@@ -14,7 +14,7 @@
         "text": "#2C2118"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Gowun Batang",
         "body": "Pretendard"
       },
       "sections": ["hero", "about", "menu", "gallery", "location", "instagram"],
@@ -39,8 +39,8 @@
         "text": "#2C1A0E"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
-        "body": "Pretendard"
+        "heading": "Song Myung",
+        "body": "Gowun Batang"
       },
       "sections": ["hero", "story", "menu", "events", "gallery", "contact"],
       "unsplashKeyword": "vintage brunch cafe warm",
@@ -64,7 +64,7 @@
         "text": "#F5F0E8"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Gothic A1",
         "body": "Pretendard"
       },
       "sections": ["hero", "philosophy", "menu", "barista", "reservations"],
@@ -89,7 +89,7 @@
         "text": "#F5F0E6"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Nanum Myeongjo",
         "body": "Pretendard"
       },
       "sections": ["hero", "chef", "course-menu", "reservation", "private-room"],
@@ -114,7 +114,7 @@
         "text": "#370617"
       },
       "fonts": {
-        "heading": "Noto Sans KR",
+        "heading": "IBM Plex Sans KR",
         "body": "Pretendard"
       },
       "sections": ["hero", "menu-board", "waiting", "location", "reviews"],
@@ -141,7 +141,7 @@
         "text": "#1A2B3C"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Gothic A1",
         "body": "Pretendard"
       },
       "sections": ["hero", "features", "curriculum", "teachers", "results", "schedule", "contact"],
@@ -166,8 +166,8 @@
         "text": "#1A2C20"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
-        "body": "Pretendard"
+        "heading": "Gowun Batang",
+        "body": "Gowun Batang"
       },
       "sections": ["hero", "classes", "gallery", "instructors", "testimonials", "pricing", "enroll"],
       "unsplashKeyword": "art class creative workshop",
@@ -191,7 +191,7 @@
         "text": "#1E1A3C"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "IBM Plex Sans KR",
         "body": "Pretendard"
       },
       "sections": ["hero", "features", "courses", "demo", "pricing", "faq", "cta"],
@@ -218,7 +218,7 @@
         "text": "#0A0A0A"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Song Myung",
         "body": "Pretendard"
       },
       "sections": ["hero", "about", "works", "process", "skills", "contact"],
@@ -243,7 +243,7 @@
         "text": "#0D1B2A"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Nanum Myeongjo",
         "body": "Pretendard"
       },
       "sections": ["hero", "about", "services", "results", "testimonials", "booking"],
@@ -268,7 +268,7 @@
         "text": "#3A1830"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "IBM Plex Sans KR",
         "body": "Pretendard"
       },
       "sections": ["hero", "links", "latest-content", "shop", "about", "newsletter"],
@@ -295,8 +295,8 @@
         "text": "#2C3539"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
-        "body": "Pretendard"
+        "heading": "Nanum Myeongjo",
+        "body": "Gowun Batang"
       },
       "sections": ["hero", "about", "events", "gallery", "location", "contact"],
       "unsplashKeyword": "church worship community",
@@ -320,7 +320,7 @@
         "text": "#1B4332"
       },
       "fonts": {
-        "heading": "Noto Sans KR",
+        "heading": "Gothic A1",
         "body": "Pretendard"
       },
       "sections": ["hero", "story", "events", "gallery", "contact"],
@@ -345,7 +345,7 @@
         "text": "#6D6875"
       },
       "fonts": {
-        "heading": "Noto Serif KR",
+        "heading": "Gowun Batang",
         "body": "Pretendard"
       },
       "sections": ["hero", "about", "events", "gallery", "contact"],

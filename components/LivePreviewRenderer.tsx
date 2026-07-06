@@ -571,7 +571,7 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
       <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto w-full">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h3 className="text-3xl font-black" style={{ color: colors.primary }}>대표 메뉴</h3>
+            <h3 className="text-3xl font-black" style={{ fontFamily: fonts.heading, color: colors.primary }}>대표 메뉴</h3>
             <p className="opacity-60 mt-2 text-lg">매일 아침 신선한 재료로 준비합니다.</p>
           </div>
         </div>

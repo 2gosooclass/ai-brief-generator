@@ -15,8 +15,8 @@ package = "@netlify/plugin-nextjs"
 [plugins.inputs]
 
 [build]
-publish = "/Users/2gosoo/Documents/2GOSOO_AI_LAB/01_APP_BUILD/05_shared_machinery/ai-brief-generator/out"
-publishOrigin = "config"
+publish = "/Users/2gosoo/Documents/2GOSOO_AI_LAB/01_APP_BUILD/05_shared_machinery/ai-brief-generator/.next"
+publishOrigin = "ui"
 commandOrigin = "config"
 command = "npm run build"
 

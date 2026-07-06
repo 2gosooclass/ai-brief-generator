@@ -1,0 +1,3 @@
+module.exports=[27699,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(97971);a.n(d("[project]/Documents/2GOSOO_AI_LAB/01_APP_BUILD/05_shared_machinery/ai-brief-generator/node_modules/next/dist/client/components/builtin/global-error.js <module evaluation>"))},45646,(a,b,c)=>{let{createClientModuleProxy:d}=a.r(97971);a.n(d("[project]/Documents/2GOSOO_AI_LAB/01_APP_BUILD/05_shared_machinery/ai-brief-generator/node_modules/next/dist/client/components/builtin/global-error.js"))},18519,a=>{"use strict";a.i(27699);var b=a.i(45646);a.n(b)},96785,a=>{a.n(a.i(18519))}];
+
+//# sourceMappingURL=0w93_next_dist_client_components_builtin_global-error_0paktps.js.map
