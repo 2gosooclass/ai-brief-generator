@@ -1,13 +1,16 @@
 "use client";
 
+import { useState } from "react";
 import { useBriefStore } from "@/store/briefStore";
 import { motion, AnimatePresence } from "framer-motion";
 import CategoryTabs from "@/components/CategoryTabs";
 import TemplateGrid from "@/components/TemplateGrid";
 import DetailPanel from "@/components/DetailPanel";
+import GuideModal from "@/components/GuideModal";
 
 export default function Home() {
   const { selectedTemplate, openPanel } = useBriefStore();
+  const [isGuideOpen, setIsGuideOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#FAFAF7]">
@@ -30,11 +33,21 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 text-[10px] font-pretendard text-[#A09080]">
-            {["Antigravity", "Codex", "Hermes", "Lovable", "v0"].map((tool) => (
-              <span key={tool} className="px-2 py-1 bg-[#F5F0EA] rounded-lg">{tool}</span>
-            ))}
-            <span className="text-[#C8A97E] ml-1">등 AI 에이전트에 바로 붙여넣기</span>
+          <div className="flex items-center gap-3">
+            {/* 가이드북 버튼 */}
+            <button
+              onClick={() => setIsGuideOpen(true)}
+              className="flex items-center gap-1.5 px-3 py-1.5 bg-[#F5F0EA] hover:bg-[#E8D5B7] text-[#5C4A3A] hover:text-[#1C1410] rounded-xl text-[10px] font-pretendard font-semibold transition-colors"
+            >
+              <span>📖</span> 가이드북 읽기
+            </button>
+
+            <div className="hidden lg:flex items-center gap-1.5 text-[10px] font-pretendard text-[#A09080]">
+              {["Antigravity", "Codex", "Hermes", "Lovable", "v0"].map((tool) => (
+                <span key={tool} className="px-2 py-1 bg-[#F5F0EA] rounded-lg">{tool}</span>
+              ))}
+              <span className="text-[#C8A97E] ml-1">등 AI 에이전트에 바로 붙여넣기</span>
+            </div>
           </div>
         </div>
       </header>
@@ -43,9 +56,19 @@ export default function Home() {
       <section className="bg-gradient-to-br from-[#1C1410] via-[#2A1C12] to-[#1C1410] text-white py-12 px-5">
         <div className="max-w-6xl mx-auto">
           <div className="max-w-2xl">
-            <div className="inline-flex items-center gap-2 bg-[#C8A97E]/15 border border-[#C8A97E]/25 rounded-full px-3.5 py-1.5 mb-5">
-              <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
-              <span className="text-[11px] font-pretendard text-[#C8A97E]">초보자도 5분이면 완성</span>
+            <div className="flex flex-wrap items-center gap-2 mb-5">
+              <div className="inline-flex items-center gap-2 bg-[#C8A97E]/15 border border-[#C8A97E]/25 rounded-full px-3.5 py-1.5">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
+                <span className="text-[11px] font-pretendard text-[#C8A97E]">초보자도 5분이면 완성</span>
+              </div>
+              
+              {/* 히어로 가이드북 숏컷 버튼 */}
+              <button
+                onClick={() => setIsGuideOpen(true)}
+                className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white rounded-full px-3.5 py-1.5 text-[11px] font-pretendard transition-colors"
+              >
+                <span>📖</span> 친절한 가이드 보기
+              </button>
             </div>
 
             <h2 className="font-serif-kr text-3xl sm:text-4xl font-bold leading-tight mb-4">
@@ -133,7 +156,17 @@ export default function Home() {
 
         {/* 사용 가이드 */}
         <div className="mt-12 bg-white border border-[#E8E0D8] rounded-2xl p-6">
-          <h3 className="font-serif-kr text-base font-semibold text-[#1C1410] mb-4">사용 가이드</h3>
+          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            <h3 className="font-serif-kr text-base font-semibold text-[#1C1410]">사용 가이드</h3>
+            {/* 가이드 전체보기 버튼 */}
+            <button
+              onClick={() => setIsGuideOpen(true)}
+              className="text-xs font-pretendard text-[#C8A97E] hover:text-[#A08060] font-semibold flex items-center gap-1 transition-colors"
+            >
+              친절한 상세 설명서(전체) 읽기 <span>→</span>
+            </button>
+          </div>
+          
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
             {[
               { icon: "🖱️", title: "템플릿 클릭", desc: "마음에 드는 카드를 클릭하면 오른쪽에 상세 패널이 열립니다. 구조가 다른 3종 레이아웃 중 선택하세요." },
@@ -148,6 +181,16 @@ export default function Home() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* ── 메인 하단 구글 애드센스(Google AdSense) 광고 슬롯 영역 ── */}
+        <div className="mt-8">
+          <div className="bg-white border-2 border-dashed border-[#E8E0D8] rounded-2xl p-6 text-center hover:border-[#C8A97E]/30 transition-colors">
+            <span className="text-[9px] tracking-widest text-[#A09080] font-bold uppercase block mb-1">Google AdSense Advertisements</span>
+            <p className="text-xs text-[#8C7A6A] font-pretendard">
+              여기에 광고 배너 코드를 연동하여 부가 수익(애드센스)을 올리실 수 있습니다.
+            </p>
           </div>
         </div>
       </main>
@@ -168,6 +211,9 @@ export default function Home() {
 
       {/* 상세 패널 */}
       <DetailPanel />
+
+      {/* 친절한 사용 설명서 모달 */}
+      <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />
     </div>
   );
 }
