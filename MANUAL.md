@@ -8,7 +8,7 @@
 
 ## 1단계: 브리프 생성기로 나만의 기획안 만들기
 
-배포된 웹앱 주소: https://storied-manatee-578557.netlify.app
+배포된 웹앱 주소: https://2gosooweb.netlify.app
 (대표님 스마트폰이나 태블릿에서도 언제든 접속 가능합니다.)
 
 1. 업종 카테고리 선택

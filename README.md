@@ -2,7 +2,7 @@
 
 초보자도 5분 만에 업종별로 검증된 웹사이트 레이아웃 구조와 스타일을 선택하고, 최신 AI 코딩 에이전트에 그대로 입력할 수 있는 고도화된 프롬프트를 자동으로 생성해 주는 웹 애플리케이션입니다.
 
-배포 주소: https://storied-manatee-578557.netlify.app
+배포 주소: https://2gosooweb.netlify.app
 개발 및 기획: 2GOSOO AI LAB
 
 ---
