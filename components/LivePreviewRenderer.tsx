@@ -28,6 +28,148 @@ function isDark(hex: string): boolean {
   return (r * 299 + g * 587 + b * 114) / 1000 < 128;
 }
 
+const TEMPLATE_DEFAULTS: Record<string, string[]> = {
+  "cafe-minimal": [
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80"
+  ],
+  "cafe-vintage": [
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80",
+    "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=800&q=80",
+    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80"
+  ],
+  "cafe-modern": [
+    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80",
+    "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&q=80",
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80"
+  ],
+  "cafe-finedining": [
+    "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
+    "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=80",
+    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80"
+  ],
+  "cafe-casual": [
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80",
+    "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=800&q=80"
+  ],
+  "academy-trust": [
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80",
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80"
+  ],
+  "academy-creative": [
+    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80",
+    "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80",
+    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80"
+  ],
+  "academy-online": [
+    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
+    "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800&q=80"
+  ],
+  "personal-portfolio": [
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
+    "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&q=80"
+  ],
+  "personal-consultant": [
+    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80"
+  ],
+  "personal-creator": [
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
+    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80",
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80"
+  ],
+  "religion-church": [
+    "https://images.unsplash.com/photo-1438029071396-1e831a7fa6d8?w=800&q=80",
+    "https://images.unsplash.com/photo-1515002246390-7bf7e8f87b54?w=800&q=80",
+    "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80"
+  ],
+  "religion-ngo": [
+    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80",
+    "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&q=80",
+    "https://images.unsplash.com/photo-1469571486040-7a9785ad667f?w=800&q=80"
+  ],
+  "religion-community": [
+    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&q=80",
+    "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
+    "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80"
+  ]
+};
+
+// ── 개별 섹션 이미지 변경 지원을 위한 래퍼 컴포넌트 ──
+interface EditableImageProps {
+  sectionKey: string;
+  defaultUrl: string;
+  className?: string;
+  asBackground?: boolean;
+  children?: React.ReactNode;
+  style?: React.CSSProperties;
+}
+
+function EditableImage({
+  sectionKey,
+  defaultUrl,
+  className = "",
+  asBackground = false,
+  children,
+  style = {}
+}: EditableImageProps) {
+  const { sectionImages, setEditingSection } = useBriefStore();
+  const imageUrl = sectionImages[sectionKey] || defaultUrl;
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setEditingSection(sectionKey);
+  };
+
+  if (asBackground) {
+    return (
+      <div
+        className={`group relative bg-cover bg-center ${className}`}
+        style={{
+          ...style,
+          backgroundImage: style.backgroundImage
+            ? `${style.backgroundImage.toString().split(', url')[0]}, url(${imageUrl})`
+            : `url(${imageUrl})`
+        }}
+      >
+        {/* 호버 오버레이 */}
+        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
+          <button
+            onClick={handleClick}
+            className="pointer-events-auto px-4 py-2 bg-white/95 text-[#1C1410] rounded-xl text-xs font-pretendard font-bold shadow-lg hover:bg-white hover:scale-105 transition-all flex items-center gap-1.5"
+          >
+            <span>📷</span> 이미지 변경
+          </button>
+        </div>
+        {children}
+      </div>
+    );
+  }
+
+  return (
+    <div className={`group relative overflow-hidden ${className}`} style={style}>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img src={imageUrl} alt={sectionKey} className="w-full h-full object-cover" />
+      
+      {/* 호버 오버레이 */}
+      <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
+        <button
+          onClick={handleClick}
+          className="pointer-events-auto px-4 py-2 bg-white/95 text-[#1C1410] rounded-xl text-xs font-pretendard font-bold shadow-lg hover:bg-white hover:scale-105 transition-all flex items-center gap-1.5"
+        >
+          <span>📷</span> 이미지 변경
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function LivePreviewRenderer() {
   const {
     selectedTemplate,
@@ -43,7 +185,6 @@ export default function LivePreviewRenderer() {
 
   const { layoutType } = selectedTemplate;
 
-  // 상태 결합
   const accentColor = userInputs.pickedColor || selectedTemplate.colors.accent;
   const bizName = userInputs.businessName || selectedTemplate.name;
   const bizDesc = userInputs.description || selectedTemplate.tagline;
@@ -52,18 +193,27 @@ export default function LivePreviewRenderer() {
     : selectedTemplate.sections;
 
   const images = useMemo(() => {
-    if (imageMode === "upload" && uploadedImageUrl) {
-      return [uploadedImageUrl, uploadedImageUrl, uploadedImageUrl];
-    } else if (imageMode === "stock" && selectedStockImages.length > 0) {
-      return [...selectedStockImages, ...selectedStockImages, ...selectedStockImages];
-    }
-    // Fallback placeholders
-    return [
+    const templateId = selectedTemplate.id;
+    const fallbacks = TEMPLATE_DEFAULTS[templateId] || [
       "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80",
       "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
       "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80"
     ];
-  }, [imageMode, uploadedImageUrl, selectedStockImages]);
+
+    let resolved = [...fallbacks];
+
+    if (imageMode === "upload" && uploadedImageUrl) {
+      resolved[0] = uploadedImageUrl;
+    } else if (imageMode === "stock" && selectedStockImages.length > 0) {
+      selectedStockImages.forEach((img, idx) => {
+        if (idx < resolved.length) {
+          resolved[idx] = img;
+        }
+      });
+    }
+
+    return resolved;
+  }, [selectedTemplate.id, imageMode, uploadedImageUrl, selectedStockImages]);
 
   const props = {
     template: selectedTemplate,
@@ -86,9 +236,6 @@ export default function LivePreviewRenderer() {
   }
 }
 
-// ─────────────────────────────────────────────
-// PROPS INTERFACE
-// ─────────────────────────────────────────────
 interface LayoutProps {
   template: Template;
   category: string;
@@ -106,7 +253,6 @@ interface LayoutProps {
 function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
   const { colors, fonts } = template;
   const heroDark = isDark(colors.primary);
-  const heroText = heroDark ? "#FFFFFF" : "#111111";
   const navBg = colors.surface ?? colors.bg;
   const navText = isDark(navBg) ? "#FFFFFF" : colors.primary;
 
@@ -131,28 +277,37 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
       </nav>
 
       {/* Hero */}
-      <header className="px-8 py-24 flex flex-col items-center text-center relative overflow-hidden" style={{ backgroundColor: colors.primary }}>
-        <div className="absolute right-10 top-1/2 -translate-y-1/2 w-64 h-64 rounded-full opacity-10" style={{ backgroundColor: accentColor }} />
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 relative z-10 leading-tight" style={{ fontFamily: fonts.heading, color: heroText }}>
+      <EditableImage
+        asBackground
+        sectionKey="hero"
+        defaultUrl={images[0]}
+        className="px-8 py-32 flex flex-col items-center text-center relative overflow-hidden"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}), rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}))`
+        }}
+      >
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 relative z-10 leading-tight text-white" style={{ fontFamily: fonts.heading }}>
           {bizDesc}
         </h1>
-        <p className="text-lg md:text-xl mb-10 relative z-10 opacity-80" style={{ color: heroText }}>
+        <p className="text-lg md:text-xl mb-10 relative z-10 text-white/90">
           {bizName}에 오신 것을 환영합니다.
         </p>
         <button className="px-8 py-4 rounded-full text-lg font-bold relative z-10 transition-transform hover:scale-105"
           style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
           자세히 알아보기
         </button>
-      </header>
+      </EditableImage>
 
       {/* Sections */}
       <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-24">
         {sections.filter(s => s !== 'hero').map((sec, i) => (
           <section key={i} className="flex flex-col md:flex-row gap-12 items-center">
             {i % 2 !== 0 && (
-              <div className="flex-1 w-full h-80 rounded-2xl overflow-hidden bg-gray-200 shadow-sm border border-black/5">
-                <img src={images[i % images.length]} alt={sec} className="w-full h-full object-cover" />
-              </div>
+              <EditableImage
+                sectionKey={sec}
+                defaultUrl={images[i % images.length]}
+                className="flex-1 w-full h-80 rounded-2xl bg-gray-200 shadow-sm border border-black/5"
+              />
             )}
             <div className="flex-1">
               <div className="inline-block px-3 py-1 rounded-full text-sm font-bold mb-4" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
@@ -166,9 +321,11 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
               </p>
             </div>
             {i % 2 === 0 && (
-              <div className="flex-1 w-full h-80 rounded-2xl overflow-hidden bg-gray-200 shadow-sm border border-black/5">
-                <img src={images[i % images.length]} alt={sec} className="w-full h-full object-cover" />
-              </div>
+              <EditableImage
+                sectionKey={sec}
+                defaultUrl={images[i % images.length]}
+                className="flex-1 w-full h-80 rounded-2xl bg-gray-200 shadow-sm border border-black/5"
+              />
             )}
           </section>
         ))}
@@ -180,7 +337,7 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
 // ─────────────────────────────────────────────
 // 2. GRID LAYOUT (빈티지 브런치, 크리에이티브 클래스 등)
 // ─────────────────────────────────────────────
-function GridLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function GridLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
   const { colors, fonts } = template;
   const heroDark = isDark(colors.primary);
   const heroText = heroDark ? "#FFFFFF" : "#111111";
@@ -214,8 +371,8 @@ function GridLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sect
           </button>
         </div>
         <div className="flex-1 relative min-h-[300px]">
-          <img src={images[0]} alt="Hero" className="absolute inset-0 w-full h-full object-cover" />
-          <div className="absolute inset-0" style={{ background: `linear-gradient(45deg, ${colors.primary}50, transparent)` }} />
+          <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full" />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(45deg, ${colors.primary}50, transparent)` }} />
         </div>
       </header>
 
@@ -224,9 +381,7 @@ function GridLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sect
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {sections.filter(s => s !== 'hero').map((sec, i) => (
             <div key={i} className="rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow" style={{ backgroundColor: colors.surface, border: `1px solid ${accentColor}20` }}>
-              <div className="h-48 overflow-hidden relative bg-gray-100">
-                <img src={images[(i + 1) % images.length]} className="w-full h-full object-cover" alt={sec} />
-              </div>
+              <EditableImage sectionKey={sec} defaultUrl={images[(i + 1) % images.length]} className="h-48 bg-gray-100" />
               <div className="p-6">
                 <div className="w-8 h-1 mb-4 rounded-full" style={{ backgroundColor: accentColor }} />
                 <h3 className="text-xl font-bold mb-2" style={{ fontFamily: fonts.heading, color: colors.text }}>{SECTION_KR[sec] ?? sec}</h3>
@@ -245,15 +400,15 @@ function GridLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sect
 // ─────────────────────────────────────────────
 // 3. OVERLAY LAYOUT (모던 스페셜티, 온라인 강좌 등)
 // ─────────────────────────────────────────────
-function OverlayLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
   const { colors, fonts } = template;
   
   return (
     <div className="min-h-full w-full bg-[#000] text-white relative font-sans" style={{ fontFamily: fonts.body }}>
       {/* Fixed Fullscreen Background Image */}
       <div className="fixed inset-0 z-0">
-        <img src={images[0]} alt="Background" className="w-full h-full object-cover opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/95" />
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full opacity-40" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/95 pointer-events-none" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-full">
@@ -319,8 +474,8 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
       
       {/* Signature Dish Hero */}
       <header className="relative h-[70vh] flex items-center justify-center text-center">
-        <img src={images[0]} alt="Signature Dish" className="absolute inset-0 w-full h-full object-cover" />
-        <div className="absolute inset-0 bg-black/60" />
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full" />
+        <div className="absolute inset-0 bg-black/60 pointer-events-none" />
         <div className="relative z-10 max-w-3xl p-8">
           <p className="text-sm tracking-[0.3em] mb-4 uppercase" style={{ color: accentColor }}>Signature Experience</p>
           <h2 className="text-5xl md:text-6xl font-light mb-8 text-white" style={{ fontFamily: fonts.heading }}>{bizDesc}</h2>
@@ -330,7 +485,7 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
         </div>
       </header>
 
-      {/* Course Menu Section (Grid Price Table) */}
+      {/* Course Menu Section */}
       <section className="py-24 px-8 max-w-6xl mx-auto w-full">
         <div className="text-center mb-16">
           <h3 className="text-4xl font-bold mb-4" style={{ fontFamily: fonts.heading }}>Tasting Menu</h3>
@@ -402,13 +557,13 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
 
       {/* Vibrant Hero */}
       <header className="p-6 md:p-12">
-        <div className="rounded-3xl overflow-hidden relative h-[50vh] flex items-center p-8 md:p-16 shadow-lg" style={{ backgroundColor: colors.primary }}>
+        <div className="rounded-3xl overflow-hidden relative h-[50vh] flex items-center p-8 md:p-16 shadow-lg bg-cover bg-center" style={{ backgroundColor: colors.primary }}>
           <div className="relative z-10 max-w-xl text-white">
             <span className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 tracking-wider" style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>NEW OPEN</span>
             <h2 className="text-4xl md:text-6xl font-black mb-4 leading-tight">{bizDesc}</h2>
             <p className="text-lg opacity-90 mb-8 font-medium">맛있는 음식과 신나는 분위기! {bizName}에서 즐거운 시간을 보내세요.</p>
           </div>
-          <img src={images[0]} alt="Food" className="absolute right-0 top-0 bottom-0 w-1/2 object-cover opacity-30 mix-blend-overlay hidden md:block" />
+          <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute right-0 top-0 bottom-0 w-1/2 opacity-30 mix-blend-overlay hidden md:block" />
         </div>
       </header>
 
@@ -424,9 +579,9 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
             <div key={i} className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white pb-4 border border-black/5 group cursor-pointer">
-              <div className="h-48 overflow-hidden bg-gray-100 relative">
-                <img src={images[i % images.length]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={`Menu ${i}`} />
-                <div className="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur rounded text-xs font-bold shadow" style={{ color: accentColor }}>
+              <div className="h-48 bg-gray-100 relative">
+                <EditableImage sectionKey={`menu-${i}`} defaultUrl={images[i % images.length]} className="w-full h-full" />
+                <div className="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur rounded text-xs font-bold shadow z-10" style={{ color: accentColor }}>
                   HIT
                 </div>
               </div>

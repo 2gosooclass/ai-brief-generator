@@ -3,45 +3,29 @@
 import { useCallback, useState } from "react";
 import { useBriefStore } from "@/store/briefStore";
 
-interface CloudinaryUploadResponse {
-  secure_url: string;
-  public_id: string;
-}
-
-async function uploadToCloudinary(
-  file: File,
-  cloudName: string,
-  uploadPreset: string
-): Promise<string> {
+async function uploadToCloudinaryServer(file: File): Promise<string> {
   const formData = new FormData();
   formData.append("file", file);
-  formData.append("upload_preset", uploadPreset);
 
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-    { method: "POST", body: formData }
-  );
+  const res = await fetch("/api/upload", {
+    method: "POST",
+    body: formData,
+  });
 
   if (!res.ok) {
-    throw new Error("Cloudinary 업로드 실패");
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.error || "Cloudinary 업로드 API 오류");
   }
 
-  const data: CloudinaryUploadResponse = await res.json();
+  const data = await res.json();
   return data.secure_url;
 }
 
 export default function ImageUploader() {
-  const { setUploadedImage, clearUploadedImage, uploadedImageUrl } = useBriefStore();
+  const { setUploadedImage, clearUploadedImage, uploadedImageUrl, activeEditingSection } = useBriefStore();
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
-
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
-  const hasCloudinary =
-    cloudName &&
-    uploadPreset &&
-    cloudName !== "your_cloudinary_cloud_name_here";
 
   const handleFile = useCallback(
     async (file: File) => {
@@ -59,29 +43,21 @@ export default function ImageUploader() {
       setIsUploading(true);
 
       try {
-        let imageUrl: string;
-
-        if (hasCloudinary) {
-          imageUrl = await uploadToCloudinary(file, cloudName!, uploadPreset!);
-        } else {
-          // 로컬 Object URL 폴백
-          imageUrl = URL.createObjectURL(file);
-        }
-
+        const imageUrl = await uploadToCloudinaryServer(file);
         setUploadedImage(imageUrl, file);
-      } catch (err) {
-        console.error("Upload error:", err);
-        // Cloudinary 실패 시 로컬 URL 폴백
+      } catch (err: any) {
+        console.error("Cloudinary upload failed, falling back to local URL:", err);
+        // 로컬 Object URL 폴백
         const localUrl = URL.createObjectURL(file);
         setUploadedImage(localUrl, file);
         setUploadError(
-          "클라우드 업로드 실패 — 로컬 미리보기로 대체됩니다. 프롬프트에 이미지를 직접 추가해주세요."
+          "서버 업로드 실패(로컬 미리보기 대체). .env 설정 또는 서버 로그를 확인하세요."
         );
       } finally {
         setIsUploading(false);
       }
     },
-    [hasCloudinary, cloudName, uploadPreset, setUploadedImage]
+    [setUploadedImage]
   );
 
   const onDrop = useCallback(
@@ -103,7 +79,7 @@ export default function ImageUploader() {
     [handleFile]
   );
 
-  if (uploadedImageUrl) {
+  if (uploadedImageUrl && !activeEditingSection) {
     return (
       <div className="space-y-2">
         <div className="relative rounded-xl overflow-hidden border-2 border-[#C8A97E] bg-[#F5F0EA]">
@@ -122,13 +98,8 @@ export default function ImageUploader() {
             </button>
           </div>
         </div>
-        {!hasCloudinary && (
-          <p className="text-[10px] text-amber-600 font-pretendard bg-amber-50 px-3 py-1.5 rounded-lg">
-            Cloudinary 미설정 — 이미지 URL이 프롬프트에 직접 삽입되지 않습니다. 직접 붙여넣기 하세요.
-          </p>
-        )}
         {uploadError && (
-          <p className="text-[10px] text-amber-600 font-pretendard">{uploadError}</p>
+          <p className="text-[10px] text-amber-600 font-pretendard bg-amber-50 px-3 py-1.5 rounded-lg">{uploadError}</p>
         )}
       </div>
     );

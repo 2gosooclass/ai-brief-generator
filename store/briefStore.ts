@@ -20,6 +20,8 @@ interface BriefState {
   uploadedImageUrl: string | null;
   uploadedImageFile: File | null;
   selectedStockImages: string[]; // 선택된 Unsplash 이미지 URL 목록
+  sectionImages: Record<string, string>; // 섹션별 개별 이미지 설정
+  activeEditingSection: string | null; // 현재 편집 중인 섹션 키
 
   // 수정 항목 체크박스
   modifyOptions: ModifyOptions;
@@ -36,6 +38,8 @@ interface BriefState {
   setUploadedImage: (url: string, file: File) => void;
   clearUploadedImage: () => void;
   toggleStockImage: (url: string) => void; // 스톡 이미지 선택/해제 토글
+  setEditingSection: (section: string | null) => void;
+  setSectionImage: (section: string, url: string) => void;
   toggleModifyOption: (option: keyof ModifyOptions) => void;
   setUserInput: (key: keyof UserInputs, value: string) => void;
   toggleMultiPage: () => void;
@@ -66,6 +70,8 @@ export const useBriefStore = create<BriefState>((set) => ({
   uploadedImageUrl: null,
   uploadedImageFile: null,
   selectedStockImages: [],
+  sectionImages: {},
+  activeEditingSection: null,
 
   modifyOptions: defaultModifyOptions,
   userInputs: defaultUserInputs,
@@ -105,9 +111,22 @@ export const useBriefStore = create<BriefState>((set) => ({
     }),
 
   setUploadedImage: (url, file) =>
-    set({
-      uploadedImageUrl: url,
-      uploadedImageFile: file,
+    set((state) => {
+      if (state.activeEditingSection) {
+        return {
+          uploadedImageUrl: url,
+          uploadedImageFile: file,
+          sectionImages: {
+            ...state.sectionImages,
+            [state.activeEditingSection]: url
+          },
+          activeEditingSection: null // 편집창 닫기
+        };
+      }
+      return {
+        uploadedImageUrl: url,
+        uploadedImageFile: file,
+      };
     }),
 
   clearUploadedImage: () =>
@@ -122,8 +141,35 @@ export const useBriefStore = create<BriefState>((set) => ({
       const next = exists
         ? state.selectedStockImages.filter((x) => x !== url)
         : [...state.selectedStockImages, url];
+      
+      // 만약 개별 섹션 편집 중이라면, 해당 섹션 이미지로도 즉시 설정
+      if (state.activeEditingSection) {
+        return {
+          selectedStockImages: next,
+          sectionImages: {
+            ...state.sectionImages,
+            [state.activeEditingSection]: url
+          },
+          activeEditingSection: null // 편집창 닫기
+        };
+      }
+
       return { selectedStockImages: next };
     }),
+
+  setEditingSection: (section) =>
+    set({
+      activeEditingSection: section
+    }),
+
+  setSectionImage: (section, url) =>
+    set((state) => ({
+      sectionImages: {
+        ...state.sectionImages,
+        [section]: url
+      },
+      activeEditingSection: null // 편집창 닫기
+    })),
 
   toggleModifyOption: (option) =>
     set((state) => ({
@@ -157,6 +203,8 @@ export const useBriefStore = create<BriefState>((set) => ({
       uploadedImageUrl: null,
       uploadedImageFile: null,
       selectedStockImages: [],
+      sectionImages: {},
+      activeEditingSection: null,
       modifyOptions: defaultModifyOptions,
       userInputs: defaultUserInputs,
     }),

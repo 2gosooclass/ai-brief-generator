@@ -70,6 +70,8 @@ export default function LivePreviewModal() {
     userInputs,
     setUserInput,
     resetPanel,
+    activeEditingSection,
+    setEditingSection,
   } = useBriefStore();
 
   const [imageOpen, setImageOpen] = useState(true);
@@ -83,6 +85,18 @@ export default function LivePreviewModal() {
   };
 
   if (!isPanelOpen || !selectedTemplate) return null;
+
+  const SECTION_KR: Record<string, string> = {
+    hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",
+    location: "오시는 길", instagram: "인스타그램", story: "우리의 이야기", events: "이벤트",
+    contact: "문의하기", features: "주요 특징", curriculum: "커리큘럼", teachers: "강사진",
+    results: "합격 실적", schedule: "수업 시간표", classes: "클래스 안내", instructors: "강사 소개",
+    testimonials: "수강 후기", pricing: "수강료", enroll: "신청하기", courses: "강좌 목록",
+    demo: "무료 체험", faq: "자주 묻는 질문", cta: "시작하기", works: "포트폴리오", process: "작업 과정",
+    skills: "보유 스킬", services: "제공 서비스", booking: "예약하기", links: "リンク 모음",
+    chef: "셰프 소개", "course-menu": "코스 메뉴", reservation: "예약 폼", "private-room": "프라이빗 룸",
+    "menu-board": "전체 메뉴판", waiting: "웨이팅 안내", reviews: "고객 리뷰"
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex bg-black/80 backdrop-blur-sm">
@@ -344,6 +358,56 @@ export default function LivePreviewModal() {
           </div>
         </div>
       </motion.aside>
+
+      {/* ── 섹션별 이미지 개별 변경 팝업 모달 ── */}
+      {activeEditingSection && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/75 backdrop-blur-sm">
+          <motion.div
+            initial={{ scale: 0.95, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-md bg-[#FAFAF7] rounded-2xl border border-[#E8E0D8] shadow-2xl p-6 relative flex flex-col mx-4"
+          >
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="font-serif-kr text-base font-semibold text-[#1C1410]">
+                이미지 변경 - {SECTION_KR[activeEditingSection] || activeEditingSection}
+              </h3>
+              <button
+                onClick={() => setEditingSection(null)}
+                className="w-7 h-7 rounded-full bg-[#F0EAE2] hover:bg-[#E8DDD5] flex items-center justify-center transition-colors"
+              >
+                <svg className="w-3.5 h-3.5 text-[#5C4A3A]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+
+            <div className="flex rounded-xl border border-[#E0D8D0] overflow-hidden mb-4 shrink-0">
+              {(["stock", "upload"] as const).map((mode) => (
+                <button
+                  key={mode}
+                  onClick={() => setImageMode(mode)}
+                  className={`flex-1 py-2 text-xs font-pretendard font-medium flex items-center justify-center gap-1.5 ${
+                    imageMode === mode
+                      ? "bg-[#1C1410] text-white"
+                      : "bg-white text-[#5C4A3A] hover:bg-[#F5F0EA]"
+                  }`}
+                >
+                  <span>{mode === "stock" ? "🖼️" : "📤"}</span>
+                  {mode === "stock" ? "스톡 이미지" : "직접 업로드"}
+                </button>
+              ))}
+            </div>
+
+            <div className="overflow-y-auto max-h-[50vh]">
+              {imageMode === "stock" ? (
+                <UnsplashPreview keyword={selectedTemplate.unsplashKeyword} />
+              ) : (
+                <ImageUploader />
+              )}
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
