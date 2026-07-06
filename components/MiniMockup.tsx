@@ -324,11 +324,14 @@ function MagazineLayout({ template }: Props) {
 // DISPATCHER
 // ─────────────────────────────────────────────
 export default function MiniMockup({ template }: Props) {
-  switch (template.mockupVariant) {
-    case "sidebar":
+  switch (template.layoutType) {
+    case "grid":
+    case "casual":
       return <SidebarLayout template={template} />;
-    case "magazine":
+    case "overlay":
+    case "finedining":
       return <MagazineLayout template={template} />;
+    case "vertical":
     default:
       return <ClassicLayout template={template} />;
   }

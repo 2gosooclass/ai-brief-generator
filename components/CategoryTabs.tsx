@@ -8,6 +8,7 @@ const CATEGORIES: { id: CategoryId; label: string; emoji: string; desc: string }
   { id: "cafe", label: "카페·레스토랑", emoji: "☕", desc: "감성 카페, 레스토랑, 베이커리" },
   { id: "academy", label: "학원·강좌", emoji: "📚", desc: "학원, 취미 클래스, 온라인 강좌" },
   { id: "personal", label: "개인 브랜드", emoji: "✨", desc: "포트폴리오, 컨설팅, 인플루언서" },
+  { id: "religion", label: "종교·단체", emoji: "🕊️", desc: "교회, 비영리단체, 커뮤니티" },
 ];
 
 export default function CategoryTabs() {

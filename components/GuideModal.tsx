@@ -185,16 +185,6 @@ export default function GuideModal({ isOpen, onClose }: GuideModalProps) {
                 </div>
               </div>
 
-              {/* 구글 애드센스(AdSense) 광고 슬롯 미리 구성 */}
-              <div className="pt-4 border-t border-[#E8E0D8]/60">
-                <div className="bg-white border-2 border-dashed border-[#C8A97E]/30 rounded-xl p-5 text-center transition-colors hover:border-[#C8A97E]/60">
-                  <span className="text-[10px] tracking-widest text-[#C8A97E] font-bold uppercase block mb-1">Google AdSense Area</span>
-                  <p className="text-[10px] text-[#A09080] font-pretendard">
-                    추후 애드센스 승인 완료 시 광고 코드가 삽입될 전용 슬롯입니다.
-                  </p>
-                </div>
-              </div>
-
             </div>
 
             {/* 푸터 */}

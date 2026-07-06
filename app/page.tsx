@@ -5,7 +5,7 @@ import { useBriefStore } from "@/store/briefStore";
 import { motion, AnimatePresence } from "framer-motion";
 import CategoryTabs from "@/components/CategoryTabs";
 import TemplateGrid from "@/components/TemplateGrid";
-import DetailPanel from "@/components/DetailPanel";
+import LivePreviewModal from "@/components/LivePreviewModal";
 import GuideModal from "@/components/GuideModal";
 
 export default function Home() {
@@ -184,15 +184,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* ── 메인 하단 구글 애드센스(Google AdSense) 광고 슬롯 영역 ── */}
-        <div className="mt-8">
-          <div className="bg-white border-2 border-dashed border-[#E8E0D8] rounded-2xl p-6 text-center hover:border-[#C8A97E]/30 transition-colors">
-            <span className="text-[9px] tracking-widest text-[#A09080] font-bold uppercase block mb-1">Google AdSense Advertisements</span>
-            <p className="text-xs text-[#8C7A6A] font-pretendard">
-              여기에 광고 배너 코드를 연동하여 부가 수익(애드센스)을 올리실 수 있습니다.
-            </p>
-          </div>
-        </div>
       </main>
 
       {/* ── 푸터 ── */}
@@ -209,8 +200,8 @@ export default function Home() {
         </div>
       </footer>
 
-      {/* 상세 패널 */}
-      <DetailPanel />
+      {/* 상세 패널 및 풀스크린 라이브 프리뷰 */}
+      <LivePreviewModal />
 
       {/* 친절한 사용 설명서 모달 */}
       <GuideModal isOpen={isGuideOpen} onClose={() => setIsGuideOpen(false)} />

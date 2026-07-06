@@ -1,4 +1,4 @@
-export type CategoryId = "cafe" | "academy" | "personal";
+export type CategoryId = "cafe" | "academy" | "personal" | "religion";
 
 export interface TemplateColors {
   primary: string;
@@ -27,13 +27,14 @@ export interface Template {
   promptKeywords: string[];
   badge: string | null;
   badgeColor: string | null;
-  mockupVariant: "classic" | "sidebar" | "magazine";
+  layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual";
 }
 
 export interface TemplatesData {
   cafe: Template[];
   academy: Template[];
   personal: Template[];
+  religion: Template[];
 }
 
 export type ImageMode = "stock" | "upload";
@@ -42,6 +43,7 @@ export interface ModifyOptions {
   colorChange: boolean;
   textChange: boolean;
   sectionReorder: boolean;
+  isMultiPage: boolean;
 }
 
 export interface UserInputs {
@@ -49,6 +51,7 @@ export interface UserInputs {
   description: string;
   customColor: string;
   sectionOrder: string;
+  pickedColor: string;
 }
 
 export interface UnsplashPhoto {

@@ -38,6 +38,7 @@ interface BriefState {
   toggleStockImage: (url: string) => void; // 스톡 이미지 선택/해제 토글
   toggleModifyOption: (option: keyof ModifyOptions) => void;
   setUserInput: (key: keyof UserInputs, value: string) => void;
+  toggleMultiPage: () => void;
   resetPanel: () => void;
 }
 
@@ -45,6 +46,7 @@ const defaultModifyOptions: ModifyOptions = {
   colorChange: false,
   textChange: true,
   sectionReorder: false,
+  isMultiPage: false,
 };
 
 const defaultUserInputs: UserInputs = {
@@ -52,6 +54,7 @@ const defaultUserInputs: UserInputs = {
   description: "",
   customColor: "",
   sectionOrder: "",
+  pickedColor: "",
 };
 
 export const useBriefStore = create<BriefState>((set) => ({
@@ -135,6 +138,14 @@ export const useBriefStore = create<BriefState>((set) => ({
       userInputs: {
         ...state.userInputs,
         [key]: value,
+      },
+    })),
+
+  toggleMultiPage: () =>
+    set((state) => ({
+      modifyOptions: {
+        ...state.modifyOptions,
+        isMultiPage: !state.modifyOptions.isMultiPage,
       },
     })),
 
