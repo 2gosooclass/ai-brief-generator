@@ -1,0 +1,233 @@
+{
+  "cafe": [
+    {
+      "id": "cafe-minimal",
+      "name": "미니멀 카페",
+      "tagline": "여백과 감성으로 만드는",
+      "description": "화이트 톤의 미니멀 레이아웃에 세리프 폰트로 고급스러운 카페 분위기를 연출합니다.",
+      "colors": {
+        "primary": "#1C1410",
+        "secondary": "#5C4A3A",
+        "accent": "#C8A97E",
+        "bg": "#FAFAF7",
+        "surface": "#F2EDE6",
+        "text": "#2C2118"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "menu", "gallery", "location", "instagram"],
+      "unsplashKeyword": "cafe interior minimal",
+      "referenceStyle": "minimal modern cafe",
+      "promptKeywords": ["카페", "커피", "감성", "미니멀", "브런치"],
+      "badge": null,
+      "badgeColor": null,
+      "mockupVariant": "classic"
+    },
+    {
+      "id": "cafe-vintage",
+      "name": "빈티지 브런치",
+      "tagline": "따뜻한 레트로 감성의 아지트",
+      "description": "따뜻한 테라코타 팔레트와 손글씨 느낌의 폰트로 빈티지 브런치 카페를 표현합니다.",
+      "colors": {
+        "primary": "#3D2B1F",
+        "secondary": "#8B5E3C",
+        "accent": "#E07B39",
+        "bg": "#FDF6EE",
+        "surface": "#F0E5D5",
+        "text": "#2C1A0E"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "story", "menu", "events", "gallery", "contact"],
+      "unsplashKeyword": "vintage brunch cafe warm",
+      "referenceStyle": "vintage warm cafe",
+      "promptKeywords": ["카페", "브런치", "레트로", "빈티지", "따뜻함"],
+      "badge": null,
+      "badgeColor": null,
+      "mockupVariant": "sidebar"
+    },
+    {
+      "id": "cafe-modern",
+      "name": "모던 스페셜티",
+      "tagline": "커피를 진지하게 대하는 공간",
+      "description": "다크 배경에 골드 포인트로 스페셜티 커피의 프리미엄 가치를 시각화합니다.",
+      "colors": {
+        "primary": "#F5F0E8",
+        "secondary": "#C8A97E",
+        "accent": "#D4AF70",
+        "bg": "#0F0D0A",
+        "surface": "#1A1713",
+        "text": "#F5F0E8"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "philosophy", "menu", "barista", "reservations"],
+      "unsplashKeyword": "specialty coffee dark moody",
+      "referenceStyle": "dark premium specialty coffee",
+      "promptKeywords": ["스페셜티", "커피", "프리미엄", "다크", "고급"],
+      "badge": "프리미엄",
+      "badgeColor": "yellow",
+      "mockupVariant": "magazine"
+    }
+  ],
+  "academy": [
+    {
+      "id": "academy-trust",
+      "name": "신뢰 학원",
+      "tagline": "성적보다 성장을 가르칩니다",
+      "description": "블루 계열의 신뢰감 있는 레이아웃으로 학부모와 학생 모두에게 안정감을 줍니다.",
+      "colors": {
+        "primary": "#1A3A5C",
+        "secondary": "#2C6BAD",
+        "accent": "#4A90D9",
+        "bg": "#F8FAFE",
+        "surface": "#EBF3FB",
+        "text": "#1A2B3C"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "features", "curriculum", "teachers", "results", "schedule", "contact"],
+      "unsplashKeyword": "study classroom education",
+      "referenceStyle": "professional education academy",
+      "promptKeywords": ["학원", "교육", "학습", "성적향상", "강사"],
+      "badge": "추천",
+      "badgeColor": "blue",
+      "mockupVariant": "classic"
+    },
+    {
+      "id": "academy-creative",
+      "name": "크리에이티브 클래스",
+      "tagline": "예술·취미·자기계발 원스톱",
+      "description": "생동감 있는 그린과 옐로우 팔레트로 창의적인 취미 클래스의 활기를 표현합니다.",
+      "colors": {
+        "primary": "#1A3C2A",
+        "secondary": "#2E7D52",
+        "accent": "#6BBF7E",
+        "bg": "#F6FBF7",
+        "surface": "#E8F5EC",
+        "text": "#1A2C20"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "classes", "gallery", "instructors", "testimonials", "pricing", "enroll"],
+      "unsplashKeyword": "art class creative workshop",
+      "referenceStyle": "creative class studio",
+      "promptKeywords": ["취미", "클래스", "예술", "창의", "워크샵"],
+      "badge": null,
+      "badgeColor": null,
+      "mockupVariant": "sidebar"
+    },
+    {
+      "id": "academy-online",
+      "name": "온라인 강좌",
+      "tagline": "내 속도로, 내 공간에서",
+      "description": "퍼플-인디고 팔레트로 온라인 교육 플랫폼의 테크 감성과 미래지향적 이미지를 담습니다.",
+      "colors": {
+        "primary": "#2D1B69",
+        "secondary": "#5B21B6",
+        "accent": "#7C3AED",
+        "bg": "#F8F7FF",
+        "surface": "#EDE9FE",
+        "text": "#1E1A3C"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "features", "courses", "demo", "pricing", "faq", "cta"],
+      "unsplashKeyword": "online learning laptop study",
+      "referenceStyle": "online education platform",
+      "promptKeywords": ["온라인", "강좌", "학습", "동영상", "커리큘럼"],
+      "badge": "신규",
+      "badgeColor": "purple",
+      "mockupVariant": "magazine"
+    }
+  ],
+  "personal": [
+    {
+      "id": "personal-portfolio",
+      "name": "크리에이터 포트폴리오",
+      "tagline": "나라는 브랜드를 세상에",
+      "description": "강렬한 모노크롬과 그리드 레이아웃으로 크리에이터·디자이너의 작업물을 돋보이게 합니다.",
+      "colors": {
+        "primary": "#0A0A0A",
+        "secondary": "#404040",
+        "accent": "#FF6B35",
+        "bg": "#FAFAFA",
+        "surface": "#F0F0F0",
+        "text": "#0A0A0A"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "works", "process", "skills", "contact"],
+      "unsplashKeyword": "creative portfolio design workspace",
+      "referenceStyle": "bold portfolio creative",
+      "promptKeywords": ["포트폴리오", "크리에이터", "디자이너", "작업물", "개인브랜드"],
+      "badge": null,
+      "badgeColor": null,
+      "mockupVariant": "classic"
+    },
+    {
+      "id": "personal-consultant",
+      "name": "전문가 컨설팅",
+      "tagline": "경험이 만드는 신뢰의 서비스",
+      "description": "딥 네이비와 골드 조합으로 컨설턴트·코치의 전문성과 권위를 시각적으로 표현합니다.",
+      "colors": {
+        "primary": "#0D1B2A",
+        "secondary": "#1B3A5C",
+        "accent": "#C9A84C",
+        "bg": "#F8F9FC",
+        "surface": "#EEF1F7",
+        "text": "#0D1B2A"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "services", "results", "testimonials", "booking"],
+      "unsplashKeyword": "professional consultant business",
+      "referenceStyle": "professional consultant authority",
+      "promptKeywords": ["컨설팅", "코칭", "전문가", "비즈니스", "코치"],
+      "badge": null,
+      "badgeColor": null,
+      "mockupVariant": "sidebar"
+    },
+    {
+      "id": "personal-creator",
+      "name": "인플루언서 링크인바이오",
+      "tagline": "한 페이지에 담는 모든 것",
+      "description": "부드러운 핑크-베이지 그라디언트로 인플루언서와 소셜 크리에이터의 감성을 담은 링크 페이지입니다.",
+      "colors": {
+        "primary": "#4A2040",
+        "secondary": "#8B4A6B",
+        "accent": "#F4A7C3",
+        "bg": "#FFF8FC",
+        "surface": "#FCF0F7",
+        "text": "#3A1830"
+      },
+      "fonts": {
+        "heading": "Noto Serif KR",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "links", "latest-content", "shop", "about", "newsletter"],
+      "unsplashKeyword": "influencer lifestyle content creator",
+      "referenceStyle": "influencer link in bio page",
+      "promptKeywords": ["인플루언서", "소셜", "링크페이지", "크리에이터", "SNS"],
+      "badge": "트렌딩",
+      "badgeColor": "pink",
+      "mockupVariant": "magazine"
+    }
+  ]
+}

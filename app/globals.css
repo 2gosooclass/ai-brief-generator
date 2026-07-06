@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+:root {
+  --font-noto-serif: "Noto Serif KR", serif;
+  --font-pretendard: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  --color-ivory: #fafaf7;
+  --color-surface: #f2ece4;
+  --color-brown-dark: #1c1410;
+  --color-brown-mid: #5c4a3a;
+  --color-gold: #c8a97e;
+  --color-gold-light: #e8d5b7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-pretendard);
+  background-color: var(--color-ivory);
+  color: var(--color-brown-dark);
+}
+
+.font-serif-kr {
+  font-family: var(--font-noto-serif);
+}
+
+.font-pretendard {
+  font-family: var(--font-pretendard);
+}
+
+/* 스크롤바 커스터마이징 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-gold);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-brown-mid);
+}
+
+/* 선택 영역 */
+::selection {
+  background: var(--color-gold-light);
+  color: var(--color-brown-dark);
+}
+
+/* 프롬프트 텍스트 영역 */
+.prompt-textarea {
+  font-family: var(--font-pretendard);
+  font-size: 13px;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* 카드 호버 애니메이션 */
+.template-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.template-card:hover {
+  transform: translateY(-4px);
+}
+
+/* 미니 목업 내부 요소 */
+.mini-mockup {
+  transform-origin: top left;
+  font-family: var(--font-pretendard);
+}
+
+/* 골드 그라디언트 */
+.gold-gradient {
+  background: linear-gradient(135deg, #c8a97e 0%, #e8d5b7 50%, #c8a97e 100%);
+}
+
+/* 복사 버튼 효과 */
+.copy-btn {
+  transition: all 0.2s ease;
+}
+.copy-btn:active {
+  transform: scale(0.96);
+}
+
+/* 체크박스 커스텀 */
+.custom-checkbox {
+  accent-color: var(--color-gold);
+}
+
+/* 탭 하단 인디케이터 */
+.tab-indicator {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 패널 오버레이 */
+.panel-overlay {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
