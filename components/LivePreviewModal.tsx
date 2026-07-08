@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
 import UnsplashPreview from "./UnsplashPreview";
@@ -72,10 +72,31 @@ export default function LivePreviewModal() {
     resetPanel,
     activeEditingSection,
     setEditingSection,
+    logoUrl,
+    setLogoUrl,
   } = useBriefStore();
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const [imageOpen, setImageOpen] = useState(true);
   const [modifyOpen, setModifyOpen] = useState(true);
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result;
+        if (typeof result === "string") {
+          setLogoUrl(result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleClose = () => {
     closePanel();
@@ -84,7 +105,7 @@ export default function LivePreviewModal() {
     setModifyOpen(true);
   };
 
-  if (!isPanelOpen || !selectedTemplate) return null;
+  if (!isPanelOpen || !selectedTemplate || !mounted) return null;
 
   const SECTION_KR: Record<string, string> = {
     hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",
@@ -293,22 +314,75 @@ export default function LivePreviewModal() {
                               >
                                 <div className="pt-2 pb-1 px-1 space-y-2">
                                   {opt.key === "textChange" && (
-                                    <>
-                                      <input
-                                        type="text"
-                                        placeholder="업체명 (예: 블루문 카페)"
-                                        value={userInputs.businessName}
-                                        onChange={(e) => setUserInput("businessName", e.target.value)}
-                                        className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0]"
-                                      />
-                                      <textarea
-                                        placeholder="한줄 소개 (예: 제주의 바람을 담은 핸드드립 카페)"
-                                        value={userInputs.description}
-                                        onChange={(e) => setUserInput("description", e.target.value)}
-                                        rows={2}
-                                        className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] resize-none"
-                                      />
-                                    </>
+                                    <div className="space-y-3">
+                                      {/* 로고 업로드 영역 */}
+                                      <div className="space-y-1">
+                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">로고 이미지 설정</label>
+                                        <div className="flex items-center gap-2">
+                                          {logoUrl ? (
+                                            <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
+                                              <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                                              <button
+                                                type="button"
+                                                onClick={(e) => {
+                                                  e.stopPropagation();
+                                                  setLogoUrl(null);
+                                                }}
+                                                className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
+                                              >
+                                                삭제
+                                              </button>
+                                            </div>
+                                          ) : (
+                                            <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-white transition-colors">
+                                              <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 로고 파일 업로드 (PNG, SVG)</span>
+                                              <input
+                                                type="file"
+                                                accept="image/*"
+                                                onChange={handleLogoUpload}
+                                                className="hidden"
+                                              />
+                                            </label>
+                                          )}
+                                        </div>
+                                      </div>
+
+                                      {/* 업체명 */}
+                                      <div className="space-y-1">
+                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">업체명</label>
+                                        <input
+                                          type="text"
+                                          placeholder="업체명 (예: 블루문 카페)"
+                                          value={userInputs.businessName}
+                                          onChange={(e) => setUserInput("businessName", e.target.value)}
+                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none"
+                                        />
+                                      </div>
+
+                                      {/* 한줄 소개 */}
+                                      <div className="space-y-1">
+                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">한줄 소개</label>
+                                        <textarea
+                                          placeholder="한줄 소개 (예: 제주의 바람을 담은 핸드드립 카페)"
+                                          value={userInputs.description}
+                                          onChange={(e) => setUserInput("description", e.target.value)}
+                                          rows={2}
+                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none resize-none"
+                                        />
+                                      </div>
+
+                                      {/* 연락처 */}
+                                      <div className="space-y-1">
+                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">연락처 설정</label>
+                                        <input
+                                          type="text"
+                                          placeholder="연락처 (예: 010-1234-5678 / info@cafe.com)"
+                                          value={userInputs.contact}
+                                          onChange={(e) => setUserInput("contact", e.target.value)}
+                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none"
+                                        />
+                                      </div>
+                                    </div>
                                   )}
 
                                   {opt.key === "colorChange" && (
