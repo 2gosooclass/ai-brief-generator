@@ -15,7 +15,6 @@ const MODIFY_OPTIONS: {
   desc: string;
   icon: string;
 }[] = [
-  { key: "textChange",    label: "텍스트 변경",    desc: "업체명, 소개 문구 교체",       icon: "✏️" },
   { key: "colorChange",   label: "컬러 변경",      desc: "포인트 컬러 커스터마이징",      icon: "🎨" },
   { key: "sectionReorder",label: "섹션 순서 변경",  desc: "원하는 순서로 재배치",         icon: "↕️" },
 ];
@@ -183,7 +182,87 @@ export default function LivePreviewModal() {
                 자동 생성 프롬프트
               </p>
             </div>
-            <PromptOutput compact />
+             <PromptOutput compact />
+          </div>
+
+          <div className="mx-5 border-t border-[#E8E0D8]" />
+
+          {/* ── 브랜드 로고 및 기본 정보 설정 (상시 노출) ── */}
+          <div className="px-5 py-4 space-y-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">📝</span>
+              <p className="text-xs font-pretendard font-semibold text-[#1C1410]">기본 정보 및 로고 설정</p>
+            </div>
+            
+            <div className="bg-white border border-[#E8E0D8] rounded-2xl p-4 space-y-3.5 shadow-sm">
+              {/* 로고 업로드 */}
+              <div className="space-y-1">
+                <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">브랜드 로고 이미지</label>
+                <div className="flex items-center gap-2">
+                  {logoUrl ? (
+                    <div className="relative w-12 h-12 rounded-xl border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
+                      <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setLogoUrl(null);
+                        }}
+                        className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
+                      >
+                        삭제
+                      </button>
+                    </div>
+                  ) : (
+                    <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-xl cursor-pointer bg-[#FAF8F5] transition-colors">
+                      <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1.5 font-medium">📤 로고 파일 업로드 (PNG, SVG)</span>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleLogoUpload}
+                        className="hidden"
+                      />
+                    </label>
+                  )}
+                </div>
+              </div>
+
+              {/* 업체명 */}
+              <div className="space-y-1">
+                <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">업체명 (사이트 타이틀)</label>
+                <input
+                  type="text"
+                  placeholder="업체명 (예: 블루문 카페)"
+                  value={userInputs.businessName}
+                  onChange={(e) => setUserInput("businessName", e.target.value)}
+                  className="w-full px-3 py-2 text-xs font-pretendard rounded-xl border border-[#E0D8D0] bg-[#FAF8F5] focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/30"
+                />
+              </div>
+
+              {/* 한줄 소개 */}
+              <div className="space-y-1">
+                <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">메인 한줄 소개</label>
+                <textarea
+                  placeholder="한줄 소개 (예: 제주의 바람을 담은 핸드드립 카페)"
+                  value={userInputs.description}
+                  onChange={(e) => setUserInput("description", e.target.value)}
+                  rows={2}
+                  className="w-full px-3 py-2 text-xs font-pretendard rounded-xl border border-[#E0D8D0] bg-[#FAF8F5] focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/30 resize-none"
+                />
+              </div>
+
+              {/* 연락처 */}
+              <div className="space-y-1">
+                <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">하단 연락처 (이메일/전화번호)</label>
+                <input
+                  type="text"
+                  placeholder="연락처 (예: 010-1234-5678)"
+                  value={userInputs.contact}
+                  onChange={(e) => setUserInput("contact", e.target.value)}
+                  className="w-full px-3 py-2 text-xs font-pretendard rounded-xl border border-[#E0D8D0] bg-[#FAF8F5] focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/30"
+                />
+              </div>
+            </div>
           </div>
 
           <div className="mx-5 border-t border-[#E8E0D8]" />
@@ -308,77 +387,7 @@ export default function LivePreviewModal() {
                                 className="overflow-hidden"
                               >
                                 <div className="pt-2 pb-1 px-1 space-y-2">
-                                  {opt.key === "textChange" && (
-                                    <div className="space-y-3">
-                                      {/* 로고 업로드 영역 */}
-                                      <div className="space-y-1">
-                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">로고 이미지 설정</label>
-                                        <div className="flex items-center gap-2">
-                                          {logoUrl ? (
-                                            <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
-                                              <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
-                                              <button
-                                                type="button"
-                                                onClick={(e) => {
-                                                  e.stopPropagation();
-                                                  setLogoUrl(null);
-                                                }}
-                                                className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
-                                              >
-                                                삭제
-                                              </button>
-                                            </div>
-                                          ) : (
-                                            <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-white transition-colors">
-                                              <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 로고 파일 업로드 (PNG, SVG)</span>
-                                              <input
-                                                type="file"
-                                                accept="image/*"
-                                                onChange={handleLogoUpload}
-                                                className="hidden"
-                                              />
-                                            </label>
-                                          )}
-                                        </div>
-                                      </div>
 
-                                      {/* 업체명 */}
-                                      <div className="space-y-1">
-                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">업체명</label>
-                                        <input
-                                          type="text"
-                                          placeholder="업체명 (예: 블루문 카페)"
-                                          value={userInputs.businessName}
-                                          onChange={(e) => setUserInput("businessName", e.target.value)}
-                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none"
-                                        />
-                                      </div>
-
-                                      {/* 한줄 소개 */}
-                                      <div className="space-y-1">
-                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">한줄 소개</label>
-                                        <textarea
-                                          placeholder="한줄 소개 (예: 제주의 바람을 담은 핸드드립 카페)"
-                                          value={userInputs.description}
-                                          onChange={(e) => setUserInput("description", e.target.value)}
-                                          rows={2}
-                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none resize-none"
-                                        />
-                                      </div>
-
-                                      {/* 연락처 */}
-                                      <div className="space-y-1">
-                                        <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">연락처 설정</label>
-                                        <input
-                                          type="text"
-                                          placeholder="연락처 (예: 010-1234-5678 / info@cafe.com)"
-                                          value={userInputs.contact}
-                                          onChange={(e) => setUserInput("contact", e.target.value)}
-                                          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none"
-                                        />
-                                      </div>
-                                    </div>
-                                  )}
 
                                   {opt.key === "colorChange" && (
                                     <div className="space-y-2">
