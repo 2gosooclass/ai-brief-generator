@@ -178,7 +178,8 @@ export default function LivePreviewRenderer() {
     userInputs,
     imageMode,
     uploadedImageUrl,
-    selectedStockImages
+    selectedStockImages,
+    logoUrl,
   } = useBriefStore();
 
   if (!selectedTemplate) return null;
@@ -188,6 +189,7 @@ export default function LivePreviewRenderer() {
   const accentColor = userInputs.pickedColor || selectedTemplate.colors.accent;
   const bizName = userInputs.businessName || selectedTemplate.name;
   const bizDesc = userInputs.description || selectedTemplate.tagline;
+  const contact = userInputs.contact || "";
   const sections = userInputs.sectionOrder
     ? userInputs.sectionOrder.split("→").map(s => s.trim()).filter(Boolean)
     : selectedTemplate.sections;
@@ -223,7 +225,9 @@ export default function LivePreviewRenderer() {
     bizName,
     bizDesc,
     sections,
-    images
+    images,
+    logoUrl,
+    contact
   };
 
   switch (layoutType) {
@@ -245,12 +249,14 @@ interface LayoutProps {
   bizDesc: string;
   sections: string[];
   images: string[];
+  logoUrl: string | null;
+  contact: string;
 }
 
 // ─────────────────────────────────────────────
 // 1. VERTICAL LAYOUT (미니멀 카페, 신뢰 학원 등)
 // ─────────────────────────────────────────────
-function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   const heroDark = isDark(colors.primary);
   const navBg = colors.surface ?? colors.bg;
@@ -260,9 +266,13 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
     <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body }}>
       {/* Nav */}
       <nav className="flex items-center justify-between px-8 py-5 sticky top-0 z-10" style={{ backgroundColor: navBg }}>
-        <span className="text-xl font-bold tracking-widest uppercase" style={{ fontFamily: fonts.heading, color: navText }}>
-          {bizName}
-        </span>
+        {logoUrl ? (
+          <img src={logoUrl} alt="Logo" className="h-8 max-w-[150px] object-contain" />
+        ) : (
+          <span className="text-xl font-bold tracking-widest uppercase" style={{ fontFamily: fonts.heading, color: navText }}>
+            {bizName}
+          </span>
+        )}
         <div className="flex gap-6">
           {isMultiPage ? (
             ["Home", "Curriculum", "Teachers", "Reviews"].map(i => (
@@ -330,6 +340,13 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
           </section>
         ))}
       </main>
+
+      {/* Footer */}
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+        <p className="font-semibold mb-2">{bizName}</p>
+        {contact && <p className="mb-2">연락처: {contact}</p>}
+        <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -337,7 +354,7 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
 // ─────────────────────────────────────────────
 // 2. GRID LAYOUT (빈티지 브런치, 크리에이티브 클래스 등)
 // ─────────────────────────────────────────────
-function GridLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function GridLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   const heroDark = isDark(colors.primary);
   const heroText = heroDark ? "#FFFFFF" : "#111111";
@@ -347,7 +364,11 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images 
       <nav className="flex justify-between items-center px-8 py-4 border-b" style={{ borderColor: `${accentColor}30`, backgroundColor: colors.surface }}>
         <div className="flex items-center gap-3">
           <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: accentColor }} />
-          <span className="text-lg font-bold" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</span>
+          {logoUrl ? (
+            <img src={logoUrl} alt="Logo" className="h-7 max-w-[130px] object-contain" />
+          ) : (
+            <span className="text-lg font-bold" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</span>
+          )}
         </div>
         <div className="hidden md:flex gap-4">
           {sections.slice(0, 4).map(sec => (
@@ -393,6 +414,13 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images 
           ))}
         </div>
       </main>
+
+      {/* Footer */}
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+        <p className="font-semibold mb-2">{bizName}</p>
+        {contact && <p className="mb-2">연락처: {contact}</p>}
+        <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -400,7 +428,7 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images 
 // ─────────────────────────────────────────────
 // 3. OVERLAY LAYOUT (모던 스페셜티, 온라인 강좌 등)
 // ─────────────────────────────────────────────
-function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   
   return (
@@ -413,9 +441,13 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
 
       <div className="relative z-10 flex flex-col min-h-full">
         <nav className="flex justify-between items-center p-8">
-          <span className="text-2xl font-black tracking-tighter" style={{ fontFamily: fonts.heading, color: accentColor }}>
-            {bizName.toUpperCase()}
-          </span>
+          {logoUrl ? (
+            <img src={logoUrl} alt="Logo" className="h-8 max-w-[150px] object-contain" />
+          ) : (
+            <span className="text-2xl font-black tracking-tighter" style={{ fontFamily: fonts.heading, color: accentColor }}>
+              {bizName.toUpperCase()}
+            </span>
+          )}
           <div className="w-8 h-8 rounded-full border border-white/20 flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-white/10 transition-colors">
             <div className="w-4 h-0.5 bg-white rounded-full" />
             <div className="w-4 h-0.5 bg-white rounded-full" />
@@ -456,6 +488,13 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
             ))}
           </div>
         </div>
+
+        {/* Footer */}
+        <footer className="w-full py-8 px-8 border-t border-white/10 text-center text-xs opacity-50 mt-auto text-white">
+          <p className="font-semibold mb-2">{bizName}</p>
+          {contact && <p className="mb-2">Contact: {contact}</p>}
+          <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
+        </footer>
       </div>
     </div>
   );
@@ -464,12 +503,16 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
 // ─────────────────────────────────────────────
 // 4. FINE DINING LAYOUT (파인다이닝 전용)
 // ─────────────────────────────────────────────
-function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   return (
     <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
       <nav className="flex justify-center p-8 border-b" style={{ borderColor: `${accentColor}30` }}>
-        <h1 className="text-3xl font-bold tracking-widest" style={{ fontFamily: fonts.heading, color: accentColor }}>{bizName}</h1>
+        {logoUrl ? (
+          <img src={logoUrl} alt="Logo" className="h-10 max-w-[180px] object-contain" />
+        ) : (
+          <h1 className="text-3xl font-bold tracking-widest" style={{ fontFamily: fonts.heading, color: accentColor }}>{bizName}</h1>
+        )}
       </nav>
       
       {/* Signature Dish Hero */}
@@ -536,6 +579,13 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
           </div>
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+        <p className="font-semibold mb-2">{bizName}</p>
+        {contact && <p className="mb-2">연락처: {contact}</p>}
+        <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -543,13 +593,17 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
 // ─────────────────────────────────────────────
 // 5. CASUAL DINING LAYOUT (캐주얼 다이닝 전용)
 // ─────────────────────────────────────────────
-function CasualLayout({ template, accentColor, bizName, bizDesc, sections, images }: LayoutProps) {
+function CasualLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   return (
     <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
       {/* Friendly Nav */}
       <nav className="flex justify-between items-center px-6 py-4 sticky top-0 z-20 shadow-sm border-b" style={{ backgroundColor: colors.surface, borderColor: `${accentColor}20` }}>
-        <h1 className="text-2xl font-black" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</h1>
+        {logoUrl ? (
+          <img src={logoUrl} alt="Logo" className="h-8 max-w-[140px] object-contain" />
+        ) : (
+          <h1 className="text-2xl font-black" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</h1>
+        )}
         <button className="px-5 py-2 rounded-full font-bold text-sm hover:opacity-90 transition-opacity" style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
           웨이팅 등록
         </button>
@@ -596,6 +650,13 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
           ))}
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+        <p className="font-semibold mb-2">{bizName}</p>
+        {contact && <p className="mb-2">연락처: {contact}</p>}
+        <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
+      </footer>
     </div>
   );
 }

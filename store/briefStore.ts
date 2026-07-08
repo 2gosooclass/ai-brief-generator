@@ -22,6 +22,7 @@ interface BriefState {
   selectedStockImages: string[]; // 선택된 Unsplash 이미지 URL 목록
   sectionImages: Record<string, string>; // 섹션별 개별 이미지 설정
   activeEditingSection: string | null; // 현재 편집 중인 섹션 키
+  logoUrl: string | null; // 사용자 업로드 로고 URL
 
   // 수정 항목 체크박스
   modifyOptions: ModifyOptions;
@@ -37,6 +38,7 @@ interface BriefState {
   setImageMode: (mode: ImageMode) => void;
   setUploadedImage: (url: string, file: File) => void;
   clearUploadedImage: () => void;
+  setLogoUrl: (url: string | null) => void; // 로고 등록 액션
   toggleStockImage: (url: string) => void; // 스톡 이미지 선택/해제 토글
   setEditingSection: (section: string | null) => void;
   setSectionImage: (section: string, url: string) => void;
@@ -59,6 +61,7 @@ const defaultUserInputs: UserInputs = {
   customColor: "",
   sectionOrder: "",
   pickedColor: "",
+  contact: "",
 };
 
 export const useBriefStore = create<BriefState>((set) => ({
@@ -75,6 +78,8 @@ export const useBriefStore = create<BriefState>((set) => ({
 
   modifyOptions: defaultModifyOptions,
   userInputs: defaultUserInputs,
+
+  logoUrl: null,
 
   setCategory: (category) =>
     set({
@@ -133,6 +138,11 @@ export const useBriefStore = create<BriefState>((set) => ({
     set({
       uploadedImageUrl: null,
       uploadedImageFile: null,
+    }),
+
+  setLogoUrl: (url) =>
+    set({
+      logoUrl: url
     }),
 
   toggleStockImage: (url) =>
@@ -205,6 +215,7 @@ export const useBriefStore = create<BriefState>((set) => ({
       selectedStockImages: [],
       sectionImages: {},
       activeEditingSection: null,
+      logoUrl: null,
       modifyOptions: defaultModifyOptions,
       userInputs: defaultUserInputs,
     }),

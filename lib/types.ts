@@ -52,6 +52,7 @@ export interface UserInputs {
   customColor: string;
   sectionOrder: string;
   pickedColor: string;
+  contact: string;
 }
 
 export interface UnsplashPhoto {
