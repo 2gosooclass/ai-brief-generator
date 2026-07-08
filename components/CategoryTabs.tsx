@@ -9,6 +9,7 @@ const CATEGORIES: { id: CategoryId; label: string; emoji: string; desc: string }
   { id: "academy", label: "학원·강좌", emoji: "📚", desc: "학원, 취미 클래스, 온라인 강좌" },
   { id: "personal", label: "개인 브랜드", emoji: "✨", desc: "포트폴리오, 컨설팅, 인플루언서" },
   { id: "religion", label: "종교·단체", emoji: "🕊️", desc: "교회, 비영리단체, 커뮤니티" },
+  { id: "traditional", label: "전통공예·매듭", emoji: "🏮", desc: "전통매듭 공방, 국악, 전통 공예 클래스" },
 ];
 
 export default function CategoryTabs() {

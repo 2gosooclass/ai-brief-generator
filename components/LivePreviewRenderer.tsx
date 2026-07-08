@@ -98,6 +98,16 @@ const TEMPLATE_DEFAULTS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&q=80",
     "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
     "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80"
+  ],
+  "traditional-knots": [
+    "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800&q=80",
+    "https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd?w=800&q=80",
+    "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=800&q=80"
+  ],
+  "traditional-pottery": [
+    "https://images.unsplash.com/photo-1610483178766-829288225575?w=800&q=80",
+    "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&q=80",
+    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800&q=80"
   ]
 };
 

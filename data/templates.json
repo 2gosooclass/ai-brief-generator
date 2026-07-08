@@ -356,5 +356,57 @@
       "badgeColor": "orange",
       "layoutType": "overlay"
     }
+  ],
+  "traditional": [
+    {
+      "id": "traditional-knots",
+      "name": "전통매듭 공방",
+      "tagline": "실끝에서 피어나는 전통의 미",
+      "description": "차분한 한옥 톤과 팥죽색, 금사 컬러 포인트를 활용하여 한국적인 고전미와 현대적 공방 느낌을 조화시킵니다.",
+      "colors": {
+        "primary": "#4A1A17",
+        "secondary": "#7D524A",
+        "accent": "#C8A97E",
+        "bg": "#FAF7F2",
+        "surface": "#F2EBE1",
+        "text": "#2A1311"
+      },
+      "fonts": {
+        "heading": "Gowun Batang",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "classes", "gallery", "location", "contact"],
+      "unsplashKeyword": "korean traditional craft knots norigae",
+      "referenceStyle": "korean traditional craft studio",
+      "promptKeywords": ["전통매듭", "공방", "공예", "한옥", "노리개"],
+      "badge": "대표 추천",
+      "badgeColor": "orange",
+      "layoutType": "vertical"
+    },
+    {
+      "id": "traditional-pottery",
+      "name": "온고 공예 아틀리에",
+      "tagline": "옛것을 익혀 새것을 빚다",
+      "description": "흙과 도자기의 질감을 닮은 웜 그레이와 카키 컬러로 고요한 동양적 아틀리에를 표현합니다.",
+      "colors": {
+        "primary": "#3E3B35",
+        "secondary": "#6E685E",
+        "accent": "#768A7E",
+        "bg": "#FAF9F5",
+        "surface": "#EDECE6",
+        "text": "#292723"
+      },
+      "fonts": {
+        "heading": "Song Myung",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "philosophy", "courses", "gallery", "location", "contact"],
+      "unsplashKeyword": "korean pottery craft ceramic studio",
+      "referenceStyle": "modern oriental pottery atelier",
+      "promptKeywords": ["도자기", "전통공예", "아틀리에", "클래스", "고요함"],
+      "badge": "신규",
+      "badgeColor": "orange",
+      "layoutType": "grid"
+    }
   ]
 }

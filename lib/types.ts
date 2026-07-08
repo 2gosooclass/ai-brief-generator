@@ -1,4 +1,4 @@
-export type CategoryId = "cafe" | "academy" | "personal" | "religion";
+export type CategoryId = "cafe" | "academy" | "personal" | "religion" | "traditional";
 
 export interface TemplateColors {
   primary: string;
@@ -35,6 +35,7 @@ export interface TemplatesData {
   academy: Template[];
   personal: Template[];
   religion: Template[];
+  traditional: Template[];
 }
 
 export type ImageMode = "stock" | "upload";
