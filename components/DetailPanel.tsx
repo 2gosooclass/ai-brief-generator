@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
 import UnsplashPreview from "./UnsplashPreview";
@@ -71,6 +71,11 @@ export default function DetailPanel() {
     setLogoUrl,
   } = useBriefStore();
 
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -95,6 +100,8 @@ export default function DetailPanel() {
     setImageOpen(true);
     setModifyOpen(true);
   };
+
+  if (!mounted) return null;
 
   return (
     <AnimatePresence>
