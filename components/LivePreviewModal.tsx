@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
 import UnsplashPreview from "./UnsplashPreview";
@@ -76,11 +76,6 @@ export default function LivePreviewModal() {
     setLogoUrl,
   } = useBriefStore();
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const [imageOpen, setImageOpen] = useState(true);
   const [modifyOpen, setModifyOpen] = useState(true);
 
@@ -105,7 +100,7 @@ export default function LivePreviewModal() {
     setModifyOpen(true);
   };
 
-  if (!isPanelOpen || !selectedTemplate || !mounted) return null;
+  if (!isPanelOpen || !selectedTemplate) return null;
 
   const SECTION_KR: Record<string, string> = {
     hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",

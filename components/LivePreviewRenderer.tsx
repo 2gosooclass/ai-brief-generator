@@ -2,7 +2,7 @@
 
 import { useBriefStore } from "@/store/briefStore";
 import type { Template } from "@/lib/types";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 
 const SECTION_KR: Record<string, string> = {
   hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",
@@ -192,12 +192,7 @@ export default function LivePreviewRenderer() {
     logoUrl,
   } = useBriefStore();
 
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!selectedTemplate || !mounted) return null;
+  if (!selectedTemplate) return null;
 
   const { layoutType } = selectedTemplate;
 
