@@ -18,16 +18,6 @@ export default function TemplateGrid() {
 
   return (
     <div>
-      {/* 단계 표시 */}
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-7 h-7 rounded-full bg-[#C8A97E] flex items-center justify-center text-white text-xs font-bold font-pretendard shrink-0">
-          2
-        </div>
-        <p className="text-sm font-pretendard text-[#5C4A3A]">
-          템플릿을 선택하면 오른쪽 패널이 열립니다
-        </p>
-      </div>
-
       <AnimatePresence mode="wait">
         <motion.div
           key={selectedCategory}

@@ -52,136 +52,144 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── 히어로 배너 ── */}
-      <section className="bg-gradient-to-br from-[#1C1410] via-[#2A1C12] to-[#1C1410] text-white py-12 px-5">
-        <div className="max-w-6xl mx-auto">
-          <div className="max-w-2xl">
-            <div className="flex flex-wrap items-center gap-2 mb-5">
-              <div className="inline-flex items-center gap-2 bg-[#C8A97E]/15 border border-[#C8A97E]/25 rounded-full px-3.5 py-1.5">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
-                <span className="text-[11px] font-pretendard text-[#C8A97E]">초보자도 5분이면 완성</span>
-              </div>
-              
-              {/* 히어로 가이드북 숏컷 버튼 */}
-              <button
-                onClick={() => setIsGuideOpen(true)}
-                className="inline-flex items-center gap-1.5 bg-white/10 hover:bg-white/20 border border-white/10 hover:border-white/20 text-white rounded-full px-3.5 py-1.5 text-[11px] font-pretendard transition-colors"
-              >
-                <span>📖</span> 친절한 가이드 보기
-              </button>
+      {/* ── 히어로 배너: 비대칭 2단 분할 구조 (Swiss Editorial Style) ── */}
+      <section className="border-b border-[#E8E0D8]/60 py-16 md:py-24 px-6 bg-[#FAFAF7]">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+          
+          {/* 좌측 7열: 타이포그래피 & 소개글 */}
+          <div className="md:col-span-7 flex flex-col justify-center">
+            <div className="inline-flex items-center gap-2 border border-[#C8A97E]/30 bg-[#FDF8F3] px-3.5 py-1.5 rounded-full w-fit mb-6 text-[10px] font-pretendard text-[#C8A97E] tracking-wider uppercase font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
+              <span>Vibe Coding Prompt Engine</span>
             </div>
 
-            <h2 className="font-serif-kr text-3xl sm:text-4xl font-bold leading-tight mb-4">
-              업종별 템플릿 선택 →<br />
-              <span className="text-[#C8A97E]">바이브 코딩 프롬프트</span> 자동 생성
+            <h2 className="text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 text-[#1C1410]">
+              Architect your layout <br />
+              <span className="font-instrument italic text-5xl sm:text-6xl md:text-8xl text-[#C8A97E] mr-2">in 5 minutes</span>
+              <span className="font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 text-[#1C1410]">바이브 코딩 프롬프트 생성기</span>
             </h2>
 
-            <p className="font-pretendard text-sm text-white/65 leading-relaxed mb-6">
-              카페, 학원, 개인 브랜드 등 업종에 맞는 검증된 웹사이트 구조를 선택하면,
-              사용하시는 AI 에이전트(Antigravity, Codex, Hermes, Lovable, v0, Claude, Cursor 등)에 그대로 붙여넣을 수 있는 프롬프트가 자동으로 만들어집니다.
+            <p className="font-pretendard text-sm md:text-base text-[#8C7A6A] leading-relaxed max-w-xl">
+              카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
             </p>
+          </div>
 
-            {/* 사용 흐름 */}
-            <div className="flex flex-wrap items-center gap-2 text-xs font-pretendard mb-6">
-              {[
-                { n: "1", t: "업종 선택" },
-                { n: "2", t: "템플릿 클릭" },
-                { n: "3", t: "옵션 설정" },
-                { n: "4", t: "프롬프트 복사" },
-                { n: "5", t: "AI에 붙여넣기" },
-              ].map((step, i) => (
-                <div key={step.n} className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-full bg-[#C8A97E] flex items-center justify-center text-[#1C1410] text-[9px] font-bold">
-                    {step.n}
-                  </div>
-                  <span className="text-white/75">{step.t}</span>
-                  {i < 4 && <span className="text-white/25">→</span>}
-                </div>
-              ))}
-            </div>
-
-            {/* ── 선택된 템플릿 동적 표시 ── */}
-            <AnimatePresence>
-              {selectedTemplate && (
+          {/* 우측 5열: 선택된 템플릿의 간략 정보 */}
+          <div className="md:col-span-5 flex justify-end">
+            <AnimatePresence mode="wait">
+              {selectedTemplate ? (
                 <motion.div
-                  initial={{ opacity: 0, y: 10, scale: 0.97 }}
+                  key={selectedTemplate.id}
+                  initial={{ opacity: 0, y: 15, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                  exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.3 }}
-                  className="flex items-center gap-3 bg-white/10 border border-white/20 rounded-2xl px-4 py-3 backdrop-blur-sm"
+                  className="w-full max-w-md bg-white border border-[#E8E0D8] rounded-xl p-6 shadow-sm relative overflow-hidden flex flex-col justify-between min-h-[220px]"
                 >
-                  {/* 컬러 도트 */}
-                  <div
-                    className="w-8 h-8 rounded-lg shrink-0 border-2 border-white/20"
-                    style={{ backgroundColor: selectedTemplate.colors.accent }}
-                  />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-[10px] text-white/50 font-pretendard">선택된 템플릿</p>
-                    <p className="text-sm font-serif-kr text-white font-semibold leading-tight truncate">
-                      {selectedTemplate.name}
-                    </p>
-                    <p className="text-[10px] text-white/60 font-pretendard truncate">
-                      {selectedTemplate.tagline}
-                    </p>
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A97E]/10 rounded-full blur-3xl pointer-events-none" />
+                  
+                  <div>
+                    <span className="text-[10px] text-[#A09080] uppercase tracking-widest font-semibold block mb-3">Active Spec</span>
+                    <div className="flex items-center gap-3.5 mb-4">
+                      <div
+                        className="w-11 h-11 rounded-lg shrink-0 border border-[#E8E0D8] shadow-sm"
+                        style={{ backgroundColor: selectedTemplate.colors.accent }}
+                      />
+                      <div className="min-w-0">
+                        <h3 className="font-serif-kr text-base font-bold text-[#1C1410] leading-tight truncate">
+                          {selectedTemplate.name}
+                        </h3>
+                        <p className="text-[11px] font-pretendard text-[#8C7A6A] leading-tight truncate mt-0.5">
+                          {selectedTemplate.tagline}
+                        </p>
+                      </div>
+                    </div>
                   </div>
+
                   <button
                     onClick={openPanel}
-                    className="shrink-0 flex items-center gap-1.5 px-3 py-1.5 bg-[#C8A97E] hover:bg-[#D4BA8C] text-[#1C1410] rounded-xl text-[11px] font-pretendard font-semibold transition-colors"
+                    className="w-full py-3 bg-[#1C1410] hover:bg-[#3A2D27] text-white text-xs font-semibold rounded-lg transition-colors flex items-center justify-center gap-1.5"
                   >
-                    프롬프트 보기
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <span>View System Prompt</span>
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </button>
+                </motion.div>
+              ) : (
+                <motion.div
+                  key="empty"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="w-full max-w-md bg-white border border-[#E8E0D8]/60 rounded-xl p-8 text-center text-xs text-[#8C7A6A] flex flex-col items-center justify-center min-h-[220px]"
+                >
+                  <p className="mb-2">아래에서 업종 템플릿을 선택하여</p>
+                  <p className="font-serif-kr text-sm text-[#1C1410] font-medium">프롬프트 빌드 아키텍처를 활성화하십시오.</p>
                 </motion.div>
               )}
             </AnimatePresence>
           </div>
+
         </div>
       </section>
 
-      {/* ── 메인 콘텐츠 ── */}
-      <main className="max-w-6xl mx-auto px-5 py-10">
-        {/* 단계 1: 업종 선택 */}
-        <div className="flex items-center gap-2 mb-5">
-          <div className="w-7 h-7 rounded-full bg-[#C8A97E] flex items-center justify-center text-[#1C1410] text-xs font-bold font-pretendard shrink-0">
-            1
-          </div>
-          <p className="text-sm font-pretendard font-semibold text-[#1C1410]">업종 카테고리 선택</p>
-        </div>
-        <CategoryTabs />
-
-        {/* 단계 2: 템플릿 선택 */}
-        <TemplateGrid />
-
-        {/* 사용 가이드 */}
-        <div className="mt-12 bg-white border border-[#E8E0D8] rounded-2xl p-6">
-          <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
-            <h3 className="font-serif-kr text-base font-semibold text-[#1C1410]">사용 가이드</h3>
-            {/* 가이드 전체보기 버튼 */}
-            <button
-              onClick={() => setIsGuideOpen(true)}
-              className="text-xs font-pretendard text-[#C8A97E] hover:text-[#A08060] font-semibold flex items-center gap-1 transition-colors"
-            >
-              친절한 상세 설명서(전체) 읽기 <span>→</span>
-            </button>
-          </div>
-          
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            {[
-              { icon: "🖱️", title: "템플릿 클릭", desc: "마음에 드는 카드를 클릭하면 오른쪽에 상세 패널이 열립니다. 구조가 다른 3종 레이아웃 중 선택하세요." },
-              { icon: "⚙️", title: "옵션 설정", desc: "이미지 방식을 선택하고, 업체명·컬러·섹션 순서를 설정하면 프롬프트가 실시간으로 업데이트됩니다." },
-              { icon: "📋", title: "프롬프트 복사", desc: "자동 생성된 프롬프트를 복사해서 사용하시는 AI 에이전트(Antigravity, Codex, Hermes, Lovable, v0, Claude, Cursor 등)에 붙여넣기 하세요." },
-            ].map((item) => (
-              <div key={item.title} className="flex gap-3">
-                <span className="text-2xl shrink-0">{item.icon}</span>
-                <div>
-                  <p className="text-sm font-pretendard font-semibold text-[#1C1410] mb-1">{item.title}</p>
-                  <p className="text-xs font-pretendard text-[#8C7A6A] leading-relaxed">{item.desc}</p>
-                </div>
+      {/* ── 메인 콘텐츠: 2단 비대칭 Split 구조 (FLOWSTATE 골격) ── */}
+      <main className="max-w-7xl mx-auto px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+        
+        {/* 좌측 4열: 카테고리 선택 및 사용 가이드 (스크롤 추적 Sticky) */}
+        <div className="md:col-span-4 lg:col-span-3">
+          <div className="md:sticky md:top-24 space-y-10">
+            
+            {/* Step 01: 업종 선택 */}
+            <div className="space-y-4">
+              <div>
+                <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase block mb-1">Step 01</span>
+                <h3 className="font-serif-kr text-lg font-bold text-[#1C1410]">업종 카테고리</h3>
+                <p className="text-[11px] text-[#8C7A6A] leading-relaxed mt-0.5">제작 목적에 부합하는 업종 구조를 선택해 주십시오.</p>
               </div>
-            ))}
+              <CategoryTabs />
+            </div>
+
+            {/* 사용 가이드 컴팩트 리뉴얼 */}
+            <div className="pt-8 border-t border-[#E8E0D8]/60 space-y-4">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase">Documentation</span>
+                <button
+                  onClick={() => setIsGuideOpen(true)}
+                  className="text-[10px] font-pretendard text-[#C8A97E] hover:text-[#A08060] font-semibold transition-colors"
+                >
+                  상세 설명서 📖
+                </button>
+              </div>
+              
+              <div className="space-y-4">
+                {[
+                  { title: "템플릿 선택", desc: "우측 그리드에서 카드를 선택해 상세 옵션 패널을 엽니다." },
+                  { title: "옵션 조율", desc: "브랜드명, 커스텀 컬러, 섹션 배치 순서를 설계합니다." },
+                  { title: "프롬프트 복사", desc: "사출된 원천 코드를 AI 요원(Lovable, v0 등)에 주입합니다." },
+                ].map((item, i) => (
+                  <div key={item.title} className="flex gap-2">
+                    <span className="text-[10px] font-bold text-[#C8A97E] font-pretendard shrink-0 mt-0.5">0{i+1}.</span>
+                    <div>
+                      <p className="text-xs font-pretendard font-semibold text-[#1C1410]">{item.title}</p>
+                      <p className="text-[10px] font-pretendard text-[#8C7A6A] leading-normal mt-0.5">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
+        </div>
+
+        {/* 우측 8열: 템플릿 그리드 */}
+        <div className="md:col-span-8 lg:col-span-9 space-y-6">
+          <div>
+            <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase block mb-1">Step 02</span>
+            <h3 className="font-serif-kr text-lg font-bold text-[#1C1410] mb-4">구조적 템플릿</h3>
+          </div>
+          <TemplateGrid />
         </div>
 
       </main>

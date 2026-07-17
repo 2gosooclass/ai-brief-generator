@@ -16,57 +16,47 @@ export default function CategoryTabs() {
   const { selectedCategory, setCategory } = useBriefStore();
 
   return (
-    <div className="mb-10">
-      {/* 단계 표시 */}
-      <div className="flex items-center gap-2 mb-5">
-        <div className="w-7 h-7 rounded-full bg-[#C8A97E] flex items-center justify-center text-white text-xs font-bold font-pretendard shrink-0">
-          1
-        </div>
-        <p className="text-sm font-pretendard text-[#5C4A3A]">
-          업종 카테고리를 선택하세요
-        </p>
-      </div>
-
-      {/* 탭 버튼 그룹 */}
-      <div className="flex gap-3 flex-wrap">
+    <div className="w-full">
+      {/* 탭 버튼 그룹 (수직 정렬) */}
+      <div className="flex flex-col gap-2.5 w-full">
         {CATEGORIES.map((cat) => {
           const isActive = selectedCategory === cat.id;
           return (
             <button
               key={cat.id}
               onClick={() => setCategory(cat.id)}
-              className={`relative flex items-center gap-3 px-5 py-3.5 rounded-xl border-2 transition-all duration-300 text-left group ${
+              className={`relative flex items-center gap-3 px-4 py-3 rounded-lg border transition-all duration-300 text-left w-full group ${
                 isActive
-                  ? "border-[#C8A97E] bg-[#FDF8F3] shadow-md"
-                  : "border-[#E5DDD5] bg-white hover:border-[#C8A97E]/60 hover:bg-[#FDF8F3]/50"
+                  ? "border-[#C8A97E] bg-[#FDF8F3]/60 shadow-sm"
+                  : "border-[#E8E0D8]/80 bg-white hover:border-[#C8A97E]/50 hover:bg-[#FDF8F3]/30"
               }`}
             >
               {isActive && (
                 <motion.div
                   layoutId="activeTabBg"
-                  className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FDF8F3] to-[#F9F1E8]"
+                  className="absolute inset-0 rounded-lg bg-[#FDF8F3]"
                   style={{ zIndex: 0 }}
                 />
               )}
 
-              <span className="text-2xl relative z-10">{cat.emoji}</span>
+              <span className="text-xl relative z-10">{cat.emoji}</span>
 
-              <div className="relative z-10">
+              <div className="relative z-10 flex-1 min-w-0">
                 <p
-                  className={`font-serif-kr text-sm font-medium leading-tight ${
+                  className={`font-serif-kr text-xs font-semibold leading-tight ${
                     isActive ? "text-[#1C1410]" : "text-[#5C4A3A]"
                   }`}
                 >
                   {cat.label}
                 </p>
-                <p className="font-pretendard text-xs text-[#8C7A6A] mt-0.5 leading-tight">
+                <p className="font-pretendard text-[10px] text-[#8C7A6A] mt-0.5 leading-tight truncate">
                   {cat.desc}
                 </p>
               </div>
 
               {isActive && (
-                <div className="ml-auto relative z-10">
-                  <div className="w-2 h-2 rounded-full bg-[#C8A97E]" />
+                <div className="ml-auto relative z-10 shrink-0">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E]" />
                 </div>
               )}
             </button>

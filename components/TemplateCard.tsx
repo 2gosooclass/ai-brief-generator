@@ -26,14 +26,14 @@ export default function TemplateCard({ template, index }: TemplateCardProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.1 }}
+      transition={{ duration: 0.4, delay: index * 0.08 }}
       onClick={() => selectTemplate(template)}
-      className={`template-card cursor-pointer rounded-2xl overflow-hidden border-2 transition-all duration-300 ${
+      className={`template-card cursor-pointer rounded-lg overflow-hidden border transition-all duration-300 ${
         isSelected
-          ? "border-[#C8A97E] shadow-xl shadow-[#C8A97E]/20 ring-4 ring-[#C8A97E]/10"
-          : "border-[#E8E0D8] hover:border-[#C8A97E]/60 hover:shadow-lg hover:shadow-[#C8A97E]/10"
+          ? "border-[#C8A97E] bg-[#FDF8F3]/10 shadow-md ring-2 ring-[#C8A97E]/5"
+          : "border-[#E8E0D8]/80 hover:border-[#C8A97E]/50 hover:shadow-sm"
       }`}
     >
       {/* 미니 목업 영역 */}
@@ -112,14 +112,14 @@ export default function TemplateCard({ template, index }: TemplateCardProps) {
             {template.sections.length}개 섹션
           </span>
           <motion.button
-            whileTap={{ scale: 0.95 }}
-            className={`text-xs px-3 py-1.5 rounded-lg font-pretendard font-medium transition-colors ${
+            whileTap={{ scale: 0.97 }}
+            className={`text-[11px] px-3 py-1.5 rounded font-pretendard font-semibold tracking-wider transition-colors uppercase ${
               isSelected
-                ? "bg-[#C8A97E] text-white"
-                : "bg-[#F5F0EA] text-[#5C4A3A] hover:bg-[#E8D5B7]"
+                ? "bg-[#1C1410] text-[#FAFAF7]"
+                : "bg-[#F5F0EA] text-[#5C4A3A] hover:bg-[#E8D5B7] hover:text-[#1C1410]"
             }`}
           >
-            {isSelected ? "선택됨 ✓" : "선택하기"}
+            {isSelected ? "Active" : "Select"}
           </motion.button>
         </div>
       </div>
