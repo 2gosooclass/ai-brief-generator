@@ -2,7 +2,7 @@
 
 import { useBriefStore } from "@/store/briefStore";
 import type { Template } from "@/lib/types";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 const SECTION_KR: Record<string, string> = {
   hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",
@@ -13,14 +13,14 @@ const SECTION_KR: Record<string, string> = {
   demo: "무료 체험", faq: "자주 묻는 질문", cta: "시작하기", works: "포트폴리오", process: "작업 과정",
   skills: "보유 스킬", services: "제공 서비스", booking: "예약하기", links: "링크 모음",
   "latest-content": "최신 콘텐츠", shop: "쇼핑몰", newsletter: "뉴스레터",
-  philosophy: "브랜드 철학", barista: "바리스타", reservations: "예약 안내",
+  philosophy: "커피 철학", barista: "바리스타", reservations: "예약 안내",
   chef: "셰프 소개", "course-menu": "코스 메뉴", reservation: "예약 폼", "private-room": "프라이빗 룸",
   "menu-board": "전체 메뉴판", waiting: "웨이팅 안내", reviews: "고객 리뷰"
 };
 
 const SECTION_CONTENTS: Record<string, string> = {
   about: "전통과 현대의 미학이 공존하는 공간에서 숙련된 전문가들이 고객의 비즈니스 페르소나에 맞춰 가장 시맨틱하고 깊이 있는 최적의 맞춤 브랜딩 솔루션을 설계해 드립니다.",
-  services: "1:1 퍼스널 아키텍처 수립부터 고부가가치 솔루션 연동 리포트까지 대표님의 한계 돌파와 무한한 생산성 해방을 위한 차별화된 핵심 프로그램을 제안합니다.",
+  services: "1:1 퍼스널 아키텍처 수립부터 고부가가치 솔루션 연동 리포트까지 대표님의 한계 돌파와 무한한 생산성 해방을 위한 차별화된 핵심 맞춤 프로그램을 제안합니다.",
   results: "매년 98% 이상의 압도적인 합격률과 만족도를 달성하며, 국내외 유수의 선두 기관들과 공식 파트너십을 체결하여 그 절대적인 역량과 신뢰를 증명하고 있습니다.",
   testimonials: "비서실의 조언 덕분에 막막했던 브랜딩 방향성을 하루 만에 정리했고, 실서버 배포 후 첫 달 매출이 200% 이상 폭발적으로 도약하는 기적 같은 경험을 직접 체감했습니다.",
   booking: "대표님의 예약 현황에 맞춰 선착순으로 제한되어 운영되는 프라이빗 스케줄러입니다. 신청 양식을 작성해 주시면 24시간 이내에 담당 마스터가 상세 일정을 조율해 드립니다.",
@@ -163,7 +163,6 @@ function EditableImage({
             : `url(${imageUrl})`
         }}
       >
-        {/* 호버 오버레이 */}
         <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
           <button
             onClick={handleClick}
@@ -181,8 +180,6 @@ function EditableImage({
     <div className={`group relative overflow-hidden ${className}`} style={style}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img src={imageUrl} alt={sectionKey} className="w-full h-full object-cover" />
-      
-      {/* 호버 오버레이 */}
       <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
         <button
           onClick={handleClick}
@@ -193,6 +190,288 @@ function EditableImage({
       </div>
     </div>
   );
+}
+
+// ─────────────────────────────────────────────
+// 🌐 12가지 웹사이트 구조 패턴 통합 렌더러 컴포넌트
+// ─────────────────────────────────────────────
+function PatternSectionRenderer({
+  sec,
+  idx,
+  template,
+  accentColor,
+  bizName,
+  images,
+  themeMode = "light"
+}: {
+  sec: string;
+  idx: number;
+  template: Template;
+  accentColor: string;
+  bizName: string;
+  images: string[];
+  themeMode?: "light" | "dark";
+}) {
+  const { colors, fonts } = template;
+  const layoutPatternIndex = idx % 12;
+  const imageUrl = images[(idx + 1) % images.length];
+  const koreanTitle = SECTION_KR[sec] ?? sec;
+  const contentText = SECTION_CONTENTS[sec] || `${bizName}의 ${koreanTitle} 섹션입니다. 기획안의 12가지 독창적 웹사이트 구조 패턴 중 하나를 반영하여 완성도를 보강했습니다.`;
+  
+  // 인터랙티브 탭 상태관리
+  const [activeTab, setActiveTab] = useState(0);
+
+  const cardBg = themeMode === "dark" ? "bg-white/5 border-white/10" : "bg-white border-black/5";
+  const textColor = themeMode === "dark" ? "text-white" : "text-[#1C1410]";
+  const subTextColor = themeMode === "dark" ? "text-white/60" : "text-[#8C7A6A]";
+
+  switch (layoutPatternIndex) {
+    case 0:
+      // 1. 그리드 레이아웃 (Grid Layout) - 모듈형 정렬
+      return (
+        <section key={sec} className={`rounded-2xl p-8 border shadow-sm ${cardBg} space-y-6`}>
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 01: Grid Layout</span>
+            <h4 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 모듈</h4>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[1, 2].map((cardNum) => (
+              <div key={cardNum} className="p-5 border rounded-xl bg-black/5 dark:bg-white/5 space-y-2">
+                <div className="w-8 h-1 rounded" style={{ backgroundColor: accentColor }} />
+                <h5 className={`font-bold text-sm ${textColor}`}>핵심 포인트 {cardNum}</h5>
+                <p className={`text-xs ${subTextColor}`}>{contentText.slice(0, 70)}...</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+
+    case 1:
+      // 2. 분할 화면 레이아웃 (Split Screen Layout) - 50:50
+      return (
+        <section key={sec} className={`flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden shadow-sm border ${cardBg}`}>
+          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 min-h-[300px] md:h-auto" />
+          <div className="flex-1 p-8 flex flex-col justify-center space-y-6">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 02: Split Screen</span>
+            <h3 className={`text-3xl font-bold leading-tight ${textColor}`}>{koreanTitle}</h3>
+            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
+            <button className="px-6 py-2.5 w-fit rounded font-bold transition-transform hover:scale-105"
+              style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
+              자세히 보기
+            </button>
+          </div>
+        </section>
+      );
+
+    case 2:
+      // 3. 비대칭 레이아웃 (Asymmetrical Layout) - 70:30 시각 무게
+      return (
+        <section key={sec} className={`grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch`}>
+          <div className={`md:col-span-8 relative rounded-2xl overflow-hidden shadow-sm border h-80 ${cardBg}`}>
+            <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="absolute inset-0 w-full h-full" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+            <div className="absolute bottom-5 left-5 z-10 text-white max-w-xl">
+              <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-2 py-0.5 rounded backdrop-blur-sm">
+                Pattern 03: Asymmetrical Focus
+              </span>
+              <h3 className="text-xl font-bold mt-2" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
+            </div>
+          </div>
+          <div className={`md:col-span-4 p-6 rounded-2xl border flex flex-col justify-between ${cardBg}`}>
+            <div className="space-y-4">
+              <div className="w-10 h-1 rounded" style={{ backgroundColor: accentColor }} />
+              <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+            </div>
+            <button className="w-full mt-6 py-3 rounded font-bold text-center border transition-all hover:bg-black/5 dark:hover:bg-white/5"
+              style={{ borderColor: accentColor, color: colors.text }}>
+              서비스 예약하기
+            </button>
+          </div>
+        </section>
+      );
+
+    case 3:
+      // 4. 전체 화면 레이아웃 (Full Screen Layout) - 이미지 타격
+      return (
+        <section key={sec} className="relative rounded-2xl overflow-hidden h-96 flex items-center justify-center text-center shadow-lg border border-black/5">
+          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="absolute inset-0 w-full h-full" />
+          <div className="absolute inset-0 bg-black/60 pointer-events-none" />
+          <div className="relative z-10 p-6 max-w-xl text-white space-y-4">
+            <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm text-[#C8A97E]">
+              Pattern 04: Full Canvas
+            </span>
+            <h3 className="text-2xl font-bold" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
+            <p className="text-sm text-white/80 leading-relaxed">{contentText}</p>
+          </div>
+        </section>
+      );
+
+    case 4:
+      // 5. 사이드 스크롤 레이아웃 (Side Scroll Layout) - 슬라이더
+      return (
+        <section key={sec} className="space-y-4">
+          <div className="flex justify-between items-center">
+            <div>
+              <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block mb-1">Pattern 05: Side Scroll</span>
+              <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle}</h3>
+            </div>
+            <span className="text-xs opacity-50 font-pretendard">스와이프 ➔</span>
+          </div>
+          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x text-black dark:text-white">
+            {[1, 2, 3].map((cardIdx) => (
+              <div key={cardIdx} className={`min-w-[260px] rounded-xl overflow-hidden border snap-start ${cardBg}`}>
+                <EditableImage sectionKey={`${sec}-${cardIdx}`} defaultUrl={images[(cardIdx) % images.length]} className="h-36 w-full" />
+                <div className="p-4 space-y-1">
+                  <h4 className={`font-bold text-sm ${textColor}`}>컬렉션 {cardIdx}</h4>
+                  <p className={`text-xs ${subTextColor}`}>{contentText.slice(0, 50)}...</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+
+    case 5:
+      // 6. 카드 레이아웃 (Card Layout) - 콤팩트 다단
+      return (
+        <section key={sec} className="space-y-4">
+          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 06: Card System</span>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            {[1, 2, 3].map((itemNum) => (
+              <div key={itemNum} className={`rounded-xl overflow-hidden border p-5 space-y-3 ${cardBg}`}>
+                <div className="w-6 h-6 rounded-full flex items-center justify-center bg-black/10 dark:bg-white/10 text-xs font-bold" style={{ color: accentColor }}>
+                  {itemNum}
+                </div>
+                <h4 className={`font-bold text-sm ${textColor}`}>{koreanTitle} 리스트 {itemNum}</h4>
+                <p className={`text-[11px] ${subTextColor} leading-relaxed`}>{contentText.slice(0, 60)}...</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+
+    case 6:
+      // 7. 잡지 레이아웃 (Magazine Layout) - 비주얼 가중치 조절
+      return (
+        <section key={sec} className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+          <div className="md:col-span-4 space-y-4">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 07: Magazine Layout</span>
+            <h3 className={`text-3xl font-light leading-tight font-serif-kr ${textColor}`}>
+              {koreanTitle}의<br /><span className="font-bold">주요 스토리라인</span>
+            </h3>
+            <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+          </div>
+          <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
+            <div className="space-y-2">
+              <EditableImage sectionKey={`${sec}-sub1`} defaultUrl={images[1]} className="h-44 rounded-xl shadow-sm border" />
+              <h4 className={`font-bold text-sm ${textColor}`}>전략 기획 및 컨설팅</h4>
+              <p className={`text-[11px] ${subTextColor}`}>{contentText.slice(0, 60)}...</p>
+            </div>
+            <div className="space-y-2">
+              <EditableImage sectionKey={`${sec}-sub2`} defaultUrl={images[2]} className="h-44 rounded-xl shadow-sm border" />
+              <h4 className={`font-bold text-sm ${textColor}`}>시네마틱 솔루션 배포</h4>
+              <p className={`text-[11px] ${subTextColor}`}>{contentText.slice(0, 60)}...</p>
+            </div>
+          </div>
+        </section>
+      );
+
+    case 7:
+      // 8. 갤러리 레이아웃 (Gallery Layout) - 비주얼 집중
+      return (
+        <section key={sec} className="space-y-4">
+          <div className="flex justify-between items-baseline">
+            <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle} 화보</h3>
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 08: Premium Gallery</span>
+          </div>
+          <div className="grid grid-cols-3 gap-2">
+            {[0, 1, 2].map((idxNum) => (
+              <EditableImage key={idxNum} sectionKey={`${sec}-gallery-${idxNum}`} defaultUrl={images[idxNum % images.length]} className="h-32 md:h-44 rounded-xl border border-black/5" />
+            ))}
+          </div>
+        </section>
+      );
+
+    case 8:
+      // 9. 지그재그 레이아웃 (Zig-Zag Layout) - 시선 Z자 정렬
+      return (
+        <section key={sec} className="flex flex-col md:flex-row gap-8 items-center border-b pb-12" style={{ borderColor: `${accentColor}15` }}>
+          <div className="flex-1 space-y-4">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 09: Zig-Zag</span>
+            <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle}</h3>
+            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
+          </div>
+          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 w-full h-64 rounded-xl shadow-sm border" />
+        </section>
+      );
+
+    case 9:
+      // 10. F-패턴 레이아웃 (F-Pattern Layout) - 장문 최적화 (좌측 스캔)
+      return (
+        <section key={sec} className={`rounded-2xl p-6 border ${cardBg} space-y-4`}>
+          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 10: F-Pattern Scan</span>
+          <h2 className={`text-4xl font-bold tracking-tight text-left ${textColor}`}>{koreanTitle} 요약</h2>
+          <div className="w-16 h-1 rounded" style={{ backgroundColor: accentColor }} />
+          <div className="space-y-4 text-left max-w-2xl">
+            <h4 className={`font-bold text-base ${textColor}`}>1순위 탐색 영역: 핵심 요약</h4>
+            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
+            <button className="px-6 py-2.5 rounded text-xs font-bold transition-all hover:scale-105"
+              style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
+              자세히 진단받기
+            </button>
+          </div>
+        </section>
+      );
+
+    case 10:
+      // 11. 인터랙티브 레이아웃 (Interactive Layout) - 실시간 탭 조작!
+      return (
+        <section key={sec} className={`rounded-2xl p-6 border ${cardBg} space-y-4`}>
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 11: Interactive Tabs</span>
+            <span className="text-[9px] text-[#A09080] font-pretendard bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded">실시간 탭 클릭 작동</span>
+          </div>
+          <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 인포</h3>
+          
+          <div className="flex gap-2 border-b border-black/10 dark:border-white/10 pb-2">
+            {["핵심 혜택", "상세 구성", "도입 가이드"].map((tabLabel, tIdx) => (
+              <button
+                key={tabLabel}
+                onClick={() => setActiveTab(tIdx)}
+                className={`text-xs px-3 py-1.5 rounded transition-all font-pretendard ${
+                  activeTab === tIdx
+                    ? "bg-[#1C1410] text-white dark:bg-white dark:text-black font-semibold"
+                    : "hover:bg-black/5 dark:hover:bg-white/5 text-[#8C7A6A]"
+                }`}
+              >
+                {tabLabel}
+              </button>
+            ))}
+          </div>
+
+          <div className="py-2 text-xs leading-relaxed text-[#8C7A6A] dark:text-white/80">
+            {activeTab === 0 && <p>🏆 {bizName}의 {koreanTitle} 혜택: {contentText}</p>}
+            {activeTab === 1 && <p>⚙️ {koreanTitle} 설계 규격: {contentText.slice(0, 100)}... 12가지 레이아웃 구조가 긴밀하게 연동되어 있습니다.</p>}
+            {activeTab === 2 && <p>🚀 {koreanTitle} 셋업 가이드: 2GOSOO AI LAB 에이전트의 원천 코드를 복사하여 Lovable 이나 v0에 붙여넣으면 즉시 배포 가능합니다.</p>}
+          </div>
+        </section>
+      );
+
+    default:
+      // 12. 애니메이션 레이아웃 (Animation Layout) - 모션 그래픽 피드
+      return (
+        <section key={sec} className={`group cursor-pointer rounded-2xl p-6 border transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg ${cardBg}`}>
+          <div className="flex justify-between items-baseline mb-4">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 12: Motion Card</span>
+            <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
+          </div>
+          <h3 className={`text-xl font-bold transition-colors ${textColor} group-hover:text-[var(--accent)]`} style={{ "--accent": accentColor } as any}>
+            {koreanTitle} <span className="inline-block transition-transform group-hover:translate-x-1">➔</span>
+          </h3>
+          <p className={`text-xs mt-2 ${subTextColor} leading-relaxed`}>{contentText}</p>
+        </section>
+      );
+  }
 }
 
 export default function LivePreviewRenderer() {
@@ -288,9 +567,9 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
   const navText = isDark(navBg) ? "#FFFFFF" : colors.primary;
 
   return (
-    <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body }}>
+    <div className="min-h-full w-full flex flex-col font-pretendard" style={{ backgroundColor: colors.bg, fontFamily: fonts.body }}>
       {/* Nav */}
-      <nav className="flex items-center justify-between px-8 py-5 sticky top-0 z-10" style={{ backgroundColor: navBg }}>
+      <nav className="flex items-center justify-between px-8 py-5 sticky top-0 z-10 border-b border-black/5" style={{ backgroundColor: navBg }}>
         {logoUrl ? (
           <img src={logoUrl} alt="Logo" className="h-8 max-w-[150px] object-contain" />
         ) : (
@@ -321,53 +600,36 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
           backgroundImage: `linear-gradient(rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}), rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}))`
         }}
       >
-        <h1 className="text-5xl md:text-6xl font-bold mb-6 relative z-10 leading-tight text-white" style={{ fontFamily: fonts.heading }}>
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 relative z-10 leading-tight text-white font-serif-kr" style={{ fontFamily: fonts.heading }}>
           {bizDesc}
         </h1>
         <p className="text-lg md:text-xl mb-10 relative z-10 text-white/90">
           {bizName}에 오신 것을 환영합니다.
         </p>
-        <button className="px-8 py-4 rounded-full text-lg font-bold relative z-10 transition-transform hover:scale-105"
+        <button className="px-8 py-4 rounded-full text-lg font-bold relative z-10 transition-transform hover:scale-105 shadow-md"
           style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
           자세히 알아보기
         </button>
       </EditableImage>
 
-      {/* Sections */}
-      <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-24">
+      {/* 12가지 레이아웃 구조 패턴 순차 순회 */}
+      <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-16">
         {sections.filter(s => s !== 'hero').map((sec, i) => (
-          <section key={i} className="flex flex-col md:flex-row gap-12 items-center">
-            {i % 2 !== 0 && (
-              <EditableImage
-                sectionKey={sec}
-                defaultUrl={images[i % images.length]}
-                className="flex-1 w-full h-80 rounded-2xl bg-gray-200 shadow-sm border border-black/5"
-              />
-            )}
-            <div className="flex-1">
-              <div className="inline-block px-3 py-1 rounded-full text-sm font-bold mb-4" style={{ backgroundColor: `${accentColor}20`, color: accentColor }}>
-                {sec.toUpperCase()}
-              </div>
-              <h2 className="text-3xl font-bold mb-6" style={{ fontFamily: fonts.heading, color: colors.text }}>
-                {SECTION_KR[sec] ?? sec}
-              </h2>
-              <p className="text-base opacity-80 leading-relaxed font-light" style={{ color: colors.text }}>
-                {SECTION_CONTENTS[sec] || `${bizName}의 ${SECTION_KR[sec] ?? sec} 섹션입니다. 브랜드의 차별화된 정체성과 핵심 가치를 한눈에 전달할 수 있도록 구성되어 있습니다.`}
-              </p>
-            </div>
-            {i % 2 === 0 && (
-              <EditableImage
-                sectionKey={sec}
-                defaultUrl={images[i % images.length]}
-                className="flex-1 w-full h-80 rounded-2xl bg-gray-200 shadow-sm border border-black/5"
-              />
-            )}
-          </section>
+          <PatternSectionRenderer
+            key={sec}
+            sec={sec}
+            idx={i}
+            template={template}
+            accentColor={accentColor}
+            bizName={bizName}
+            images={images}
+            themeMode="light"
+          />
         ))}
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto border-black/10" style={{ color: colors.text }}>
         <p className="font-semibold mb-2">{bizName}</p>
         {contact && <p className="mb-2">연락처: {contact}</p>}
         <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
@@ -385,8 +647,8 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images,
   const heroText = heroDark ? "#FFFFFF" : "#111111";
 
   return (
-    <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body }}>
-      <nav className="flex justify-between items-center px-8 py-4 border-b" style={{ borderColor: `${accentColor}30`, backgroundColor: colors.surface }}>
+    <div className="min-h-full w-full flex flex-col font-pretendard" style={{ backgroundColor: colors.bg, fontFamily: fonts.body }}>
+      <nav className="flex justify-between items-center px-8 py-4 border-b border-black/5" style={{ backgroundColor: colors.surface }}>
         <div className="flex items-center gap-3">
           <div className="w-4 h-4 rounded-sm" style={{ backgroundColor: accentColor }} />
           {logoUrl ? (
@@ -405,10 +667,10 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images,
       {/* Split Hero */}
       <header className="flex flex-col md:flex-row min-h-[60vh]">
         <div className="flex-1 flex flex-col justify-center p-12 lg:p-24" style={{ backgroundColor: colors.primary }}>
-          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight" style={{ fontFamily: fonts.heading, color: heroText }}>
+          <h1 className="text-4xl lg:text-6xl font-bold mb-6 leading-tight font-serif-kr" style={{ fontFamily: fonts.heading, color: heroText }}>
             {bizDesc}
           </h1>
-          <p className="text-lg opacity-80 mb-10" style={{ color: heroText }}>
+          <p className="text-lg opacity-80 mb-10 leading-relaxed" style={{ color: heroText }}>
             독창적인 시각과 따뜻한 감성으로 완성된 {bizName}만의 특별한 가치를 경험해보세요.
           </p>
           <button className="px-8 py-4 w-fit font-bold rounded shadow-lg transition-transform hover:-translate-y-1"
@@ -422,141 +684,24 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images,
         </div>
       </header>
 
-      {/* ── 다채로운 구조적 아키텍처 섹션 리스트 (AI Grid 탈피) ── */}
-      <main className="flex-1 px-6 md:px-12 py-16 max-w-6xl mx-auto w-full space-y-24">
-        {sections.filter(s => s !== 'hero').map((sec, i) => {
-          const layoutIndex = i % 5;
-          const imageUrl = images[(i + 1) % images.length];
-          const koreanTitle = SECTION_KR[sec] ?? sec;
-          const contentText = SECTION_CONTENTS[sec] || `${bizName}의 ${koreanTitle} 섹션입니다. 12가지 레이아웃 구조 패턴을 적용하여 시각적 아키텍처를 다채롭게 구성해 드렸습니다.`;
-
-          if (layoutIndex === 0) {
-            // 1. 지그재그 레이아웃 (Zig-Zag Layout - Z-패턴 반영)
-            return (
-              <section key={i} className="flex flex-col md:flex-row gap-10 items-center border-b pb-16" style={{ borderColor: `${accentColor}15` }}>
-                <div className="flex-1 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
-                      Pattern 09: Zig-Zag
-                    </span>
-                  </div>
-                  <h3 className="text-3xl font-bold" style={{ fontFamily: fonts.heading, color: colors.text }}>{koreanTitle}</h3>
-                  <p className="text-sm opacity-70 leading-relaxed max-w-lg" style={{ color: colors.text }}>{contentText}</p>
-                </div>
-                <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 w-full h-80 rounded-2xl shadow-md border border-black/5" />
-              </section>
-            );
-          }
-
-          if (layoutIndex === 1) {
-            // 2. 분할 화면 레이아웃 (Split Screen Layout - 50:50)
-            return (
-              <section key={i} className="flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden shadow-sm border" style={{ backgroundColor: colors.surface, borderColor: `${accentColor}15` }}>
-                <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 min-h-[320px] md:h-auto" />
-                <div className="flex-1 p-8 md:p-12 flex flex-col justify-center space-y-6">
-                  <span className="text-[10px] font-bold tracking-widest uppercase w-fit px-2 py-0.5 rounded" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
-                    Pattern 02: Split Screen
-                  </span>
-                  <h3 className="text-3xl font-bold" style={{ fontFamily: fonts.heading, color: colors.text }}>{koreanTitle}</h3>
-                  <p className="text-sm opacity-70 leading-relaxed" style={{ color: colors.text }}>{contentText}</p>
-                  <button className="px-6 py-2.5 w-fit rounded font-bold transition-transform hover:scale-105"
-                    style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
-                    자세히 보기
-                  </button>
-                </div>
-              </section>
-            );
-          }
-
-          if (layoutIndex === 2) {
-            // 3. 비대칭 레이아웃 (Asymmetrical Layout - 70:30 시각적 무게 편중)
-            return (
-              <section key={i} className="grid grid-cols-1 md:grid-cols-12 gap-8 border-b pb-16" style={{ borderColor: `${accentColor}15` }}>
-                <div className="md:col-span-8 relative rounded-2xl overflow-hidden shadow-sm border border-black/5 h-96">
-                  <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="absolute inset-0 w-full h-full" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
-                  <div className="absolute bottom-6 left-6 z-10 text-white max-w-xl">
-                    <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-2 py-0.5 rounded backdrop-blur-sm">
-                      Pattern 03: Asymmetrical Layout
-                    </span>
-                    <h3 className="text-2xl font-bold mt-2" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
-                  </div>
-                </div>
-                <div className="md:col-span-4 p-6 rounded-2xl border flex flex-col justify-between" style={{ backgroundColor: colors.surface, borderColor: `${accentColor}15` }}>
-                  <div className="space-y-4">
-                    <div className="w-10 h-1 rounded" style={{ backgroundColor: accentColor }} />
-                    <p className="text-xs opacity-80 leading-relaxed" style={{ color: colors.text }}>{contentText}</p>
-                  </div>
-                  <button className="w-full mt-6 py-3 rounded font-bold text-center border transition-colors hover:bg-black/5"
-                    style={{ borderColor: accentColor, color: colors.text }}>
-                    서비스 예약 신청
-                  </button>
-                </div>
-              </section>
-            );
-          }
-
-          if (layoutIndex === 3) {
-            // 4. 사이드 스크롤 레이아웃 (Side Scroll Layout - Netflix style)
-            return (
-              <section key={i} className="space-y-6 border-b pb-16 animate-pulse-subtle" style={{ borderColor: `${accentColor}15` }}>
-                <div className="flex justify-between items-baseline">
-                  <div>
-                    <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded block mb-1 w-fit" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
-                      Pattern 05: Side Scroll Row
-                    </span>
-                    <h3 className="text-3xl font-bold" style={{ fontFamily: fonts.heading, color: colors.text }}>{koreanTitle}</h3>
-                  </div>
-                  <span className="text-xs opacity-50 font-pretendard">마우스로 넘기기 ➔</span>
-                </div>
-                <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-none snap-x snap-mandatory">
-                  {[1, 2, 3].map((cardIdx) => (
-                    <div key={cardIdx} className="min-w-[280px] md:min-w-[340px] rounded-xl overflow-hidden shadow-sm border snap-start" style={{ backgroundColor: colors.surface, borderColor: `${accentColor}10` }}>
-                      <EditableImage sectionKey={`${sec}-${cardIdx}`} defaultUrl={images[(cardIdx) % images.length]} className="h-44 w-full" />
-                      <div className="p-5 space-y-2">
-                        <h4 className="font-bold text-sm" style={{ color: colors.text }}>{koreanTitle} 아카이브 {cardIdx}</h4>
-                        <p className="text-xs opacity-70 leading-relaxed" style={{ color: colors.text }}>
-                          {contentText.slice(0, 50)}...
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            );
-          }
-
-          // 5. 잡지 레이아웃 (Magazine Layout - layoutIndex === 4)
-          return (
-            <section key={i} className="grid grid-cols-1 md:grid-cols-12 gap-10 items-start border-b pb-16" style={{ borderColor: `${accentColor}15` }}>
-              <div className="md:col-span-4 space-y-4">
-                <span className="text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 rounded block w-fit" style={{ backgroundColor: `${accentColor}15`, color: accentColor }}>
-                  Pattern 07: Magazine Focus
-                </span>
-                <h3 className="text-4xl font-light leading-tight font-serif-kr" style={{ fontFamily: fonts.heading, color: colors.text }}>
-                  {koreanTitle}의<br /><span className="font-bold">핵심 스토리</span>
-                </h3>
-                <p className="text-sm opacity-70 leading-relaxed" style={{ color: colors.text }}>{contentText}</p>
-              </div>
-              <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6 w-full">
-                <div className="space-y-4">
-                  <EditableImage sectionKey={`${sec}-sub1`} defaultUrl={images[1]} className="h-56 rounded-xl shadow-sm border" />
-                  <h4 className="font-bold text-base" style={{ color: colors.text }}>기초 로드맵 구축</h4>
-                  <p className="text-xs opacity-75 leading-relaxed" style={{ color: colors.text }}>체계적인 데이터 매핑과 인터랙션 설계를 바탕으로 사용자 경험을 극대화합니다.</p>
-                </div>
-                <div className="space-y-4">
-                  <EditableImage sectionKey={`${sec}-sub2`} defaultUrl={images[2]} className="h-56 rounded-xl shadow-sm border" />
-                  <h4 className="font-bold text-base" style={{ color: colors.text }}>글로벌 론칭 가속화</h4>
-                  <p className="text-xs opacity-75 leading-relaxed" style={{ color: colors.text }}>서버리스 인프라와 결합하여 고부가가치 솔루션 연동을 즉각 완료합니다.</p>
-                </div>
-              </div>
-            </section>
-          );
-        })}
+      {/* 12가지 레이아웃 구조 패턴 순차 순회 */}
+      <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-16">
+        {sections.filter(s => s !== 'hero').map((sec, i) => (
+          <PatternSectionRenderer
+            key={sec}
+            sec={sec}
+            idx={i}
+            template={template}
+            accentColor={accentColor}
+            bizName={bizName}
+            images={images}
+            themeMode="light"
+          />
+        ))}
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto border-black/10" style={{ color: colors.text }}>
         <p className="font-semibold mb-2">{bizName}</p>
         {contact && <p className="mb-2">연락처: {contact}</p>}
         <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
@@ -596,7 +741,7 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
 
         <header className="flex-1 flex flex-col justify-center px-8 lg:px-24 py-20">
           <div className="w-16 h-1 mb-8" style={{ backgroundColor: accentColor }} />
-          <h1 className="text-5xl lg:text-7xl font-light leading-tight mb-6" style={{ fontFamily: fonts.heading }}>
+          <h1 className="text-5xl lg:text-7xl font-light leading-tight mb-6 font-serif-kr" style={{ fontFamily: fonts.heading }}>
             {bizDesc.split(' ').map((word, i) => (
               <span key={i} className={i === 1 ? "font-bold" : ""}>{word} </span>
             ))}
@@ -605,7 +750,7 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
             모던하고 세련된 풀스크린 오버레이 디자인입니다. 영상이나 고품질 화보 이미지를 배경으로 두고, 여백을 살려 고급스러운 분위기를 연출합니다.
           </p>
           <div className="flex items-center gap-6">
-            <button className="px-10 py-4 rounded-full font-bold text-lg transition-colors"
+            <button className="px-10 py-4 rounded-full font-bold text-lg transition-colors shadow-lg"
               style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
               알아보기
             </button>
@@ -615,22 +760,24 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
           </div>
         </header>
 
-        <div className="px-8 lg:px-24 py-20 bg-black/60 backdrop-blur-md border-t border-white/10 mt-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            {sections.slice(1, 4).map((sec, i) => (
-              <div key={i} className="group cursor-pointer">
-                <span className="text-sm font-bold opacity-50 mb-2 block" style={{ color: accentColor }}>0{i + 1}</span>
-                <h3 className="text-2xl font-bold mb-4 group-hover:text-[var(--accent)] transition-colors" style={{ '--accent': accentColor } as any}>
-                  {SECTION_KR[sec] ?? sec}
-                </h3>
-                <p className="opacity-60 leading-relaxed text-sm">강렬한 대비와 세련된 타이포그래피로 시선을 사로잡는 섹션입니다.</p>
-              </div>
-            ))}
-          </div>
+        {/* 12가지 다크 레이아웃 구조 패턴 순회 */}
+        <div className="px-8 lg:px-24 py-20 bg-black/85 backdrop-blur-md border-t border-white/10 mt-auto space-y-16">
+          {sections.filter(s => s !== 'hero').map((sec, i) => (
+            <PatternSectionRenderer
+              key={sec}
+              sec={sec}
+              idx={i}
+              template={template}
+              accentColor={accentColor}
+              bizName={bizName}
+              images={images}
+              themeMode="dark"
+            />
+          ))}
         </div>
 
         {/* Footer */}
-        <footer className="w-full py-8 px-8 border-t border-white/10 text-center text-xs opacity-50 mt-auto text-white">
+        <footer className="w-full py-8 px-8 border-t border-white/10 text-center text-xs opacity-50 mt-auto text-white bg-black">
           <p className="font-semibold mb-2">{bizName}</p>
           {contact && <p className="mb-2">Contact: {contact}</p>}
           <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
@@ -646,12 +793,12 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
 function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   return (
-    <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
-      <nav className="flex justify-center p-8 border-b" style={{ borderColor: `${accentColor}30` }}>
+    <div className="min-h-full w-full flex flex-col font-pretendard" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
+      <nav className="flex justify-center p-8 border-b border-black/5">
         {logoUrl ? (
           <img src={logoUrl} alt="Logo" className="h-10 max-w-[180px] object-contain" />
         ) : (
-          <h1 className="text-3xl font-bold tracking-widest" style={{ fontFamily: fonts.heading, color: accentColor }}>{bizName}</h1>
+          <h1 className="text-3xl font-bold tracking-widest font-serif-kr" style={{ fontFamily: fonts.heading, color: accentColor }}>{bizName}</h1>
         )}
       </nav>
       
@@ -661,7 +808,7 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
         <div className="absolute inset-0 bg-black/60 pointer-events-none" />
         <div className="relative z-10 max-w-3xl p-8">
           <p className="text-sm tracking-[0.3em] mb-4 uppercase" style={{ color: accentColor }}>Signature Experience</p>
-          <h2 className="text-5xl md:text-6xl font-light mb-8 text-white" style={{ fontFamily: fonts.heading }}>{bizDesc}</h2>
+          <h2 className="text-5xl md:text-6xl font-light mb-8 text-white font-serif-kr" style={{ fontFamily: fonts.heading }}>{bizDesc}</h2>
           <button className="px-8 py-3 border border-white text-white hover:bg-white hover:text-black transition-colors">
             예약하기
           </button>
@@ -671,14 +818,14 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
       {/* Course Menu Section */}
       <section className="py-24 px-8 max-w-6xl mx-auto w-full">
         <div className="text-center mb-16">
-          <h3 className="text-4xl font-bold mb-4" style={{ fontFamily: fonts.heading }}>Tasting Menu</h3>
+          <h3 className="text-4xl font-bold mb-4 font-serif-kr" style={{ fontFamily: fonts.heading }}>Tasting Menu</h3>
           <div className="w-12 h-0.5 mx-auto" style={{ backgroundColor: accentColor }} />
         </div>
         
         <div className="grid md:grid-cols-2 gap-16">
           {/* Lunch Course */}
-          <div className="p-10 border shadow-lg" style={{ borderColor: `${accentColor}40`, backgroundColor: colors.surface }}>
-            <h4 className="text-2xl font-bold mb-8 text-center" style={{ color: accentColor }}>Lunch Course</h4>
+          <div className="p-10 border shadow-lg rounded-2xl bg-white border-black/5" style={{ backgroundColor: colors.surface }}>
+            <h4 className="text-2xl font-bold mb-8 text-center font-serif-kr" style={{ color: accentColor }}>Lunch Course</h4>
             <div className="space-y-6">
               {[
                 { name: "Amuse-Bouche", desc: "제철 식재료를 활용한 세 가지 한입 거리" },
@@ -686,7 +833,7 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
                 { name: "Main", desc: "최상급 한우 채끝 스테이크와 트러플 매쉬" },
                 { name: "Dessert", desc: "바닐라 빈 몽블랑과 계절 과일" }
               ].map((item, idx) => (
-                <div key={idx} className="flex justify-between items-baseline border-b pb-4" style={{ borderColor: `${accentColor}20` }}>
+                <div key={idx} className="flex justify-between items-baseline border-b pb-4 border-black/5">
                   <div>
                     <p className="text-lg font-bold">{item.name}</p>
                     <p className="text-sm opacity-60 mt-1">{item.desc}</p>
@@ -694,12 +841,12 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
                 </div>
               ))}
             </div>
-            <p className="text-center text-2xl font-bold mt-10" style={{ fontFamily: fonts.heading }}>120,000 KRW</p>
+            <p className="text-center text-2xl font-bold mt-10 font-serif-kr" style={{ fontFamily: fonts.heading }}>120,000 KRW</p>
           </div>
 
           {/* Dinner Course */}
-          <div className="p-10 border shadow-lg" style={{ borderColor: `${accentColor}40`, backgroundColor: colors.surface }}>
-            <h4 className="text-2xl font-bold mb-8 text-center" style={{ color: accentColor }}>Dinner Course</h4>
+          <div className="p-10 border shadow-lg rounded-2xl bg-white border-black/5" style={{ backgroundColor: colors.surface }}>
+            <h4 className="text-2xl font-bold mb-8 text-center font-serif-kr" style={{ color: accentColor }}>Dinner Course</h4>
             <div className="space-y-6">
               {[
                 { name: "Amuse-Bouche", desc: "다섯 가지 시그니처 아뮤즈 부쉬" },
@@ -707,7 +854,7 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
                 { name: "Main", desc: "드라이에이징 한우 안심과 포트와인 쥬" },
                 { name: "Dessert", desc: "시그니처 초콜릿 텍스처" }
               ].map((item, idx) => (
-                <div key={idx} className="flex justify-between items-baseline border-b pb-4" style={{ borderColor: `${accentColor}20` }}>
+                <div key={idx} className="flex justify-between items-baseline border-b pb-4 border-black/5">
                   <div>
                     <p className="text-lg font-bold">{item.name}</p>
                     <p className="text-sm opacity-60 mt-1">{item.desc}</p>
@@ -715,13 +862,29 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
                 </div>
               ))}
             </div>
-            <p className="text-center text-2xl font-bold mt-10" style={{ fontFamily: fonts.heading }}>250,000 KRW</p>
+            <p className="text-center text-2xl font-bold mt-10 font-serif-kr" style={{ fontFamily: fonts.heading }}>250,000 KRW</p>
           </div>
         </div>
       </section>
 
+      {/* 12가지 레이아웃 구조 패턴 순차 순회 */}
+      <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-16 border-t border-black/10">
+        {sections.filter(s => s !== 'hero').map((sec, i) => (
+          <PatternSectionRenderer
+            key={sec}
+            sec={sec}
+            idx={i}
+            template={template}
+            accentColor={accentColor}
+            bizName={bizName}
+            images={images}
+            themeMode="light"
+          />
+        ))}
+      </main>
+
       {/* Footer */}
-      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto border-black/10" style={{ color: colors.text }}>
         <p className="font-semibold mb-2">{bizName}</p>
         {contact && <p className="mb-2">연락처: {contact}</p>}
         <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
@@ -736,13 +899,13 @@ function FineDiningLayout({ template, accentColor, bizName, bizDesc, sections, i
 function CasualLayout({ template, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
   const { colors, fonts } = template;
   return (
-    <div className="min-h-full w-full flex flex-col" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
+    <div className="min-h-full w-full flex flex-col font-pretendard" style={{ backgroundColor: colors.bg, fontFamily: fonts.body, color: colors.text }}>
       {/* Friendly Nav */}
-      <nav className="flex justify-between items-center px-6 py-4 sticky top-0 z-20 shadow-sm border-b" style={{ backgroundColor: colors.surface, borderColor: `${accentColor}20` }}>
+      <nav className="flex justify-between items-center px-6 py-4 sticky top-0 z-20 shadow-sm border-b border-black/5" style={{ backgroundColor: colors.surface }}>
         {logoUrl ? (
           <img src={logoUrl} alt="Logo" className="h-8 max-w-[140px] object-contain" />
         ) : (
-          <h1 className="text-2xl font-black" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</h1>
+          <h1 className="text-2xl font-black font-serif-kr" style={{ fontFamily: fonts.heading, color: colors.primary }}>{bizName}</h1>
         )}
         <button className="px-5 py-2 rounded-full font-bold text-sm hover:opacity-90 transition-opacity" style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
           웨이팅 등록
@@ -753,8 +916,8 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
       <header className="p-6 md:p-12">
         <div className="rounded-3xl overflow-hidden relative h-[50vh] flex items-center p-8 md:p-16 shadow-lg bg-cover bg-center" style={{ backgroundColor: colors.primary }}>
           <div className="relative z-10 max-w-xl text-white">
-            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 tracking-wider" style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>NEW OPEN</span>
-            <h2 className="text-4xl md:text-6xl font-black mb-4 leading-tight">{bizDesc}</h2>
+            <span className="inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 tracking-wider animate-bounce-slow" style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>NEW OPEN</span>
+            <h2 className="text-4xl md:text-6xl font-black mb-4 leading-tight font-serif-kr">{bizDesc}</h2>
             <p className="text-lg opacity-90 mb-8 font-medium">맛있는 음식과 신나는 분위기! {bizName}에서 즐거운 시간을 보내세요.</p>
           </div>
           <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute right-0 top-0 bottom-0 w-1/2 opacity-30 mix-blend-overlay hidden md:block" />
@@ -762,17 +925,17 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
       </header>
 
       {/* Photo Menu Board */}
-      <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto w-full">
+      <section className="py-12 px-6 md:px-12 max-w-7xl mx-auto w-full border-b border-black/10">
         <div className="flex justify-between items-end mb-10">
           <div>
-            <h3 className="text-3xl font-black" style={{ fontFamily: fonts.heading, color: colors.primary }}>대표 메뉴</h3>
+            <h3 className="text-3xl font-black font-serif-kr" style={{ fontFamily: fonts.heading, color: colors.primary }}>대표 메뉴</h3>
             <p className="opacity-60 mt-2 text-lg">매일 아침 신선한 재료로 준비합니다.</p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white pb-4 border border-black/5 group cursor-pointer">
+            <div key={i} className="rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white pb-4 border border-black/5 group cursor-pointer">
               <div className="h-48 bg-gray-100 relative">
                 <EditableImage sectionKey={`menu-${i}`} defaultUrl={images[i % images.length]} className="w-full h-full" />
                 <div className="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur rounded text-xs font-bold shadow z-10" style={{ color: accentColor }}>
@@ -780,19 +943,35 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
                 </div>
               </div>
               <div className="p-5">
-                <div className="flex justify-between items-start mb-2">
+                <div className="flex justify-between items-start mb-2 text-black">
                   <h4 className="text-lg font-bold">시그니처 메뉴 {i}</h4>
                   <span className="font-black text-lg" style={{ color: accentColor }}>15.0</span>
                 </div>
-                <p className="text-sm opacity-60 leading-relaxed">바삭하게 튀겨낸 베스트셀러 요리입니다. 맥주와 함께 즐겨보세요.</p>
+                <p className="text-sm opacity-60 leading-relaxed text-black">바삭하게 튀겨낸 베스트셀러 요리입니다. 맥주와 함께 즐겨보세요.</p>
               </div>
             </div>
           ))}
         </div>
       </section>
 
+      {/* 12가지 레이아웃 구조 패턴 순차 순회 */}
+      <main className="flex-1 px-6 md:px-12 py-16 max-w-6xl mx-auto w-full space-y-16">
+        {sections.filter(s => s !== 'hero').map((sec, i) => (
+          <PatternSectionRenderer
+            key={sec}
+            sec={sec}
+            idx={i}
+            template={template}
+            accentColor={accentColor}
+            bizName={bizName}
+            images={images}
+            themeMode="light"
+          />
+        ))}
+      </main>
+
       {/* Footer */}
-      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto" style={{ borderColor: `${accentColor}20`, color: colors.text }}>
+      <footer className="w-full py-8 px-8 border-t text-center text-xs opacity-60 mt-auto border-black/10" style={{ color: colors.text }}>
         <p className="font-semibold mb-2">{bizName}</p>
         {contact && <p className="mb-2">연락처: {contact}</p>}
         <p>© {new Date().getFullYear()} {bizName}. All rights reserved.</p>
