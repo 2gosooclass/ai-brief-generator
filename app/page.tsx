@@ -16,36 +16,36 @@ interface StageData {
 }
 
 const STAGES: StageData[] = [
-  { id: 0, type: "classic", label: "1단계: 클래식 미색" },
+  { id: 0, type: "classic", label: "0단계: 오리지널 순정" },
   {
     id: 1,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081127_0992a171-d3c6-4978-8213-0ec5df8b6d63.mp4",
-    label: "2단계: 골든 아워"
+    label: "1단계: 골든 아워"
   },
   {
     id: 2,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_092026_dd05b805-ea0f-40b2-8c52-332b88502592.mp4",
-    label: "3단계: 스틸 워터"
+    label: "2단계: 스틸 워터"
   },
   {
     id: 3,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081042_df7202bf-bd80-4b2b-bbc6-1f09ba2870e9.mp4",
-    label: "4단계: 딥 우즈"
+    label: "3단계: 딥 우즈"
   },
   {
     id: 4,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4",
-    label: "5단계: 콰이어트 던"
+    label: "4단계: 콰이어트 던"
   },
   {
     id: 5,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260714_113715_c7e0daa0-8bdd-4486-a2da-040901f8f0ea.mp4",
-    label: "6단계: 심야 질주"
+    label: "5단계: 심야 질주"
   }
 ];
 
