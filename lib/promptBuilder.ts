@@ -44,6 +44,20 @@ const SECTION_LABELS: Record<string, string> = {
   reservations: "예약하기",
 };
 
+const PATTERN_TYPES = [
+  "분할 화면 레이아웃 (Split Screen Layout - Z-패턴 반영)",
+  "비대칭 레이아웃 (Asymmetrical Layout - 시각적 무게 반영)",
+  "지그재그 레이아웃 (Zig-Zag Layout - Z 모양 시선 흐름 반영)",
+  "카드 레이아웃 (Card Layout - 콤팩트 탐색 최적화)",
+  "사이드 스크롤 레이아웃 (Side Scroll Layout - 넷플릭스 스타일)",
+  "F-패턴 레이아웃 (F-Pattern Layout - 장문 스캔 최적화)",
+  "잡지 레이아웃 (Magazine Layout - 거대 메인 비주얼과 서브 매칭)",
+  "그리드 레이아웃 (Grid Layout - 모듈 바둑판 정렬)",
+  "갤러리 레이아웃 (Gallery Layout - 비주얼 집중형)",
+  "인터랙티브 레이아웃 (Interactive Layout - 탭/슬라이더 조작)",
+  "애니메이션 레이아웃 (Animation Layout - 스크롤 페이드 효과)"
+];
+
 export function buildPrompt({
   template,
   categoryId,
@@ -62,9 +76,19 @@ export function buildPrompt({
   userInputs: UserInputs;
 }): string {
   const categoryLabel = CATEGORY_LABELS[categoryId] ?? categoryId;
+  
   const sectionList = template.sections
-    .map((s) => `  - ${SECTION_LABELS[s] ?? s}`)
-    .join("\n");
+    .map((s, idx) => {
+      const label = SECTION_LABELS[s] ?? s;
+      if (s === "hero" || idx === 0) {
+        return `[섹션 ${idx + 1} 구조 패턴 유형: 전체 화면 레이아웃 (Full Screen Layout - Z-패턴 기본 반영)]\n  - ${label}: 화면 전체를 하나의 압도적인 비주얼로 채우고 미니멀 타이포그래피만 배치하여 브랜드 감성을 각인하십시오. 요소의 시선 흐름이 마지막에 CTA(행동 유도 버튼)로 명확히 꽂히게 유도해 주세요.`;
+      }
+      
+      const patternIdx = (idx - 1) % PATTERN_TYPES.length;
+      const pattern = PATTERN_TYPES[patternIdx];
+      return `[섹션 ${idx + 1} 구조 패턴 유형: ${pattern}]\n  - ${label}: 초보자 웹사이트처럼 똑같은 [상단 이미지 + 하단 텍스트] 그리드 레이아웃이 절대 남발되지 않도록 이 구조적 패턴 가이드라인을 엄수해 주세요. 좌우 비대칭 배치나 사이드 스크롤, 또는 지그재그 Z-패턴의 흐름을 사용하여 시각적 강약을 줍니다.`;
+    })
+    .join("\n\n");
 
   const colorsText = [
     `  - 메인 컬러: ${template.colors.primary}`,

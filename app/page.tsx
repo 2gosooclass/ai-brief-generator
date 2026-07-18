@@ -350,8 +350,12 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 메인 콘텐츠: 2단 비대칭 Split 구조 (백드롭 필터 적용) ── */}
-      <div className="bg-[#FAFAF7]/95 backdrop-blur-xl border-t border-[#E8E0D8]/60 relative z-20">
+      {/* ── 메인 콘텐츠: 2단 비대칭 Split 구조 (백드롭 필터 및 실시간 테마 트랜지션) ── */}
+      <div className={`transition-colors duration-700 border-t relative z-20 ${
+        isClassicTheme
+          ? "bg-[#FAFAF7]/95 border-[#E8E0D8]/60"
+          : "bg-[#0A090B]/95 border-white/10"
+      }`}>
         <main className="max-w-7xl mx-auto px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           
           {/* 좌측 4열: 카테고리 선택 및 사용 가이드 */}
@@ -361,20 +365,32 @@ export default function Home() {
               {/* Step 01: 업종 선택 */}
               <div className="space-y-4">
                 <div>
-                  <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase block mb-1">Step 01</span>
-                  <h3 className="font-serif-kr text-lg font-bold text-[#1C1410]">업종 카테고리</h3>
-                  <p className="text-[11px] text-[#8C7A6A] leading-relaxed mt-0.5">제작 목적에 부합하는 업종 구조를 선택해 주십시오.</p>
+                  <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
+                    isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
+                  }`}>Step 01</span>
+                  <h3 className={`font-serif-kr text-lg font-bold transition-colors duration-700 ${
+                    isClassicTheme ? "text-[#1C1410]" : "text-white"
+                  }`}>업종 카테고리</h3>
+                  <p className={`text-[11px] leading-relaxed mt-0.5 transition-colors duration-700 ${
+                    isClassicTheme ? "text-[#8C7A6A]" : "text-white/60"
+                  }`}>제작 목적에 부합하는 업종 구조를 선택해 주십시오.</p>
                 </div>
                 <CategoryTabs />
               </div>
 
               {/* 사용 가이드 컴팩트 리뉴얼 */}
-              <div className="pt-8 border-t border-[#E8E0D8]/60 space-y-4">
+              <div className={`pt-8 border-t space-y-4 transition-colors duration-700 ${
+                isClassicTheme ? "border-[#E8E0D8]/60" : "border-white/10"
+              }`}>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase">Documentation</span>
+                  <span className={`text-[10px] font-semibold tracking-widest uppercase ${
+                    isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
+                  }`}>Documentation</span>
                   <button
                     onClick={() => setIsGuideOpen(true)}
-                    className="text-[10px] font-pretendard text-[#C8A97E] hover:text-[#A08060] font-semibold transition-colors cursor-pointer"
+                    className={`text-[10px] font-pretendard font-semibold transition-colors cursor-pointer ${
+                      isClassicTheme ? "text-[#C8A97E] hover:text-[#A08060]" : "text-[#F5C88E] hover:text-[#FFF]"
+                    }`}
                   >
                     상세 설명서 📖
                   </button>
@@ -389,8 +405,12 @@ export default function Home() {
                     <div key={item.title} className="flex gap-2">
                       <span className="text-[10px] font-bold text-[#C8A97E] font-pretendard shrink-0 mt-0.5">0{i+1}.</span>
                       <div>
-                        <p className="text-xs font-pretendard font-semibold text-[#1C1410]">{item.title}</p>
-                        <p className="text-[10px] font-pretendard text-[#8C7A6A] leading-normal mt-0.5">{item.desc}</p>
+                        <p className={`text-xs font-pretendard font-semibold transition-colors duration-700 ${
+                          isClassicTheme ? "text-[#1C1410]" : "text-white"
+                        }`}>{item.title}</p>
+                        <p className={`text-[10px] font-pretendard leading-normal mt-0.5 transition-colors duration-700 ${
+                          isClassicTheme ? "text-[#8C7A6A]" : "text-white/60"
+                        }`}>{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -403,8 +423,12 @@ export default function Home() {
           {/* 우측 8열: 템플릿 그리드 */}
           <div className="md:col-span-8 lg:col-span-9 space-y-6">
             <div>
-              <span className="text-[10px] text-[#C8A97E] font-semibold tracking-widest uppercase block mb-1">Step 02</span>
-              <h3 className="font-serif-kr text-lg font-bold text-[#1C1410] mb-4">구조적 템플릿</h3>
+              <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
+                isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
+              }`}>Step 02</span>
+              <h3 className={`font-serif-kr text-lg font-bold mb-4 transition-colors duration-700 ${
+                isClassicTheme ? "text-[#1C1410]" : "text-white"
+              }`}>구조적 템플릿</h3>
             </div>
             <TemplateGrid />
           </div>
@@ -413,12 +437,16 @@ export default function Home() {
       </div>
 
       {/* ── 푸터 ── */}
-      <footer className="border-t border-[#E8E0D8]/60 bg-[#FAFAF7] py-5 px-5 relative z-20">
+      <footer className={`border-t py-5 px-5 relative z-20 transition-colors duration-700 ${
+        isClassicTheme
+          ? "bg-[#FAFAF7] border-[#E8E0D8]/60 text-[#A09080]"
+          : "bg-[#09080A] border-white/10 text-white/40"
+      }`}>
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-xs font-pretendard text-[#A09080]">
+          <p className="text-xs font-pretendard">
             © 2026 2GOSOO AI LAB. AI 웹사이트 브리프 생성기.
           </p>
-          <div className="flex items-center gap-3 text-[11px] font-pretendard text-[#A09080]">
+          <div className="flex items-center gap-3 text-[11px] font-pretendard">
             <span>Photos by Unsplash</span>
             <span>·</span>
             <span>Built with Next.js + Tailwind</span>

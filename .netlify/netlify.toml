@@ -17,7 +17,7 @@ package = "@netlify/plugin-nextjs"
 [build]
 publish = "/Users/2gosoo/Documents/2GOSOO_AI_LAB/01_APP_BUILD/05_shared_machinery/ai-brief-generator/.next"
 publishOrigin = "ui"
-commandOrigin = "config"
+commandOrigin = "ui"
 command = "npm run build"
 
 [build.environment]
@@ -33,15 +33,6 @@ command = "npm run build"
 [build.processing.js]
 
 [build.services]
-
-[[headers]]
-for = "/*"
-
-[headers.values]
-X-Frame-Options = "DENY"
-X-XSS-Protection = "1; mode=block"
-X-Content-Type-Options = "nosniff"
-Referrer-Policy = "strict-origin-when-cross-origin"
 
 [[headers]]
 for = "/_next/static/*"
