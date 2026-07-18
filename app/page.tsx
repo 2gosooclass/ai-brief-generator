@@ -16,36 +16,37 @@ interface StageData {
 }
 
 const STAGES: StageData[] = [
-  { id: 0, type: "classic", label: "0단계: 오리지널 순정" },
-  {
-    id: 1,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081127_0992a171-d3c6-4978-8213-0ec5df8b6d63.mp4",
-    label: "1단계: 골든 아워"
-  },
+  { id: 0, type: "classic", label: "0단계: AI 순정" },
+  { id: 1, type: "classic", label: "1단계: 오리지널 미색" },
   {
     id: 2,
     type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_092026_dd05b805-ea0f-40b2-8c52-332b88502592.mp4",
-    label: "2단계: 스틸 워터"
+    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081127_0992a171-d3c6-4978-8213-0ec5df8b6d63.mp4",
+    label: "2단계: 골든 아워"
   },
   {
     id: 3,
     type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081042_df7202bf-bd80-4b2b-bbc6-1f09ba2870e9.mp4",
-    label: "3단계: 딥 우즈"
+    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_092026_dd05b805-ea0f-40b2-8c52-332b88502592.mp4",
+    label: "3단계: 스틸 워터"
   },
   {
     id: 4,
     type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4",
-    label: "4단계: 콰이어트 던"
+    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081042_df7202bf-bd80-4b2b-bbc6-1f09ba2870e9.mp4",
+    label: "4단계: 딥 우즈"
   },
   {
     id: 5,
     type: "video",
+    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4",
+    label: "5단계: 콰이어트 던"
+  },
+  {
+    id: 6,
+    type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260714_113715_c7e0daa0-8bdd-4486-a2da-040901f8f0ea.mp4",
-    label: "5단계: 심야 질주"
+    label: "6단계: 심야 질주"
   }
 ];
 
@@ -53,7 +54,7 @@ export default function Home() {
   const { selectedTemplate, openPanel } = useBriefStore();
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
-  // activeVideo state tracks the selected stage (0 to 5)
+  // activeVideo state tracks the selected stage (0 to 6)
   const [activeVideo, setActiveVideo] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
@@ -66,7 +67,8 @@ export default function Home() {
     }, 1000);
   };
 
-  const isClassicTheme = activeVideo === 0;
+  const isAISlop = activeVideo === 0;
+  const isClassicTheme = activeVideo === 0 || activeVideo === 1;
 
   return (
     <div className="min-h-screen bg-black relative flex flex-col justify-between overflow-x-hidden">
@@ -108,12 +110,16 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── 히어로 배너: 비대칭 2단 분할 구조 + 6단계 비교 백그라운드 ── */}
-      <section className={`relative py-16 md:py-24 px-6 overflow-hidden min-h-[460px] flex items-center transition-colors duration-700 ${
-        isClassicTheme ? "bg-[#FAFAF7]" : "bg-[#09080A]"
+      {/* ── 히어로 배너: 비대칭 2단 분할 구조 (0단계는 구식 AI 그라데이션 배너 탑재) ── */}
+      <section className={`relative py-16 md:py-24 px-6 overflow-hidden min-h-[460px] flex items-center transition-all duration-700 ${
+        isAISlop
+          ? "bg-gradient-to-br from-[#1C1410] via-[#2A1C12] to-[#1C1410] text-white"
+          : isClassicTheme
+          ? "bg-[#FAFAF7]"
+          : "bg-[#09080A]"
       }`}>
         
-        {/* 1. Background Video Layer (key={activeVideo} 핫스왑 단일 인스턴스 설계로 로드/오류 완벽 차단) */}
+        {/* 1. Background Video Layer (key={activeVideo} 핫스왑 단일 인스턴스 설계 - 클래식 및 0단계 테마일 때는 감춤) */}
         <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${
           isClassicTheme ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}>
@@ -134,7 +140,7 @@ export default function Home() {
           <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent pointer-events-none z-10" />
         </div>
 
-        {/* 2. Figma PNG Texture Overlay (1단계 클래식 테마일 때는 감춤) */}
+        {/* 2. Figma PNG Texture Overlay (0단계 및 1단계 클래식 테마일 때는 감춤) */}
         <img
           src="https://soft-zoom-63098134.figma.site/_assets/v11/0b4a435b2df2747593c43d7a1c9b4578f7d8d90c.png"
           alt="Figma Texture Overlay"
@@ -150,20 +156,32 @@ export default function Home() {
             
             {/* 배지 및 6단계 스위처 그룹 */}
             <div className="flex flex-wrap items-center gap-3 mb-6">
-              <div className={`inline-flex items-center gap-2 border px-3.5 py-1.5 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold transition-all duration-700 ${
-                isClassicTheme
-                  ? "border-[#C8A97E]/30 bg-[#FDF8F3] text-[#C8A97E]"
-                  : "border-white/20 bg-white/5 text-white/90"
-              }`}>
-                <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${
-                  isClassicTheme ? "bg-[#C8A97E]" : "bg-white"
-                }`} />
-                <span>Vibe Coding Prompt Engine</span>
-              </div>
+              
+              {isAISlop ? (
+                // 0단계 전용 YC 풍 복구 배지
+                <div className="inline-flex items-center gap-2 bg-[#C8A97E]/15 border border-[#C8A97E]/25 rounded-full px-3.5 py-1.5 text-[11px] font-pretendard text-[#C8A97E]">
+                  <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
+                  <span>초보자도 5분이면 완성</span>
+                </div>
+              ) : (
+                // 1~6단계 스위스 에디토리얼 배지
+                <div className={`inline-flex items-center gap-2 border px-3.5 py-1.5 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold transition-all duration-700 ${
+                  isClassicTheme
+                    ? "border-[#C8A97E]/30 bg-[#FDF8F3] text-[#C8A97E]"
+                    : "border-white/20 bg-white/5 text-white/90"
+                }`}>
+                  <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${
+                    isClassicTheme ? "bg-[#C8A97E]" : "bg-white"
+                  }`} />
+                  <span>Vibe Coding Prompt Engine</span>
+                </div>
+              )}
 
-              {/* 6-Step Visual Comparison Switcher */}
+              {/* 0-6 Step Visual Comparison Switcher */}
               <div className={`flex flex-wrap items-center gap-1.5 rounded-full p-1 border transition-all duration-700 ${
-                isClassicTheme
+                isAISlop
+                  ? "bg-white/10 border-white/20 text-white"
+                  : isClassicTheme
                   ? "bg-[#F5F0EA] border-[#E8E0D8]"
                   : "bg-black/35 border-white/10"
               }`}>
@@ -173,9 +191,13 @@ export default function Home() {
                     onClick={() => handleVideoSwitch(idx)}
                     className={`text-[9px] font-pretendard font-bold px-2.5 py-1 rounded-full transition-all duration-300 cursor-pointer ${
                       idx === activeVideo
-                        ? isClassicTheme
+                        ? isAISlop
+                          ? "bg-[#C8A97E] text-[#1C1410] shadow-sm"
+                          : isClassicTheme
                           ? "bg-[#1C1410] text-white shadow-sm"
                           : "bg-white text-black"
+                        : isAISlop
+                        ? "text-white/60 hover:text-white"
                         : isClassicTheme
                         ? "text-[#8C7A6A] hover:text-[#1C1410]"
                         : "text-white/60 hover:text-white"
@@ -187,34 +209,52 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 타이틀 명칭 (어두운 배경 위에서는 무조건 선명한 화이트 테마 적용) */}
-            <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-all duration-700 ${
-              isClassicTheme
-                ? "text-[#1C1410]"
-                : "text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]"
-            }`}>
-              Architect your layout <br />
-              <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
+            {/* 타이틀 명칭 분기 */}
+            {isAISlop ? (
+              // 0단계: 오리지널 AI 기계적 타이틀
+              <h2 className="font-serif-kr text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-white">
+                업종별 템플릿 선택 →<br />
+                <span className="text-[#C8A97E]">바이브 코딩 프롬프트</span> 자동 생성
+              </h2>
+            ) : (
+              // 1~6단계: 수려한 스위스 세리프 이탤릭 타이틀
+              <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-all duration-700 ${
                 isClassicTheme
-                  ? "text-[#C8A97E]"
-                  : "text-[#F5C88E] drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-              }`}>in 5 minutes</span>
-              <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
-                isClassicTheme ? "text-[#1C1410]" : "text-white"
-              }`}>바이브 코딩 프롬프트 생성기</span>
-            </h2>
+                  ? "text-[#1C1410]"
+                  : "text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]"
+              }`}>
+                Architect your layout <br />
+                <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
+                  isClassicTheme
+                    ? "text-[#C8A97E]"
+                    : "text-[#F5C88E] drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
+                }`}>in 5 minutes</span>
+                <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
+                  isClassicTheme ? "text-[#1C1410]" : "text-white"
+                }`}>바이브 코딩 프롬프트 생성기</span>
+              </h2>
+            )}
 
-            {/* 본문 설명문 (어두운 배경 위에서는 무조건 화이트/85% 적용) */}
-            <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-all duration-700 ${
-              isClassicTheme
-                ? "text-[#8C7A6A]"
-                : "text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
-            }`}>
-              카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
-            </p>
+            {/* 본문 설명문 분기 */}
+            {isAISlop ? (
+              // 0단계: 최초 MVP 한글 설명글
+              <p className="font-pretendard text-sm text-white/65 leading-relaxed max-w-xl">
+                카페, 학원, 개인 브랜드 등 업종에 맞는 검증된 웹사이트 구조를 선택하면,
+                사용하시는 AI 에이전트(Antigravity, Codex, Hermes, Lovable, v0, Claude, Cursor 등)에 그대로 붙여넣을 수 있는 프롬프트가 자동으로 만들어집니다.
+              </p>
+            ) : (
+              // 1~6단계: 스위스 디자인 설명문
+              <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-all duration-700 ${
+                isClassicTheme
+                  ? "text-[#8C7A6A]"
+                  : "text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
+              }`}>
+                카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
+              </p>
+            )}
           </div>
 
-          {/* 우측 5열: 선택된 템플릿의 간략 정보 (어두운 비디오 배경에서는 무조건 가독성 극대화 다크 글래스 고정) */}
+          {/* 우측 5열: 선택된 템플릿의 간략 정보 */}
           <div className="md:col-span-5 flex justify-end">
             <AnimatePresence mode="wait">
               {selectedTemplate ? (
@@ -225,7 +265,9 @@ export default function Home() {
                   exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.3 }}
                   className={`w-full max-w-md rounded-xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-all duration-700 ${
-                    isClassicTheme
+                    isAISlop
+                      ? "bg-white/10 border border-white/20 text-white rounded-2xl backdrop-blur-sm"
+                      : isClassicTheme
                       ? "bg-white border border-[#E8E0D8] text-[#1C1410]"
                       : "dark-liquid-glass text-white"
                   }`}
@@ -234,29 +276,29 @@ export default function Home() {
                   
                   <div>
                     <span className={`text-[10px] uppercase tracking-widest font-semibold block mb-3 transition-colors duration-700 ${
-                      isClassicTheme
+                      isClassicTheme && !isAISlop
                         ? "text-[#A09080]"
                         : "text-white/70"
                     }`}>Active Spec</span>
                     <div className="flex items-center gap-3.5 mb-4">
                       <div
                         className={`w-11 h-11 rounded-lg shrink-0 shadow-sm transition-colors duration-700 ${
-                          isClassicTheme ? "border border-[#E8E0D8]" : "border border-white/10"
+                          isClassicTheme && !isAISlop ? "border border-[#E8E0D8]" : "border border-white/10"
                         }`}
                         style={{ backgroundColor: selectedTemplate.colors.accent }}
                       />
                       <div className="min-w-0">
                         <h3 className={`font-serif-kr text-base font-bold leading-tight truncate transition-colors duration-700 ${
-                          isClassicTheme
+                          isClassicTheme && !isAISlop
                             ? "text-[#1C1410]"
                             : "text-white"
                         }`}>
                           {selectedTemplate.name}
                         </h3>
                         <p className={`text-[11px] font-pretendard leading-tight truncate mt-0.5 transition-colors duration-700 ${
-                          isClassicTheme
+                          isClassicTheme && !isAISlop
                             ? "text-[#8C7A6A]"
-                            : "text-white/80"
+                            : "text-white/85"
                         }`}>
                           {selectedTemplate.tagline}
                         </p>
@@ -267,7 +309,9 @@ export default function Home() {
                   <button
                     onClick={openPanel}
                     className={`w-full py-3 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow active:scale-98 ${
-                      isClassicTheme
+                      isAISlop
+                        ? "bg-[#C8A97E] hover:bg-[#D4BA8C] text-[#1C1410]"
+                        : isClassicTheme
                         ? "bg-[#1C1410] hover:bg-[#3A2D27] text-white"
                         : "bg-white hover:bg-white/90 text-[#1C1410]"
                     }`}
@@ -285,16 +329,18 @@ export default function Home() {
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
                   className={`w-full max-w-md rounded-xl p-8 text-center text-xs flex flex-col items-center justify-center min-h-[220px] transition-all duration-700 ${
-                    isClassicTheme
+                    isAISlop
+                      ? "bg-white/10 border border-white/20 text-white rounded-2xl backdrop-blur-sm"
+                      : isClassicTheme
                       ? "bg-white border border-[#E8E0D8]/60 text-[#8C7A6A]"
                       : "dark-liquid-glass text-white"
                   }`}
                 >
                   <p className={`mb-2 transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#8C7A6A]" : "text-white/80"
+                    isClassicTheme && !isAISlop ? "text-[#8C7A6A]" : "text-white/80"
                   }`}>아래에서 업종 템플릿을 선택하여</p>
                   <p className={`font-serif-kr text-sm font-medium transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#1C1410]" : "text-white"
+                    isClassicTheme && !isAISlop ? "text-[#1C1410]" : "text-white"
                   }`}>프롬프트 빌드 아키텍처를 활성화하십시오.</p>
                 </motion.div>
               )}
