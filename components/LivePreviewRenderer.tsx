@@ -195,6 +195,120 @@ function EditableImage({
 // ─────────────────────────────────────────────
 // 🌐 12가지 웹사이트 구조 패턴 통합 렌더러 컴포넌트 (대표님 명세 지침 100% 반영)
 // ─────────────────────────────────────────────
+// 🌐 템플릿별로 각 섹션에 어울리는 12대 레이아웃 구조 패턴 고유 매핑 (획일화 탈피 마스터 테이블)
+const TEMPLATE_SECTION_PATTERNS: Record<string, Record<string, number>> = {
+  "cafe-minimal": {
+    "about": 8,       // 지그재그 레이아웃
+    "menu": 0,        // 그리드 레이아웃
+    "gallery": 7,     // 갤러리 레이아웃
+    "location": 1,    // 분할 화면 레이아웃 (오시는 길 50:50)
+    "instagram": 4    // 사이드 스크롤 레이아웃 (인스타그램 롤)
+  },
+  "cafe-vintage": {
+    "story": 8,       // 지그재그 레이아웃
+    "menu": 5,        // 카드 레이아웃
+    "events": 11,     // 애니메이션 레이아웃 (제품/이벤트 모션)
+    "gallery": 7,     // 갤러리 레이아웃
+    "contact": 1      // 분할 화면 레이아웃 (문의 폼 50:50)
+  },
+  "cafe-modern": {
+    "philosophy": 3,  // 전체 화면 레이아웃 (철학 감성 타격)
+    "menu": 0,        // 그리드 레이아웃 (메뉴)
+    "barista": 2,     // 비대칭 레이아웃 (바리스타 소개 70:30)
+    "reservations": 10 // 인터랙티브 레이아웃 (예약 탭 스위처)
+  },
+  "cafe-finedining": {
+    "chef": 2,        // 비대칭 레이아웃 (셰프 소개 70:30)
+    "course-menu": 6, // 잡지 레이아웃 (코스 메뉴)
+    "reservation": 1, // 분할 화면 레이아웃 (예약 가입 양식)
+    "private-room": 3 // 전체 화면 레이아웃 (프라이빗 룸 화보)
+  },
+  "cafe-casual": {
+    "menu-board": 0,  // 그리드 레이아웃 (메뉴판)
+    "waiting": 10,    // 인터랙티브 레이아웃 (웨이팅 시뮬레이션)
+    "location": 1,    // 분할 화면 레이아웃
+    "reviews": 5      // 카드 레이아웃 (수강후기/리뷰)
+  },
+  "academy-trust": {
+    "features": 0,    // 그리드 레이아웃 (주요 특징)
+    "curriculum": 8,  // 지그재그 레이아웃 (커리큘럼 단계)
+    "teachers": 6,    // 잡지 레이아웃 (강사진 스토리)
+    "results": 9,     // F-패턴 레이아웃 (합격 실적 대형 수치)
+    "schedule": 5,    // 카드 레이아웃 (시간표)
+    "contact": 1      // 분할 화면 레이아웃
+  },
+  "academy-creative": {
+    "classes": 0,     // 그리드 레이아웃
+    "gallery": 7,     // 갤러리 레이아웃
+    "instructors": 2, // 비대칭 레이아웃
+    "testimonials": 5, // 카드 레이아웃
+    "pricing": 9,     // F-패턴 레이아웃
+    "enroll": 10      // 인터랙티브 레이아웃 (신청 탭)
+  },
+  "academy-online": {
+    "features": 0,    // 그리드 레이아웃
+    "courses": 5,     // 카드 레이아웃
+    "demo": 10,       // 인터랙티브 레이아웃
+    "pricing": 9,     // F-패턴 레이아웃
+    "faq": 8,         // 지그재그 레이아웃
+    "cta": 11         // 애니메이션 레이아웃
+  },
+  "personal-portfolio": {
+    "about": 8,       // 지그재그
+    "works": 7,       // 갤러리
+    "process": 0,     // 그리드 (작업 과정)
+    "skills": 5,      // 카드 (보유 스킬)
+    "contact": 1      // 분할 화면
+  },
+  "personal-consultant": {
+    "about": 8,       // 지그재그
+    "services": 0,    // 그리드 (제공 서비스)
+    "results": 9,     // F-패턴 (실적 수치)
+    "testimonials": 5, // 카드 (후기)
+    "booking": 10     // 인터랙티브 (예약 탭)
+  },
+  "personal-creator": {
+    "links": 5,       // 카드 (링크 모음)
+    "latest-content": 4, // 사이드 스크롤 (최신 피드 롤)
+    "shop": 0,        // 그리드 (샵 상품)
+    "about": 8,       // 지그재그
+    "newsletter": 1   // 분할 화면
+  },
+  "religion-church": {
+    "about": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 0      // 그리드
+  },
+  "religion-ngo": {
+    "story": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "contact": 1      // 분할 화면
+  },
+  "religion-community": {
+    "about": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "contact": 1      // 분할 화면
+  },
+  "traditional-knots": {
+    "about": 8,       // 지그재그
+    "classes": 0,     // 그리드 (매듭 클래스)
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 5      // 카드
+  },
+  "traditional-pottery": {
+    "philosophy": 3,  // 전체 화면 (도예 철학)
+    "courses": 0,     // 그리드
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 5      // 카드
+  }
+};
+
 function PatternSectionRenderer({
   sec,
   idx,
@@ -213,7 +327,8 @@ function PatternSectionRenderer({
   themeMode?: "light" | "dark";
 }) {
   const { colors, fonts } = template;
-  const layoutPatternIndex = idx % 12;
+  const templateId = template.id;
+  const layoutPatternIndex = TEMPLATE_SECTION_PATTERNS[templateId]?.[sec] ?? (idx % 12);
   const imageUrl = images[(idx + 1) % images.length];
   const koreanTitle = SECTION_KR[sec] ?? sec;
   const contentText = SECTION_CONTENTS[sec] || `${bizName}의 ${koreanTitle} 섹션입니다. 기획안의 12가지 독창적 웹사이트 구조 패턴 중 하나를 반영하여 완성도를 보강했습니다.`;

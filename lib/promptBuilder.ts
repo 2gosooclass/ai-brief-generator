@@ -44,18 +44,133 @@ const SECTION_LABELS: Record<string, string> = {
   reservations: "예약하기",
 };
 
+// 🌐 템플릿별로 각 섹션에 어울리는 12대 레이아웃 구조 패턴 고유 매핑 (획일화 탈피 마스터 테이블)
+const TEMPLATE_SECTION_PATTERNS: Record<string, Record<string, number>> = {
+  "cafe-minimal": {
+    "about": 8,       // 지그재그 레이아웃
+    "menu": 0,        // 그리드 레이아웃 (모듈형)
+    "gallery": 7,     // 갤러리 레이아웃
+    "location": 1,    // 분할 화면 레이아웃 (50:50)
+    "instagram": 4    // 사이드 스크롤 레이아웃
+  },
+  "cafe-vintage": {
+    "story": 8,       // 지그재그 레이아웃
+    "menu": 5,        // 카드 레이아웃
+    "events": 11,     // 애니메이션 레이아웃
+    "gallery": 7,     // 갤러리 레이아웃
+    "contact": 1      // 분할 화면 레이아웃
+  },
+  "cafe-modern": {
+    "philosophy": 3,  // 전체 화면 레이아웃 (감성 타격)
+    "menu": 0,        // 그리드 레이아웃
+    "barista": 2,     // 비대칭 레이아웃 (70:30)
+    "reservations": 10 // 인터랙티브 레이아웃
+  },
+  "cafe-finedining": {
+    "chef": 2,        // 비대칭 레이아웃 (70:30)
+    "course-menu": 6, // 잡지 레이아웃
+    "reservation": 1, // 분할 화면 레이아웃
+    "private-room": 3 // 전체 화면 레이아웃
+  },
+  "cafe-casual": {
+    "menu-board": 0,  // 그리드 레이아웃
+    "waiting": 10,    // 인터랙티브 레이아웃
+    "location": 1,    // 분할 화면 레이아웃
+    "reviews": 5      // 카드 레이아웃
+  },
+  "academy-trust": {
+    "features": 0,    // 그리드 레이아웃
+    "curriculum": 8,  // 지그재그 레이아웃
+    "teachers": 6,    // 잡지 레이아웃
+    "results": 9,     // F-패턴 레이아웃
+    "schedule": 5,    // 카드 레이아웃
+    "contact": 1      // 분할 화면 레이아웃
+  },
+  "academy-creative": {
+    "classes": 0,     // 그리드 레이아웃
+    "gallery": 7,     // 갤러리 레이아웃
+    "instructors": 2, // 비대칭 레이아웃
+    "testimonials": 5, // 카드 레이아웃
+    "pricing": 9,     // F-패턴 레이아웃
+    "enroll": 10      // 인터랙티브 레이아웃
+  },
+  "academy-online": {
+    "features": 0,    // 그리드 레이아웃
+    "courses": 5,     // 카드 레이아웃
+    "demo": 10,       // 인터랙티브 레이아웃
+    "pricing": 9,     // F-패턴 레이아웃
+    "faq": 8,         // 지그재그 레이아웃
+    "cta": 11         // 애니메이션 레이아웃
+  },
+  "personal-portfolio": {
+    "about": 8,       // 지그재그
+    "works": 7,       // 갤러리
+    "process": 0,     // 그리드
+    "skills": 5,      // 카드
+    "contact": 1      // 분할 화면
+  },
+  "personal-consultant": {
+    "about": 8,       // 지그재그
+    "services": 0,    // 그리드
+    "results": 9,     // F-패턴
+    "testimonials": 5, // 카드
+    "booking": 10     // 인터랙티브
+  },
+  "personal-creator": {
+    "links": 5,       // 카드
+    "latest-content": 4, // 사이드 스크롤
+    "shop": 0,        // 그리드
+    "about": 8,       // 지그재그
+    "newsletter": 1   // 분할 화면
+  },
+  "religion-church": {
+    "about": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 0      // 그리드
+  },
+  "religion-ngo": {
+    "story": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "contact": 1      // 분할 화면
+  },
+  "religion-community": {
+    "about": 8,       // 지그재그
+    "events": 11,     // 애니메이션
+    "gallery": 7,     // 갤러리
+    "contact": 1      // 분할 화면
+  },
+  "traditional-knots": {
+    "about": 8,       // 지그재그
+    "classes": 0,     // 그리드
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 5      // 카드
+  },
+  "traditional-pottery": {
+    "philosophy": 3,  // 전체 화면
+    "courses": 0,     // 그리드
+    "gallery": 7,     // 갤러리
+    "location": 1,    // 분할 화면
+    "contact": 5      // 카드
+  }
+};
+
 const PATTERN_TYPES = [
-  "분할 화면 레이아웃 (Split Screen Layout - Z-패턴 반영)",
-  "비대칭 레이아웃 (Asymmetrical Layout - 시각적 무게 반영)",
-  "지그재그 레이아웃 (Zig-Zag Layout - Z 모양 시선 흐름 반영)",
-  "카드 레이아웃 (Card Layout - 콤팩트 탐색 최적화)",
-  "사이드 스크롤 레이아웃 (Side Scroll Layout - 넷플릭스 스타일)",
-  "F-패턴 레이아웃 (F-Pattern Layout - 장문 스캔 최적화)",
-  "잡지 레이아웃 (Magazine Layout - 거대 메인 비주얼과 서브 매칭)",
-  "그리드 레이아웃 (Grid Layout - 모듈 바둑판 정렬)",
-  "갤러리 레이아웃 (Gallery Layout - 비주얼 집중형)",
-  "인터랙티브 레이아웃 (Interactive Layout - 탭/슬라이더 조작)",
-  "애니메이션 레이아웃 (Animation Layout - 스크롤 페이드 효과)"
+  "그리드 레이아웃 (Grid Layout - 모듈형 그리드 및 단일 열 그리드 활용)",
+  "분할 화면 레이아웃 (Split Screen Layout - 50:50 비주얼과 양식/스펙 대조)",
+  "비대칭 레이아웃 (Asymmetrical Layout - 70:30 시선 유도 및 CTA 배치)",
+  "전체 화면 레이아웃 (Full Screen Layout - 압도적 배경 및 미니멀 타이포그래피)",
+  "사이드 스크롤 레이아웃 (Side Scroll Layout - 넷플릭스 스타일 가로 롤)",
+  "카드 레이아웃 (Card Layout - 콤팩트 직사각형 탐색 구조 ※ 남발 금지)",
+  "잡지 레이아웃 (Magazine Layout - 거대 메인 비주얼과 주변 서브 배치)",
+  "갤러리 레이아웃 (Gallery Layout - 텍스트 최소화 이미지 전시)",
+  "지그재그 레이아웃 (Zig-Zag Layout - Z-패턴 교차 배치)",
+  "F-패턴 레이아웃 (F-Pattern Layout - 좌측 상단 흐름 중심 장문 스캔 최적화)",
+  "인터랙티브 레이아웃 (Interactive Layout - 탭/슬라이더 클릭 가상 체험)",
+  "애니메이션 레이아웃 (Animation Layout - 스크롤 페이드인 및 모션 그래픽)"
 ];
 
 export function buildPrompt({
@@ -76,16 +191,21 @@ export function buildPrompt({
   userInputs: UserInputs;
 }): string {
   const categoryLabel = CATEGORY_LABELS[categoryId] ?? categoryId;
+  const templateId = template.id;
   
   const sectionList = template.sections
     .map((s, idx) => {
       const label = SECTION_LABELS[s] ?? s;
+      
+      // 히어로나 첫 섹션은 Full Screen Layout
       if (s === "hero" || idx === 0) {
         return `[섹션 ${idx + 1} 구조 패턴 유형: 전체 화면 레이아웃 (Full Screen Layout - Z-패턴 기본 반영)]\n  - ${label}: 화면 전체를 하나의 압도적인 비주얼로 채우고 미니멀 타이포그래피만 배치하여 브랜드 감성을 각인하십시오. 요소의 시선 흐름이 마지막에 CTA(행동 유도 버튼)로 명확히 꽂히게 유도해 주세요.`;
       }
       
-      const patternIdx = (idx - 1) % PATTERN_TYPES.length;
+      // 템플릿별로 각 섹션 고유 레이아웃 인덱스 조회 (정의되지 않은 경우 i % 12 매핑)
+      const patternIdx = TEMPLATE_SECTION_PATTERNS[templateId]?.[s] ?? ((idx - 1) % PATTERN_TYPES.length);
       const pattern = PATTERN_TYPES[patternIdx];
+      
       return `[섹션 ${idx + 1} 구조 패턴 유형: ${pattern}]\n  - ${label}: 초보자 웹사이트처럼 똑같은 [상단 이미지 + 하단 텍스트] 그리드 레이아웃이 절대 남발되지 않도록 이 구조적 패턴 가이드라인을 엄수해 주세요. 좌우 비대칭 배치나 사이드 스크롤, 또는 지그재그 Z-패턴의 흐름을 사용하여 시각적 강약을 줍니다.`;
     })
     .join("\n\n");
