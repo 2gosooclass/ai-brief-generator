@@ -193,7 +193,7 @@ function EditableImage({
 }
 
 // ─────────────────────────────────────────────
-// 🌐 12가지 웹사이트 구조 패턴 통합 렌더러 컴포넌트
+// 🌐 12가지 웹사이트 구조 패턴 통합 렌더러 컴포넌트 (대표님 명세 지침 100% 반영)
 // ─────────────────────────────────────────────
 function PatternSectionRenderer({
   sec,
@@ -218,8 +218,9 @@ function PatternSectionRenderer({
   const koreanTitle = SECTION_KR[sec] ?? sec;
   const contentText = SECTION_CONTENTS[sec] || `${bizName}의 ${koreanTitle} 섹션입니다. 기획안의 12가지 독창적 웹사이트 구조 패턴 중 하나를 반영하여 완성도를 보강했습니다.`;
   
-  // 인터랙티브 탭 상태관리
+  // 11. 인터랙티브 레이아웃 탭 및 수치 조작 상태
   const [activeTab, setActiveTab] = useState(0);
+  const [sliderValue, setSliderValue] = useState(50);
 
   const cardBg = themeMode === "dark" ? "bg-white/5 border-white/10" : "bg-white border-black/5";
   const textColor = themeMode === "dark" ? "text-white" : "text-[#1C1410]";
@@ -227,87 +228,137 @@ function PatternSectionRenderer({
 
   switch (layoutPatternIndex) {
     case 0:
-      // 1. 그리드 레이아웃 (Grid Layout) - 모듈형 정렬
+      // 1. 그리드 레이아웃 (Grid Layout)
+      // - 모듈형 그리드: 상품이나 포트폴리오 이미지를 바둑판 형태로 정렬
+      // - 단일 열 그리드: 긴 글로 이루어진 철학이나 블로그 형태에 적용
       return (
-        <section key={sec} className={`rounded-2xl p-8 border shadow-sm ${cardBg} space-y-6`}>
-          <div className="flex justify-between items-center">
+        <section key={sec} className={`rounded-2xl p-8 border shadow-sm ${cardBg} space-y-8`}>
+          <div className="flex justify-between items-center border-b pb-4 dark:border-white/10">
             <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 01: Grid Layout</span>
-            <h4 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 모듈</h4>
+            <h4 className={`text-xl font-bold ${textColor}`}>{koreanTitle}</h4>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {[1, 2].map((cardNum) => (
-              <div key={cardNum} className="p-5 border rounded-xl bg-black/5 dark:bg-white/5 space-y-2">
-                <div className="w-8 h-1 rounded" style={{ backgroundColor: accentColor }} />
-                <h5 className={`font-bold text-sm ${textColor}`}>핵심 포인트 {cardNum}</h5>
-                <p className={`text-xs ${subTextColor}`}>{contentText.slice(0, 70)}...</p>
+          
+          <div className="space-y-6">
+            {/* 모듈형 그리드 */}
+            <div>
+              <p className="text-[11px] font-bold text-[#C8A97E] uppercase tracking-wider mb-3">■ 모듈형 그리드 (바둑판 정렬)</p>
+              <div className="grid grid-cols-2 gap-4">
+                {[1, 2].map((num) => (
+                  <div key={num} className="p-4 rounded-xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 space-y-2">
+                    <EditableImage sectionKey={`${sec}-grid-mod-${num}`} defaultUrl={images[num % images.length]} className="h-28 rounded-lg shadow-sm" />
+                    <h5 className={`font-bold text-xs ${textColor}`}>포트폴리오 {num}</h5>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
+
+            {/* 단일 열 그리드 */}
+            <div>
+              <p className="text-[11px] font-bold text-[#C8A97E] uppercase tracking-wider mb-3">■ 단일 열 그리드 (블로그/철학 최적화)</p>
+              <div className="space-y-3">
+                <div className="p-5 rounded-xl border border-black/5 dark:border-white/5 bg-black/5 dark:bg-white/5 space-y-2 text-left">
+                  <h5 className={`font-serif-kr font-bold text-sm ${textColor}`}>본질과 가치에 대한 고찰</h5>
+                  <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
       );
 
     case 1:
-      // 2. 분할 화면 레이아웃 (Split Screen Layout) - 50:50
+      // 2. 분할 화면 레이아웃 (Split Screen Layout)
+      // - 화면을 정확히 50:50으로 나누어, 한쪽에는 고품질 비주얼을 두고 반대쪽에는 텍스트 가입 양식이나 핵심 핵심 스펙 요약을 대조 배치.
       return (
         <section key={sec} className={`flex flex-col md:flex-row gap-0 rounded-2xl overflow-hidden shadow-sm border ${cardBg}`}>
-          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 min-h-[300px] md:h-auto" />
-          <div className="flex-1 p-8 flex flex-col justify-center space-y-6">
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 02: Split Screen</span>
+          {/* 한쪽 고품질 비주얼 (50%) */}
+          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 min-h-[350px] md:h-auto" />
+          
+          {/* 반대쪽 텍스트 가입 양식 및 스펙 대조 (50%) */}
+          <div className="flex-1 p-8 md:p-12 flex flex-col justify-center space-y-6">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 02: Split Screen (50:50)</span>
             <h3 className={`text-3xl font-bold leading-tight ${textColor}`}>{koreanTitle}</h3>
-            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
-            <button className="px-6 py-2.5 w-fit rounded font-bold transition-transform hover:scale-105"
-              style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
-              자세히 보기
-            </button>
+            
+            {/* 핵심 스펙 요약 대조 배치 */}
+            <div className="grid grid-cols-2 gap-4 border-y py-4 dark:border-white/10">
+              <div>
+                <p className="text-[10px] opacity-50">성공률</p>
+                <p className={`text-xl font-bold font-serif-kr ${textColor}`}>98% 달성</p>
+              </div>
+              <div>
+                <p className="text-[10px] opacity-50">도입 속도</p>
+                <p className={`text-xl font-bold font-serif-kr ${textColor}`}>평균 5분</p>
+              </div>
+            </div>
+
+            {/* 가입 양식 모사 UI */}
+            <div className="space-y-2">
+              <input type="text" placeholder="이메일 주소를 입력해 주십시오" className="w-full px-4 py-2 border rounded-lg text-xs bg-black/5 dark:bg-white/5 focus:outline-none dark:border-white/10" disabled />
+              <button className="px-6 py-2.5 w-full rounded font-bold transition-transform hover:scale-103 text-center"
+                style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
+                지금 가입 신청 및 리포트 받기
+              </button>
+            </div>
           </div>
         </section>
       );
 
     case 2:
-      // 3. 비대칭 레이아웃 (Asymmetrical Layout) - 70:30 시각 무게
+      // 3. 비대칭 레이아웃 (Asymmetrical Layout)
+      // - 좌우 비율을 의도적으로 다르게 가져가(예: 70:30), 더 큰 공간으로 사용자의 시선을 강제로 유도하고 그곳에 핵심 CTA 버튼을 배치.
       return (
-        <section key={sec} className={`grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch`}>
-          <div className={`md:col-span-8 relative rounded-2xl overflow-hidden shadow-sm border h-80 ${cardBg}`}>
+        <section key={sec} className="grid grid-cols-1 md:grid-cols-10 gap-6 items-stretch">
+          {/* 70% 넓은 비주얼 영역으로 시선 강제 유도 */}
+          <div className={`md:col-span-7 relative rounded-2xl overflow-hidden shadow-sm border h-88 ${cardBg}`}>
             <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="absolute inset-0 w-full h-full" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
-            <div className="absolute bottom-5 left-5 z-10 text-white max-w-xl">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-transparent pointer-events-none" />
+            <div className="absolute bottom-6 left-6 z-10 text-white max-w-xl">
               <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-2 py-0.5 rounded backdrop-blur-sm">
-                Pattern 03: Asymmetrical Focus
+                Pattern 03: Asymmetrical 70:30 Layout
               </span>
-              <h3 className="text-xl font-bold mt-2" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
+              <h3 className="text-2xl font-bold mt-2" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
+              <p className="text-xs text-white/80 leading-normal mt-1">{bizName}의 대표적인 시각적 임팩트 구도입니다.</p>
             </div>
           </div>
-          <div className={`md:col-span-4 p-6 rounded-2xl border flex flex-col justify-between ${cardBg}`}>
+          
+          {/* 30% 영역에 핵심 CTA 배치 */}
+          <div className={`md:col-span-3 p-6 rounded-2xl border flex flex-col justify-between ${cardBg}`}>
             <div className="space-y-4">
-              <div className="w-10 h-1 rounded" style={{ backgroundColor: accentColor }} />
+              <span className="text-[9px] text-[#C8A97E] uppercase tracking-widest font-bold">Action Control</span>
               <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
             </div>
-            <button className="w-full mt-6 py-3 rounded font-bold text-center border transition-all hover:bg-black/5 dark:hover:bg-white/5"
-              style={{ borderColor: accentColor, color: colors.text }}>
-              서비스 예약하기
+            
+            {/* 핵심 CTA 버튼 */}
+            <button className="w-full py-4.5 rounded-xl font-bold text-center transition-all duration-300 transform hover:scale-[1.03] shadow-md text-sm border"
+              style={{ backgroundColor: accentColor, borderColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
+              핵심 가이드 다운로드 ➔
             </button>
           </div>
         </section>
       );
 
     case 3:
-      // 4. 전체 화면 레이아웃 (Full Screen Layout) - 이미지 타격
+      // 4. 전체 화면 레이아웃 (Full Screen Layout)
+      // - 화면 전체를 하나의 압도적인 배경 이미지/영상으로 채우고, 그 위에 미니멀한 타이포그래피만 얹어 브랜드의 감성을 한눈에 타격하는 구조.
       return (
         <section key={sec} className="relative rounded-2xl overflow-hidden h-96 flex items-center justify-center text-center shadow-lg border border-black/5">
           <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="absolute inset-0 w-full h-full" />
-          <div className="absolute inset-0 bg-black/60 pointer-events-none" />
-          <div className="relative z-10 p-6 max-w-xl text-white space-y-4">
-            <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-2.5 py-1 rounded-full backdrop-blur-sm text-[#C8A97E]">
-              Pattern 04: Full Canvas
+          <div className="absolute inset-0 bg-black/70 pointer-events-none" />
+          <div className="relative z-10 p-6 max-w-2xl text-white space-y-6">
+            <span className="text-[9px] font-bold tracking-widest uppercase bg-white/20 px-3 py-1 rounded-full backdrop-blur-sm text-[#C8A97E]">
+              Pattern 04: Full Canvas Layout
             </span>
-            <h3 className="text-2xl font-bold" style={{ fontFamily: fonts.heading }}>{koreanTitle}</h3>
-            <p className="text-sm text-white/80 leading-relaxed">{contentText}</p>
+            <h1 className="text-3xl md:text-4xl font-light tracking-tight leading-tight font-serif-kr">
+              감각적인 미학, <span className="font-bold">한눈에 와닿는 브랜드 감성</span>
+            </h1>
+            <p className="text-xs text-white/70 max-w-lg mx-auto leading-relaxed">{contentText}</p>
           </div>
         </section>
       );
 
     case 4:
-      // 5. 사이드 스크롤 레이아웃 (Side Scroll Layout) - 슬라이더
+      // 5. 사이드 스크롤 레이아웃 (Side Scroll Layout)
+      // - 상하 스크롤이 아닌 좌우로 부드럽게 넘기는 넷플릭스 스타일 구조. 카테고리나 이미지 갤러리를 압도감 없이 나열할 때 사용.
       return (
         <section key={sec} className="space-y-4">
           <div className="flex justify-between items-center">
@@ -315,15 +366,17 @@ function PatternSectionRenderer({
               <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block mb-1">Pattern 05: Side Scroll</span>
               <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle}</h3>
             </div>
-            <span className="text-xs opacity-50 font-pretendard">스와이프 ➔</span>
+            <span className="text-xs opacity-50 font-pretendard">마우스/드래그하여 넘기기 ➔</span>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-none snap-x text-black dark:text-white">
-            {[1, 2, 3].map((cardIdx) => (
-              <div key={cardIdx} className={`min-w-[260px] rounded-xl overflow-hidden border snap-start ${cardBg}`}>
-                <EditableImage sectionKey={`${sec}-${cardIdx}`} defaultUrl={images[(cardIdx) % images.length]} className="h-36 w-full" />
+          
+          {/* 가로 넷플릭스 롤 */}
+          <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-none snap-x text-black dark:text-white">
+            {[1, 2, 3, 4].map((cardIdx) => (
+              <div key={cardIdx} className={`min-w-[240px] rounded-xl overflow-hidden border snap-start ${cardBg}`}>
+                <EditableImage sectionKey={`${sec}-${cardIdx}`} defaultUrl={images[(cardIdx) % images.length]} className="h-32 w-full" />
                 <div className="p-4 space-y-1">
-                  <h4 className={`font-bold text-sm ${textColor}`}>컬렉션 {cardIdx}</h4>
-                  <p className={`text-xs ${subTextColor}`}>{contentText.slice(0, 50)}...</p>
+                  <h4 className={`font-bold text-xs ${textColor}`}>카테고리 화보 {cardIdx}</h4>
+                  <p className={`text-[11px] ${subTextColor}`}>{bizName}의 대표적 나열 스펙</p>
                 </div>
               </div>
             ))}
@@ -332,18 +385,23 @@ function PatternSectionRenderer({
       );
 
     case 5:
-      // 6. 카드 레이아웃 (Card Layout) - 콤팩트 다단
+      // 6. 카드 레이아웃 (Card Layout)
+      // - 직사각형 상자 안에 이미지, 제목, 가격/설명을 콤팩트하게 담아 빠른 탐색을 유도하는 구조. (※ 사이트 전체 남발 금지, 특정 1개 섹션에만 한정할 것)
       return (
         <section key={sec} className="space-y-4">
-          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 06: Card System</span>
+          <div className="flex justify-between items-center">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 06: Card Layout</span>
+            <span className="text-[9px] text-[#A08060] font-pretendard bg-[#FDF8F0] border border-[#E8D5B7] px-2 py-0.5 rounded-full">※ 특정 1개 섹션에만 한정 적용</span>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[1, 2, 3].map((itemNum) => (
-              <div key={itemNum} className={`rounded-xl overflow-hidden border p-5 space-y-3 ${cardBg}`}>
-                <div className="w-6 h-6 rounded-full flex items-center justify-center bg-black/10 dark:bg-white/10 text-xs font-bold" style={{ color: accentColor }}>
-                  {itemNum}
+              <div key={itemNum} className={`rounded-xl overflow-hidden border p-4 space-y-3 shadow-sm hover:shadow transition-shadow ${cardBg}`}>
+                <EditableImage sectionKey={`${sec}-card-img-${itemNum}`} defaultUrl={images[itemNum % images.length]} className="h-32 rounded-lg" />
+                <div className="space-y-1 text-left">
+                  <h4 className={`font-bold text-sm ${textColor}`}>{koreanTitle} 상품 {itemNum}</h4>
+                  <p className="text-xs font-semibold text-[#C8A97E]">₩{(itemNum * 50000).toLocaleString()}</p>
+                  <p className={`text-[10px] ${subTextColor} leading-relaxed`}>{contentText.slice(0, 50)}...</p>
                 </div>
-                <h4 className={`font-bold text-sm ${textColor}`}>{koreanTitle} 리스트 {itemNum}</h4>
-                <p className={`text-[11px] ${subTextColor} leading-relaxed`}>{contentText.slice(0, 60)}...</p>
               </div>
             ))}
           </div>
@@ -351,124 +409,208 @@ function PatternSectionRenderer({
       );
 
     case 6:
-      // 7. 잡지 레이아웃 (Magazine Layout) - 비주얼 가중치 조절
+      // 7. 잡지 레이아웃 (Magazine Layout)
+      // - 인쇄 매거진처럼 가장 큰 메인 스토리에는 거대한 영웅 이미지를 쓰고, 나머지 서브 콘텐츠는 주변에 작게 배치하여 정보의 강약을 조절하는 구조.
       return (
-        <section key={sec} className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
-          <div className="md:col-span-4 space-y-4">
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 07: Magazine Layout</span>
-            <h3 className={`text-3xl font-light leading-tight font-serif-kr ${textColor}`}>
-              {koreanTitle}의<br /><span className="font-bold">주요 스토리라인</span>
-            </h3>
-            <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
-          </div>
-          <div className="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            <div className="space-y-2">
-              <EditableImage sectionKey={`${sec}-sub1`} defaultUrl={images[1]} className="h-44 rounded-xl shadow-sm border" />
-              <h4 className={`font-bold text-sm ${textColor}`}>전략 기획 및 컨설팅</h4>
-              <p className={`text-[11px] ${subTextColor}`}>{contentText.slice(0, 60)}...</p>
+        <section key={sec} className="space-y-6">
+          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 07: Magazine Layout</span>
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+            
+            {/* 거대 영웅 이미지 메인 스토리 (60%) */}
+            <div className="md:col-span-7 space-y-4">
+              <EditableImage sectionKey={`${sec}-mag-hero`} defaultUrl={imageUrl} className="h-64 md:h-80 rounded-2xl shadow-sm border border-black/5" />
+              <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle} 시그니처 픽</h3>
+              <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
             </div>
-            <div className="space-y-2">
-              <EditableImage sectionKey={`${sec}-sub2`} defaultUrl={images[2]} className="h-44 rounded-xl shadow-sm border" />
-              <h4 className={`font-bold text-sm ${textColor}`}>시네마틱 솔루션 배포</h4>
-              <p className={`text-[11px] ${subTextColor}`}>{contentText.slice(0, 60)}...</p>
+
+            {/* 주변 서브 콘텐츠 작게 배치 (40%) */}
+            <div className="md:col-span-5 space-y-6 border-l pl-6 dark:border-white/10">
+              {[1, 2].map((subNum) => (
+                <div key={subNum} className="flex gap-4 items-center text-left">
+                  <EditableImage sectionKey={`${sec}-mag-sub-${subNum}`} defaultUrl={images[subNum % images.length]} className="w-20 h-20 rounded-xl shrink-0" />
+                  <div className="space-y-1">
+                    <h4 className={`font-bold text-sm ${textColor}`}>서브 콘텐츠 {subNum}</h4>
+                    <p className={`text-[11px] ${subTextColor} leading-normal`}>{contentText.slice(0, 45)}...</p>
+                  </div>
+                </div>
+              ))}
             </div>
+
           </div>
         </section>
       );
 
     case 7:
-      // 8. 갤러리 레이아웃 (Gallery Layout) - 비주얼 집중
+      // 8. 갤러리 레이아웃 (Gallery Layout)
+      // - 텍스트를 극도로 아끼고 오직 이미지/비주얼의 힘으로만 승부하는 레이아웃. 포트폴리오 전시용.
       return (
         <section key={sec} className="space-y-4">
-          <div className="flex justify-between items-baseline">
-            <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle} 화보</h3>
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 08: Premium Gallery</span>
+          <div className="flex justify-between items-baseline border-b pb-2 dark:border-white/10">
+            <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 전시 갤러리</h3>
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 08: Gallery Only</span>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {[0, 1, 2].map((idxNum) => (
-              <EditableImage key={idxNum} sectionKey={`${sec}-gallery-${idxNum}`} defaultUrl={images[idxNum % images.length]} className="h-32 md:h-44 rounded-xl border border-black/5" />
+          
+          {/* 텍스트 배제, 오직 이미지의 힘으로만 승부 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+            {[0, 1, 2, 3].map((gNum) => (
+              <EditableImage key={gNum} sectionKey={`${sec}-gal-item-${gNum}`} defaultUrl={images[gNum % images.length]} className="h-44 rounded-xl border border-black/5 shadow-sm" />
             ))}
           </div>
         </section>
       );
 
     case 8:
-      // 9. 지그재그 레이아웃 (Zig-Zag Layout) - 시선 Z자 정렬
+      // 9. 지그재그 레이아웃 (Zig-Zag Layout)
+      // - 시선이 Z 모양으로 움직이도록 [좌 이미지/우 텍스트] ➔ [좌 텍스트/우 이미지] 형태로 번갈아 배치하여 가독성과 참여율을 높이는 구조.
       return (
-        <section key={sec} className="flex flex-col md:flex-row gap-8 items-center border-b pb-12" style={{ borderColor: `${accentColor}15` }}>
-          <div className="flex-1 space-y-4">
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 09: Zig-Zag</span>
-            <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle}</h3>
-            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
+        <section key={sec} className="space-y-12">
+          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E] block w-fit">Pattern 09: Zig-Zag (Z-Pattern)</span>
+          
+          <div className="space-y-12">
+            {/* 좌 이미지 / 우 텍스트 */}
+            <div className="flex flex-col md:flex-row gap-8 items-center">
+              <EditableImage sectionKey={`${sec}-zig-1`} defaultUrl={images[0]} className="flex-1 w-full h-56 rounded-xl shadow-sm border" />
+              <div className="flex-1 text-left space-y-2">
+                <h4 className={`font-bold text-lg ${textColor}`}>01. 본질의 이해</h4>
+                <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+              </div>
+            </div>
+
+            {/* 좌 텍스트 / 우 이미지 */}
+            <div className="flex flex-col md:flex-row-reverse gap-8 items-center">
+              <EditableImage sectionKey={`${sec}-zig-2`} defaultUrl={images[1]} className="flex-1 w-full h-56 rounded-xl shadow-sm border" />
+              <div className="flex-1 text-left space-y-2">
+                <h4 className={`font-bold text-lg ${textColor}`}>02. 실전 고도화 배포</h4>
+                <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+              </div>
+            </div>
           </div>
-          <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 w-full h-64 rounded-xl shadow-sm border" />
         </section>
       );
 
     case 9:
-      // 10. F-패턴 레이아웃 (F-Pattern Layout) - 장문 최적화 (좌측 스캔)
+      // 10. F-패턴 레이아웃 (F-Pattern Layout)
+      // - 사용자가 글을 읽을 때 왼쪽 상단 위주로 먼저 스캔하는 F자 습성을 고려하여, 핵심 헤드라인과 네비게이션, 중요 CTA를 철저히 좌측 상단 흐름에 배치하는 장문 최적화 구조.
       return (
-        <section key={sec} className={`rounded-2xl p-6 border ${cardBg} space-y-4`}>
-          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 10: F-Pattern Scan</span>
-          <h2 className={`text-4xl font-bold tracking-tight text-left ${textColor}`}>{koreanTitle} 요약</h2>
-          <div className="w-16 h-1 rounded" style={{ backgroundColor: accentColor }} />
-          <div className="space-y-4 text-left max-w-2xl">
-            <h4 className={`font-bold text-base ${textColor}`}>1순위 탐색 영역: 핵심 요약</h4>
-            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
-            <button className="px-6 py-2.5 rounded text-xs font-bold transition-all hover:scale-105"
-              style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
-              자세히 진단받기
-            </button>
+        <section key={sec} className={`rounded-2xl p-8 border ${cardBg} space-y-6 text-left`}>
+          <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 10: F-Pattern Layout</span>
+          
+          {/* 좌측 상단 위주 밀집 설계 */}
+          <div className="space-y-4 max-w-2xl">
+            <h1 className={`text-3xl md:text-4xl font-extrabold tracking-tight ${textColor}`}>
+              {koreanTitle} 핵심 리포트
+            </h1>
+            <div className="w-12 h-1 rounded" style={{ backgroundColor: accentColor }} />
+            
+            <p className={`text-xs ${subTextColor} leading-relaxed`}>
+              독자의 시선은 언제나 좌측 상단을 1순위로 스캔합니다. 가장 매혹적인 요약 정보와 가독성 장치를 여기에 밀집 배치하여, 시선 흐름이 끊기지 않고 자연스럽게 머무르도록 유도합니다.
+            </p>
+
+            <div className="pt-2">
+              {/* 좌측 정렬 중요 CTA */}
+              <button className="px-8 py-3 rounded-lg text-xs font-bold transition-transform hover:scale-103 shadow-md"
+                style={{ backgroundColor: accentColor, color: isDark(accentColor) ? "#FFF" : "#000" }}>
+                1분 무료 진단 신청하기
+              </button>
+            </div>
           </div>
         </section>
       );
 
     case 10:
-      // 11. 인터랙티브 레이아웃 (Interactive Layout) - 실시간 탭 조작!
+      // 11. 인터랙티브 레이아웃 (Interactive Layout)
+      // - 사용자의 클릭, 스크롤, 슬라이더 조작에 따라 화면이 동적으로 반응하거나 가상 체험을 유도하는 몰입형 구조.
       return (
-        <section key={sec} className={`rounded-2xl p-6 border ${cardBg} space-y-4`}>
-          <div className="flex justify-between items-center">
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 11: Interactive Tabs</span>
-            <span className="text-[9px] text-[#A09080] font-pretendard bg-black/5 dark:bg-white/5 px-2 py-0.5 rounded">실시간 탭 클릭 작동</span>
-          </div>
-          <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 인포</h3>
-          
-          <div className="flex gap-2 border-b border-black/10 dark:border-white/10 pb-2">
-            {["핵심 혜택", "상세 구성", "도입 가이드"].map((tabLabel, tIdx) => (
-              <button
-                key={tabLabel}
-                onClick={() => setActiveTab(tIdx)}
-                className={`text-xs px-3 py-1.5 rounded transition-all font-pretendard ${
-                  activeTab === tIdx
-                    ? "bg-[#1C1410] text-white dark:bg-white dark:text-black font-semibold"
-                    : "hover:bg-black/5 dark:hover:bg-white/5 text-[#8C7A6A]"
-                }`}
-              >
-                {tabLabel}
-              </button>
-            ))}
+        <section key={sec} className={`rounded-2xl p-6 border ${cardBg} space-y-6 text-left`}>
+          <div className="flex justify-between items-center border-b pb-3 dark:border-white/10">
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 11: Interactive Layout</span>
+            <span className="text-[9px] text-green-600 bg-green-50 px-2 py-0.5 rounded">가상 체험 시뮬레이터</span>
           </div>
 
-          <div className="py-2 text-xs leading-relaxed text-[#8C7A6A] dark:text-white/80">
-            {activeTab === 0 && <p>🏆 {bizName}의 {koreanTitle} 혜택: {contentText}</p>}
-            {activeTab === 1 && <p>⚙️ {koreanTitle} 설계 규격: {contentText.slice(0, 100)}... 12가지 레이아웃 구조가 긴밀하게 연동되어 있습니다.</p>}
-            {activeTab === 2 && <p>🚀 {koreanTitle} 셋업 가이드: 2GOSOO AI LAB 에이전트의 원천 코드를 복사하여 Lovable 이나 v0에 붙여넣으면 즉시 배포 가능합니다.</p>}
+          <div className="space-y-4">
+            <h3 className={`text-lg font-bold ${textColor}`}>인터랙티브 대시보드</h3>
+            
+            {/* 클릭 조작 탭 */}
+            <div className="flex gap-2 bg-black/5 dark:bg-white/5 p-1 rounded-lg">
+              {["코칭 서비스", "포트폴리오", "실시간 분석"].map((tabLabel, tIdx) => (
+                <button
+                  key={tabLabel}
+                  onClick={() => setActiveTab(tIdx)}
+                  className={`flex-1 text-[11px] py-2 rounded-md transition-all font-pretendard ${
+                    activeTab === tIdx
+                      ? "bg-white text-black shadow font-semibold dark:bg-[#1C1410] dark:text-white"
+                      : "text-[#8C7A6A] hover:bg-black/5"
+                  }`}
+                >
+                  {tabLabel}
+                </button>
+              ))}
+            </div>
+
+            {/* 슬라이더 조작 (동적 반응) */}
+            <div className="space-y-2 border p-4 rounded-xl dark:border-white/10 bg-black/5 dark:bg-white/5">
+              <div className="flex justify-between text-xs">
+                <span className={textColor}>시스템 가동 예산</span>
+                <span className="font-bold text-[#C8A97E]">{sliderValue} 만원</span>
+              </div>
+              <input
+                type="range"
+                min="10"
+                max="200"
+                value={sliderValue}
+                onChange={(e) => setSliderValue(Number(e.target.value))}
+                className="w-full accent-[#C8A97E]"
+              />
+              <p className={`text-[10px] ${subTextColor} text-center mt-1`}>
+                예산에 따라 매칭되는 최적화 파이프라인 개수: <span className="font-bold text-white bg-[#C8A97E] px-1.5 py-0.25 rounded-md">{Math.round(sliderValue / 15)}개</span>
+              </p>
+            </div>
+
+            {/* 탭 반응 설명 */}
+            <div className="p-4 rounded-xl bg-white dark:bg-white/5 border dark:border-white/10 text-xs text-[#8C7A6A] dark:text-white/80 leading-relaxed">
+              {activeTab === 0 && <p>🎯 {bizName} 퍼스널 컨설팅: {contentText}</p>}
+              {activeTab === 1 && <p>📂 12가지 독창적 시각 아키텍처 포트폴리오를 적용하여 기계적 그리드 배열을 원천 극복합니다.</p>}
+              {activeTab === 2 && <p>📊 예산 {sliderValue}만원에 튜닝되는 자동화 파이프라인 분석 리포트를 즉시 사출해냅니다.</p>}
+            </div>
           </div>
         </section>
       );
 
     default:
-      // 12. 애니메이션 레이아웃 (Animation Layout) - 모션 그래픽 피드
+      // 12. 애니메이션 레이아웃 (Animation Layout)
+      // - 스크롤을 내릴 때 요소들이 스르륵 나타나거나(Fade-in), 제품의 작동 모습을 짧은 모션 그래픽으로 직관적(CSS/키프레임)으로 보여주는 구조.
       return (
-        <section key={sec} className={`group cursor-pointer rounded-2xl p-6 border transition-all duration-500 hover:scale-[1.03] hover:-translate-y-1 hover:shadow-lg ${cardBg}`}>
+        <section key={sec} className={`group rounded-2xl p-6 border transition-all duration-500 hover:scale-[1.02] hover:shadow-lg ${cardBg}`}>
           <div className="flex justify-between items-baseline mb-4">
-            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 12: Motion Card</span>
-            <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
+            <span className="text-[10px] tracking-widest uppercase font-bold text-[#C8A97E]">Pattern 12: Animation Layout</span>
+            <span className="text-[9px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded animate-pulse">실시간 모션 그래픽 작동 중</span>
           </div>
-          <h3 className={`text-xl font-bold transition-colors ${textColor} group-hover:text-[var(--accent)]`} style={{ "--accent": accentColor } as any}>
-            {koreanTitle} <span className="inline-block transition-transform group-hover:translate-x-1">➔</span>
-          </h3>
-          <p className={`text-xs mt-2 ${subTextColor} leading-relaxed`}>{contentText}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            <div className="space-y-3 text-left">
+              <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle} 엔진</h3>
+              <p className={`text-xs ${subTextColor} leading-relaxed`}>{contentText}</p>
+            </div>
+            
+            {/* 제품 작동 모습을 모사하는 짧은 모션 그래픽 UI (CSS 애니메이션) */}
+            <div className="h-44 bg-black/5 dark:bg-white/5 rounded-xl flex items-center justify-center relative overflow-hidden border dark:border-white/10">
+              <div className="absolute inset-0 flex items-center justify-center opacity-25">
+                <div className="w-32 h-32 rounded-full border border-dashed border-[#C8A97E] animate-spin-slow" />
+              </div>
+              <div className="relative z-10 flex flex-col items-center space-y-3">
+                {/* 펄스 파동 그래픽 */}
+                <div className="flex items-end gap-1.5 h-12">
+                  <div className="w-1 bg-[#C8A97E] rounded-full animate-[pulse_1s_infinite_100ms] h-8" />
+                  <div className="w-1 bg-white rounded-full animate-[pulse_1.2s_infinite_300ms] h-12" />
+                  <div className="w-1 bg-[#C8A97E] rounded-full animate-[pulse_0.8s_infinite_0s] h-6" />
+                  <div className="w-1 bg-white rounded-full animate-[pulse_1.4s_infinite_500ms] h-10" />
+                </div>
+                <span className="text-[10px] font-mono tracking-widest uppercase text-[#C8A97E] animate-pulse">
+                  System Processing...
+                </span>
+              </div>
+            </div>
+          </div>
         </section>
       );
   }

@@ -185,6 +185,41 @@ export default function GuideModal({ isOpen, onClose }: GuideModalProps) {
                 </div>
               </div>
 
+              {/* 📐 12가지 웹사이트 구조 패턴 라이브러리 안내 */}
+              <div className="space-y-4 pt-6 border-t border-[#E8E0D8]/60">
+                <h3 className="text-sm font-serif-kr font-bold text-[#1C1410] flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-full bg-[#C8A97E] text-[#1C1410] text-xs font-bold flex items-center justify-center">📐</span>
+                  12가지 프리미엄 구조적 아키텍처 라이브러리
+                </h3>
+                <p className="text-[10px] text-[#8C7A6A] leading-normal">
+                  저희 브리프 생성기가 실시간 미리보기에서 다채롭게 구현하고 있는 12가지 명작 레이아웃 명세입니다. 사용자가 조율 및 선택 시 이 명세가 프롬프트 내에 메타데이터로 정확히 마운트됩니다.
+                </p>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  {[
+                    { num: "01", title: "그리드 레이아웃 (Grid Layout)", desc: "모듈형 그리드(상품/포트폴리오 이미지를 바둑판 정렬)와 단일 열 그리드(긴 글로 이루어진 철학/블로그 정렬)를 선택적으로 적용해 정보의 구획을 단정하게 나눕니다." },
+                    { num: "02", title: "분할 화면 레이아웃 (Split Screen Layout)", desc: "화면을 정확히 50:50으로 양분하여 한쪽에는 압도적인 브랜드 비주얼을, 반대쪽에는 텍스트 가입 양식이나 핵심 스펙 대조표를 밀도 높게 매칭합니다." },
+                    { num: "03", title: "비대칭 레이아웃 (Asymmetrical Layout)", desc: "좌우 비율을 의도적으로 70:30 등으로 다르게 조율하여, 70% 영역의 거대 비주얼로 시선을 강제 흡수한 뒤 30% 영역의 어두운 카드에 핵심 CTA 단추를 심어 전환율을 높입니다." },
+                    { num: "04", title: "전체 화면 레이아웃 (Full Screen Layout)", desc: "화면 전체를 하나의 거대하고 화사한 배경 이미지나 영상으로 빈틈없이 채우고, 미니멀한 명작 타이포그래피만 단독 배치하여 브랜드 감성을 저격합니다." },
+                    { num: "05", title: "사이드 스크롤 레이아웃 (Side Scroll Layout)", desc: "상하가 아닌 좌우로 미끄러지듯 넘기는 넷플릭스 스타일 가로 롤입니다. 카테고리나 화보 갤러리를 시각적 피로감 없이 부드럽게 나열할 때 적격입니다." },
+                    { num: "06", title: "카드 레이아웃 (Card Layout)", desc: "직사각형의 콤팩트한 입체 카드 상자 안에 이미지, 굵은 표제, 가격(₩) 및 한 줄 설명을 정돈해 빠른 탐색을 유도합니다. (※ 사이트 남발을 막기 위해 1개 섹션에만 한정)" },
+                    { num: "07", title: "잡지 레이아웃 (Magazine Layout)", desc: "인쇄 매거진의 지면처럼 가장 큰 메인 영역에는 영웅 비주얼 이미지를 대담하게 할당하고, 나머지 서브 요소들은 주변에 작게 붙여 정보의 시각적 강약을 조율합니다." },
+                    { num: "08", title: "갤러리 레이아웃 (Gallery Layout)", desc: "텍스트 설명을 극도로 소거하고 오직 3~4개의 고해상도 비주얼 화보 이미지의 힘으로만 승부하는 감각적인 포트폴리오 쇼케이스 구조입니다." },
+                    { num: "09", title: "지그재그 레이아웃 (Zig-Zag Layout)", desc: "[좌 이미지 / 우 텍스트]에서 [좌 텍스트 / 우 이미지] 형태로 정밀하게 Z자 동선을 그리며 엇갈려 배치하여, 읽는 재미와 체류 시간을 극적으로 늘립니다." },
+                    { num: "10", title: "F-패턴 레이아웃 (F-Pattern Layout)", desc: "인간이 좌측 상단 위주로 장문을 훑는 습성에 입각하여, 가장 중요한 헤드라인 타이틀, 1순위 핵심 요약문, 그리고 메인 CTA 버튼을 좌측 상단 흐름에 수직 밀집 배치합니다." },
+                    { num: "11", title: "인터랙티브 레이아웃 (Interactive Layout)", desc: "사용자의 클릭이나 슬라이더 값 변경에 따라 화면이 동적으로 반응하거나 가상 예산 매칭 시뮬레이션을 제공하는 몰입형 구조입니다." },
+                    { num: "12", title: "애니메이션 레이아웃 (Animation Layout)", desc: "요소들이 스르륵 나타나는 페이드인 효과를 가미하고, 내부에서 기어가 맞물려 돌거나 파동 그래프가 치는 듯한 작동 펄스 모션을 CSS 키프레임 그래픽으로 직관적으로 렌더링합니다." }
+                  ].map((item) => (
+                    <div key={item.num} className="bg-white border border-[#E8E0D8] p-4 rounded-xl shadow-sm space-y-1.5 text-left">
+                      <div className="flex items-center gap-2">
+                        <span className="text-[10px] font-bold text-white bg-[#C8A97E] px-1.5 py-0.5 rounded-md">{item.num}</span>
+                        <strong className="text-xs font-pretendard text-[#1C1410]">{item.title}</strong>
+                      </div>
+                      <p className="text-[10px] text-[#8C7A6A] leading-relaxed">{item.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
             </div>
 
             {/* 푸터 */}
