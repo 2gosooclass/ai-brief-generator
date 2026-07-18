@@ -85,7 +85,7 @@ const TEMPLATE_DEFAULTS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800&q=80"
   ],
   "personal-portfolio": [
-    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=800&q=80",
+    "/images/hero-bg.png",
     "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
     "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&q=80"
   ],
