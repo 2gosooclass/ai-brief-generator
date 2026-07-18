@@ -854,7 +854,7 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
         defaultUrl={images[0]}
         className="px-8 py-32 flex flex-col items-center text-center relative overflow-hidden"
         style={{
-          backgroundImage: `linear-gradient(rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}), rgba(0, 0, 0, ${heroDark ? 0.75 : 0.55}))`
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0.35))`
         }}
       >
         <h1 className="text-5xl md:text-6xl font-bold mb-6 relative z-10 leading-tight text-white font-serif-kr" style={{ fontFamily: fonts.heading }}>
@@ -937,7 +937,7 @@ function GridLayout({ template, accentColor, bizName, bizDesc, sections, images,
         </div>
         <div className="flex-1 relative min-h-[300px]">
           <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full" />
-          <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(45deg, ${colors.primary}50, transparent)` }} />
+          <div className="absolute inset-0 pointer-events-none" style={{ background: `linear-gradient(45deg, ${colors.primary}15, transparent)` }} />
         </div>
       </header>
 
@@ -977,8 +977,8 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
     <div className="min-h-full w-full bg-[#000] text-white relative font-sans" style={{ fontFamily: fonts.body }}>
       {/* Fixed Fullscreen Background Image */}
       <div className="fixed inset-0 z-0">
-        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full opacity-40" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/50 to-black/95 pointer-events-none" />
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/5 to-black/45 pointer-events-none" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-full">
@@ -1018,7 +1018,7 @@ function OverlayLayout({ template, accentColor, bizName, bizDesc, sections, imag
         </header>
 
         {/* 12가지 다크 레이아웃 구조 패턴 순회 */}
-        <div className="px-8 lg:px-24 py-20 bg-black/85 backdrop-blur-md border-t border-white/10 mt-auto space-y-16">
+        <div className="px-8 lg:px-24 py-20 bg-black/65 backdrop-blur-md border-t border-white/10 mt-auto space-y-16">
           {sections.filter(s => s !== 'hero').map((sec, i) => (
             <PatternSectionRenderer
               key={sec}
