@@ -67,7 +67,6 @@ export default function Home() {
   };
 
   const isClassicTheme = activeVideo === 0;
-  const isDarkTheme = activeVideo === 3; // 4단계: Deep Woods (index 3)
 
   return (
     <div className="min-h-screen bg-black relative flex flex-col justify-between overflow-x-hidden">
@@ -114,28 +113,23 @@ export default function Home() {
         isClassicTheme ? "bg-[#FAFAF7]" : "bg-[#09080A]"
       }`}>
         
-        {/* 1. Background Video Layer (1단계 클래식 테마일 때는 감춤) */}
+        {/* 1. Background Video Layer (key={activeVideo} 핫스왑 단일 인스턴스 설계로 로드/오류 완벽 차단) */}
         <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${
           isClassicTheme ? "opacity-0 pointer-events-none" : "opacity-100"
         }`}>
-          {STAGES.map((vid, idx) => {
-            if (vid.type !== "video") return null;
-            return (
-              <video
-                key={vid.url}
-                autoPlay
-                muted
-                loop
-                playsInline
-                style={{ filter: "brightness(0.35) contrast(1.05) saturate(0.65)" }}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out select-none pointer-events-none ${
-                  idx === activeVideo ? "opacity-100" : "opacity-0"
-                }`}
-              >
-                <source src={vid.url} type="video/mp4" />
-              </video>
-            );
-          })}
+          {!isClassicTheme && STAGES[activeVideo]?.url && (
+            <video
+              key={activeVideo} // key가 바뀌어 브라우저가 새 비디오를 강제 오토플레이
+              autoPlay
+              muted
+              loop
+              playsInline
+              style={{ filter: "brightness(0.35) contrast(1.05) saturate(0.65)" }}
+              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
+            >
+              <source src={STAGES[activeVideo].url} type="video/mp4" />
+            </video>
+          )}
           {/* 가독성 전용 다크 그라데이션 마스크 */}
           <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/35 pointer-events-none z-10" />
         </div>
@@ -159,12 +153,10 @@ export default function Home() {
               <div className={`inline-flex items-center gap-2 border px-3.5 py-1.5 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold transition-all duration-700 ${
                 isClassicTheme
                   ? "border-[#C8A97E]/30 bg-[#FDF8F3] text-[#C8A97E]"
-                  : isDarkTheme
-                  ? "border-[#182C41]/30 bg-[#182C41]/10 text-[#182C41]"
                   : "border-white/20 bg-white/5 text-white/90"
               }`}>
                 <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${
-                  isClassicTheme ? "bg-[#C8A97E]" : isDarkTheme ? "bg-[#182C41]" : "bg-white"
+                  isClassicTheme ? "bg-[#C8A97E]" : "bg-white"
                 }`} />
                 <span>Vibe Coding Prompt Engine</span>
               </div>
@@ -173,8 +165,6 @@ export default function Home() {
               <div className={`flex flex-wrap items-center gap-1.5 rounded-full p-1 border transition-all duration-700 ${
                 isClassicTheme
                   ? "bg-[#F5F0EA] border-[#E8E0D8]"
-                  : isDarkTheme
-                  ? "bg-[#182C41]/10 border-[#182C41]/20"
                   : "bg-black/35 border-white/10"
               }`}>
                 {STAGES.map((vid, idx) => (
@@ -185,13 +175,9 @@ export default function Home() {
                       idx === activeVideo
                         ? isClassicTheme
                           ? "bg-[#1C1410] text-white shadow-sm"
-                          : isDarkTheme
-                          ? "bg-[#182C41] text-white"
                           : "bg-white text-black"
                         : isClassicTheme
                         ? "text-[#8C7A6A] hover:text-[#1C1410]"
-                        : isDarkTheme
-                        ? "text-[#182C41]/60 hover:text-[#182C41]"
                         : "text-white/60 hover:text-white"
                     }`}
                   >
@@ -201,40 +187,34 @@ export default function Home() {
               </div>
             </div>
 
-            {/* 타이틀 명칭 */}
+            {/* 타이틀 명칭 (어두운 배경 위에서는 무조건 선명한 화이트 테마 적용) */}
             <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-all duration-700 ${
               isClassicTheme
                 ? "text-[#1C1410]"
-                : isDarkTheme
-                ? "text-[#182C41] drop-shadow-none"
                 : "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
             }`}>
               Architect your layout <br />
               <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
                 isClassicTheme
                   ? "text-[#C8A97E]"
-                  : isDarkTheme
-                  ? "text-[#182C41]/90"
                   : "text-[#F5C88E] drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
               }`}>in 5 minutes</span>
               <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
-                isClassicTheme ? "text-[#1C1410]" : isDarkTheme ? "text-[#182C41]" : "text-white"
+                isClassicTheme ? "text-[#1C1410]" : "text-white"
               }`}>바이브 코딩 프롬프트 생성기</span>
             </h2>
 
-            {/* 본문 설명문 */}
+            {/* 본문 설명문 (어두운 배경 위에서는 무조건 화이트/85% 적용) */}
             <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-all duration-700 ${
               isClassicTheme
                 ? "text-[#8C7A6A]"
-                : isDarkTheme
-                ? "text-[#182C41]/80 drop-shadow-none"
                 : "text-white/85 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
             }`}>
               카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
             </p>
           </div>
 
-          {/* 우측 5열: 선택된 템플릿의 간략 정보 */}
+          {/* 우측 5열: 선택된 템플릿의 간략 정보 (어두운 비디오 배경에서는 무조건 가독성 극대화 다크 글래스 고정) */}
           <div className="md:col-span-5 flex justify-end">
             <AnimatePresence mode="wait">
               {selectedTemplate ? (
@@ -247,8 +227,6 @@ export default function Home() {
                   className={`w-full max-w-md rounded-xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-all duration-700 ${
                     isClassicTheme
                       ? "bg-white border border-[#E8E0D8] text-[#1C1410]"
-                      : isDarkTheme
-                      ? "bg-[#182C41]/15 border border-[#182C41]/25 text-[#182C41]"
                       : "dark-liquid-glass text-white"
                   }`}
                 >
@@ -258,8 +236,6 @@ export default function Home() {
                     <span className={`text-[10px] uppercase tracking-widest font-semibold block mb-3 transition-colors duration-700 ${
                       isClassicTheme
                         ? "text-[#A09080]"
-                        : isDarkTheme
-                        ? "text-[#182C41]/70"
                         : "text-white/70"
                     }`}>Active Spec</span>
                     <div className="flex items-center gap-3.5 mb-4">
@@ -273,8 +249,6 @@ export default function Home() {
                         <h3 className={`font-serif-kr text-base font-bold leading-tight truncate transition-colors duration-700 ${
                           isClassicTheme
                             ? "text-[#1C1410]"
-                            : isDarkTheme
-                            ? "text-[#182C41]"
                             : "text-white"
                         }`}>
                           {selectedTemplate.name}
@@ -282,8 +256,6 @@ export default function Home() {
                         <p className={`text-[11px] font-pretendard leading-tight truncate mt-0.5 transition-colors duration-700 ${
                           isClassicTheme
                             ? "text-[#8C7A6A]"
-                            : isDarkTheme
-                            ? "text-[#182C41]/80"
                             : "text-white/80"
                         }`}>
                           {selectedTemplate.tagline}
@@ -297,8 +269,6 @@ export default function Home() {
                     className={`w-full py-3 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow active:scale-98 ${
                       isClassicTheme
                         ? "bg-[#1C1410] hover:bg-[#3A2D27] text-white"
-                        : isDarkTheme
-                        ? "bg-[#182C41] hover:bg-[#1C3650] text-white"
                         : "bg-white hover:bg-white/90 text-[#1C1410]"
                     }`}
                   >
@@ -317,16 +287,14 @@ export default function Home() {
                   className={`w-full max-w-md rounded-xl p-8 text-center text-xs flex flex-col items-center justify-center min-h-[220px] transition-all duration-700 ${
                     isClassicTheme
                       ? "bg-white border border-[#E8E0D8]/60 text-[#8C7A6A]"
-                      : isDarkTheme
-                      ? "bg-[#182C41]/15 border border-[#182C41]/25 text-[#182C41]"
                       : "dark-liquid-glass text-white"
                   }`}
                 >
                   <p className={`mb-2 transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#8C7A6A]" : isDarkTheme ? "text-[#182C41]/80" : "text-white/80"
+                    isClassicTheme ? "text-[#8C7A6A]" : "text-white/80"
                   }`}>아래에서 업종 템플릿을 선택하여</p>
                   <p className={`font-serif-kr text-sm font-medium transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#1C1410]" : isDarkTheme ? "text-[#182C41]" : "text-white"
+                    isClassicTheme ? "text-[#1C1410]" : "text-white"
                   }`}>프롬프트 빌드 아키텍처를 활성화하십시오.</p>
                 </motion.div>
               )}
