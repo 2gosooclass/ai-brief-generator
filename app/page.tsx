@@ -54,7 +54,7 @@ export default function Home() {
     <div className="min-h-screen bg-black relative flex flex-col justify-between overflow-x-hidden">
 
       {/* ── STICKY 헤더 ── */}
-      <header className="border-b border-[#E8E0D8]/60 bg-[#FAFAF7]/90 backdrop-blur-md sticky top-0 z-30">
+      <header className="border-b border-[#E8E0D8]/60 bg-[#FAFAF7]/95 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-[#1C1410] flex items-center justify-center">
@@ -93,7 +93,7 @@ export default function Home() {
       {/* ── 히어로 배너: 비대칭 2단 분할 구조 + 시네마틱 백그라운드 ── */}
       <section className="relative py-16 md:py-24 px-6 overflow-hidden min-h-[460px] flex items-center">
         
-        {/* 1. Background Video Layer */}
+        {/* 1. Background Video Layer (brightness & contrast 조율로 가독성 강제 확보) */}
         <div className="absolute inset-0 z-0">
           {VIDEOS.map((vid, idx) => (
             <video
@@ -102,6 +102,7 @@ export default function Home() {
               muted
               loop
               playsInline
+              style={{ filter: "brightness(0.35) contrast(1.05) saturate(0.65)" }}
               className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out select-none pointer-events-none ${
                 idx === activeVideo ? "opacity-100" : "opacity-0"
               }`}
@@ -109,20 +110,20 @@ export default function Home() {
               <source src={vid.url} type="video/mp4" />
             </video>
           ))}
-          {/* Subtle overlay for layout readability */}
-          <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+          {/* 비디오 바로 위 가독성 전용 다크 그라데이션 마스크 */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/35 pointer-events-none z-10" />
         </div>
 
-        {/* 2. Figma PNG Texture Overlay */}
+        {/* 2. Figma PNG Texture Overlay (가독성 방해 최소화를 위해 opacity 15%로 대폭 하향) */}
         <img
           src="https://soft-zoom-63098134.figma.site/_assets/v11/0b4a435b2df2747593c43d7a1c9b4578f7d8d90c.png"
           alt="Figma Texture Overlay"
-          className="absolute inset-0 z-10 w-full h-full object-cover pointer-events-none animate-train-bob opacity-40"
+          className="absolute inset-0 z-10 w-full h-full object-cover pointer-events-none animate-train-bob opacity-15"
         />
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center relative z-20 w-full">
           
-          {/* 좌측 7열: 타이포그래피 & 소개글 (테마 전환 700ms) */}
+          {/* 좌측 7열: 타이포그래피 & 소개글 (드롭 섀도우를 통한 초강력 시인성 확보) */}
           <div className="md:col-span-7 flex flex-col justify-center transition-colors duration-700">
             <div className="flex flex-wrap items-center gap-3 mb-6">
               <div className={`inline-flex items-center gap-2 border px-3.5 py-1.5 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold transition-all duration-700 ${
@@ -158,26 +159,26 @@ export default function Home() {
               </div>
             </div>
 
-            <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-colors duration-700 ${
+            <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-colors duration-700 drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)] ${
               isDarkTheme ? "text-[#182C41]" : "text-white"
             }`}>
               Architect your layout <br />
               <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
-                isDarkTheme ? "text-[#182C41]/90" : "text-[#C8A97E]"
+                isDarkTheme ? "text-[#182C41]/90" : "text-[#F5C88E] drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
               }`}>in 5 minutes</span>
               <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
                 isDarkTheme ? "text-[#182C41]" : "text-white"
               }`}>바이브 코딩 프롬프트 생성기</span>
             </h2>
 
-            <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-colors duration-700 ${
-              isDarkTheme ? "text-[#182C41]/80" : "text-white/80"
+            <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-colors duration-700 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] ${
+              isDarkTheme ? "text-[#182C41]/80" : "text-white/85"
             }`}>
               카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
             </p>
           </div>
 
-          {/* 우측 5열: 선택된 템플릿의 간략 정보 (Liquid Glass 적용) */}
+          {/* 우측 5열: 선택된 템플릿의 간략 정보 (dark-liquid-glass 적용하여 투명도 대폭 제어) */}
           <div className="md:col-span-5 flex justify-end">
             <AnimatePresence mode="wait">
               {selectedTemplate ? (
@@ -187,17 +188,17 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.3 }}
-                  className={`w-full max-w-md rounded-xl p-6 shadow-lg relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-all duration-700 ${
+                  className={`w-full max-w-md rounded-xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-all duration-700 ${
                     isDarkTheme
-                      ? "bg-[#182C41]/10 border border-[#182C41]/20 text-[#182C41]"
-                      : "liquid-glass border border-white/20 text-white"
+                      ? "bg-[#182C41]/15 border border-[#182C41]/25 text-[#182C41]"
+                      : "dark-liquid-glass text-white"
                   }`}
                 >
                   <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A97E]/10 rounded-full blur-3xl pointer-events-none" />
                   
                   <div>
                     <span className={`text-[10px] uppercase tracking-widest font-semibold block mb-3 transition-colors duration-700 ${
-                      isDarkTheme ? "text-[#182C41]/70" : "text-white/60"
+                      isDarkTheme ? "text-[#182C41]/70" : "text-white/70"
                     }`}>Active Spec</span>
                     <div className="flex items-center gap-3.5 mb-4">
                       <div
@@ -241,11 +242,11 @@ export default function Home() {
                   exit={{ opacity: 0 }}
                   className={`w-full max-w-md rounded-xl p-8 text-center text-xs flex flex-col items-center justify-center min-h-[220px] transition-all duration-700 ${
                     isDarkTheme
-                      ? "bg-[#182C41]/10 border border-[#182C41]/20 text-[#182C41]"
-                      : "liquid-glass border border-white/20 text-white"
+                      ? "bg-[#182C41]/15 border border-[#182C41]/25 text-[#182C41]"
+                      : "dark-liquid-glass text-white"
                   }`}
                 >
-                  <p className={`mb-2 transition-colors duration-700 ${isDarkTheme ? "text-[#182C41]/80" : "text-white/70"}`}>아래에서 업종 템플릿을 선택하여</p>
+                  <p className={`mb-2 transition-colors duration-700 ${isDarkTheme ? "text-[#182C41]/80" : "text-white/80"}`}>아래에서 업종 템플릿을 선택하여</p>
                   <p className={`font-serif-kr text-sm font-medium transition-colors duration-700 ${isDarkTheme ? "text-[#182C41]" : "text-white"}`}>프롬프트 빌드 아키텍처를 활성화하십시오.</p>
                 </motion.div>
               )}

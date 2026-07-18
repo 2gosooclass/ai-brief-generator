@@ -162,3 +162,34 @@ body {
   animation: train-bob 3s ease-in-out infinite;
 }
 
+/* ─────────────────────────────────────────────
+   Dark Liquid Glass Effect (가독성 대응)
+   ───────────────────────────────────────────── */
+.dark-liquid-glass {
+  background: rgba(0, 0, 0, 0.4);
+  background-blend-mode: multiply;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: none;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(180deg,
+    rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 20%,
+    rgba(255,255,255,0) 40%, rgba(255,255,255,0) 60%,
+    rgba(255,255,255,0.05) 80%, rgba(255,255,255,0.2) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+
