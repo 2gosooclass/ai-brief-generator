@@ -124,14 +124,14 @@ export default function Home() {
               muted
               loop
               playsInline
-              style={{ filter: "brightness(0.35) contrast(1.05) saturate(0.65)" }}
+              style={{ filter: "brightness(0.85) contrast(1.0) saturate(0.95)" }}
               className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
             >
               <source src={STAGES[activeVideo].url} type="video/mp4" />
             </video>
           )}
           {/* 가독성 전용 다크 그라데이션 마스크 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/35 pointer-events-none z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent pointer-events-none z-10" />
         </div>
 
         {/* 2. Figma PNG Texture Overlay (1단계 클래식 테마일 때는 감춤) */}
@@ -191,13 +191,13 @@ export default function Home() {
             <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-all duration-700 ${
               isClassicTheme
                 ? "text-[#1C1410]"
-                : "text-white drop-shadow-[0_2px_10px_rgba(0,0,0,0.65)]"
+                : "text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]"
             }`}>
               Architect your layout <br />
               <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
                 isClassicTheme
                   ? "text-[#C8A97E]"
-                  : "text-[#F5C88E] drop-shadow-[0_2px_8px_rgba(0,0,0,0.4)]"
+                  : "text-[#F5C88E] drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
               }`}>in 5 minutes</span>
               <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
                 isClassicTheme ? "text-[#1C1410]" : "text-white"
@@ -208,7 +208,7 @@ export default function Home() {
             <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-all duration-700 ${
               isClassicTheme
                 ? "text-[#8C7A6A]"
-                : "text-white/85 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]"
+                : "text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
             }`}>
               카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
             </p>
