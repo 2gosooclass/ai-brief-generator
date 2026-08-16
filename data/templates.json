@@ -205,6 +205,31 @@
   ],
   "personal": [
     {
+      "id": "personal-dynamic",
+      "name": "다이내믹 인터랙티브 랩",
+      "tagline": "살아 숨쉬는 3D 모션 & 인터랙티브 웹",
+      "description": "네온 글로우와 무한 롤링 티커, 3D 글래스모피즘 모션으로 방문자를 압도하는 미래지향적 인터랙티브 웹사이트입니다.",
+      "colors": {
+        "primary": "#0A0D14",
+        "secondary": "#1E293B",
+        "accent": "#00F2FE",
+        "bg": "#0A0D14",
+        "surface": "#131A26",
+        "text": "#F8FAFC"
+      },
+      "fonts": {
+        "heading": "Gowun Batang",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "works", "skills", "services", "contact"],
+      "unsplashKeyword": "futuristic creative technology neon",
+      "referenceStyle": "interactive dynamic motion agency",
+      "promptKeywords": ["인터랙티브", "3D모션", "FramerMotion", "네온", "글래스모피즘"],
+      "badge": "인기 모션",
+      "badgeColor": "cyan",
+      "layoutType": "dynamic"
+    },
+    {
       "id": "personal-portfolio",
       "name": "크리에이터 포트폴리오",
       "tagline": "나라는 브랜드를 세상에",

@@ -27,7 +27,7 @@ export interface Template {
   promptKeywords: string[];
   badge: string | null;
   badgeColor: string | null;
-  layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual";
+  layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual" | "dynamic";
   categoryId?: string;
 }
 
@@ -39,7 +39,7 @@ export interface TemplatesData {
   traditional: Template[];
 }
 
-export type ImageMode = "stock" | "upload";
+export type ImageMode = "stock" | "upload" | "prompt";
 
 export interface ModifyOptions {
   colorChange: boolean;
@@ -57,6 +57,7 @@ export interface UserInputs {
   contact: string;
   referenceUrl: string;
   referenceScreenshotUrl: string;
+  imagePromptKeyword: string;
 }
 
 export interface UnsplashPhoto {

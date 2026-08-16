@@ -183,6 +183,12 @@ export function buildPrompt({
     imageSection = `
 ## 이미지 처리
 저는 직접 이미지를 제공할 예정입니다. 히어로와 갤러리 섹션은 [이미지 URL을 여기에 넣어주세요] 형태로 플레이스홀더를 남겨두고, 나머지는 Unsplash에서 "${template.unsplashKeyword}" 키워드로 어울리는 이미지를 찾아 사용해 주세요.`;
+  } else if (imageMode === "prompt") {
+    imageSection = `
+## 이미지 처리 (AI 프롬프트 생성 모드)
+제가 AI 생성 툴(Midjourney/DALL-E)로 직접 이미지를 생성하여 배치할 예정입니다. 히어로 및 주요 섹션에는 아래 AI 생성 프롬프트로 생성된 결과물이나 고해상도 비주얼이 최적의 비율로 담길 수 있도록 이미지 캔버스와 3D/글래스모피즘 프레임을 설계해 주세요:
+- 미드저니/DALL-E 추천 프롬프트: ${template.unsplashKeyword ? `A high-end cinematic editorial photograph of ${template.unsplashKeyword}, ${template.referenceStyle} aesthetic, 8k --ar 16:9` : "A cinematic visual"}
+(그 외 다른 보조 섹션에는 "${template.unsplashKeyword}" 키워드로 분위기가 조화로운 Unsplash 이미지를 자동 배치해 주세요.)`;
   } else {
     if (selectedStockImages && selectedStockImages.length > 0) {
       const urlsText = selectedStockImages.map((url) => `- ${url}`).join("\n");
@@ -290,7 +296,11 @@ ${recommendedMediaSection}
 ## 기술 요구사항
 - 반응형 웹사이트로 만들어 주세요 (모바일 우선 설계).
 - 버튼, 링크, 호버 효과 등 인터랙션을 자연스럽게 넣어 주세요.
-- 빠른 로딩을 위해 이미지는 lazy loading을 적용해 주세요.
+${
+  template.layoutType === "dynamic"
+    ? "- **다이내믹 인터랙션 구현**: Framer Motion 또는 GSAP를 활용하여 부드러운 스크롤 패럴랙스, 카드 호버 3D 틸트 효과, 무한 롤링 텍스트 티커(Ticker Bar), 마우스 트래킹 마이크로 인터랙션을 생생하게 구현해 주세요.\n"
+    : ""
+}- 빠른 로딩을 위해 이미지는 lazy loading을 적용해 주세요.
 - 완성 후 전체 페이지 미리보기를 보여주세요.
 
 ---

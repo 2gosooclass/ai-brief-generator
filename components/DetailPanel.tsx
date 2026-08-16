@@ -5,6 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
 import UnsplashPreview from "./UnsplashPreview";
 import ImageUploader from "./ImageUploader";
+import AiImagePromptGenerator from "./AiImagePromptGenerator";
 import PromptOutput from "./PromptOutput";
 import type { ModifyOptions } from "@/lib/types";
 
@@ -314,18 +315,18 @@ export default function DetailPanel() {
                 <div className="space-y-3">
                   {/* 방식 토글 */}
                   <div className="flex rounded-xl border border-[#E0D8D0] overflow-hidden">
-                    {(["stock", "upload"] as const).map((mode) => (
+                    {(["stock", "upload", "prompt"] as const).map((mode) => (
                       <button
                         key={mode}
                         onClick={() => setImageMode(mode)}
-                        className={`flex-1 py-2 text-xs font-pretendard font-medium transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
+                        className={`flex-1 py-2 text-[11px] font-pretendard font-medium transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer ${
                           imageMode === mode
                             ? "bg-[#1C1410] text-white"
                             : "bg-white text-[#5C4A3A] hover:bg-[#F5F0EA]"
                         }`}
                       >
-                        <span>{mode === "stock" ? "🖼️" : "📤"}</span>
-                        {mode === "stock" ? "스톡 자동" : "직접 업로드"}
+                        <span>{mode === "stock" ? "🖼️" : mode === "upload" ? "📤" : "✨"}</span>
+                        {mode === "stock" ? "스톡 자동" : mode === "upload" ? "직접 업로드" : "AI 프롬프트"}
                       </button>
                     ))}
                   </div>
@@ -334,8 +335,10 @@ export default function DetailPanel() {
                   <div className="bg-white p-3 rounded-xl border border-[#E8E0D8]">
                     {imageMode === "stock" ? (
                       <UnsplashPreview keyword={selectedTemplate.unsplashKeyword} />
-                    ) : (
+                    ) : imageMode === "upload" ? (
                       <ImageUploader />
+                    ) : (
+                      <AiImagePromptGenerator />
                     )}
                   </div>
                 </div>

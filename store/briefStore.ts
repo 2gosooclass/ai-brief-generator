@@ -66,6 +66,7 @@ const defaultUserInputs: UserInputs = {
   contact: "",
   referenceUrl: "",
   referenceScreenshotUrl: "",
+  imagePromptKeyword: "",
 };
 
 export const useBriefStore = create<BriefState>((set) => ({
