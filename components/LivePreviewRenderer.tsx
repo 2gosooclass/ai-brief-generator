@@ -19,11 +19,11 @@ const SECTION_KR: Record<string, string> = {
 
 const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
   cafe: [
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80", // Modern Luxury House
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80",
-    "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=1200&q=80"
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80", // Premium Coffee & Dessert
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80",
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80"
   ],
   traditional: [
     "https://images.unsplash.com/photo-1590418606746-018840f9cd0f?w=1200&q=80", // Hanok / Traditional
@@ -38,9 +38,9 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80"
   ],
   default: [
-    "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200&q=80",
-    "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=1200&q=80"
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80"
   ]
 };
 
@@ -245,7 +245,256 @@ interface LayoutProps {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 1. 글로벌 모던 비즈니스 / 부동산 / 에이전시 (Horizon Realty 스타일)
+// 🌟 1. 프리미엄 프랜차이즈 표준 풀와이드 (투썸플레이스 / 스타벅스 스타일)
+// ════════════════════════════════════════════════════════════════════════
+function CorporateFranchiseLayout({
+  accentColor,
+  bizName,
+  bizDesc,
+  images,
+  logoUrl,
+  contact,
+  navMenus,
+  onActionClick,
+  onNavClick,
+}: LayoutProps) {
+  const brandRed = accentColor || "#D62828";
+
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F8F9FA] text-[#111827]">
+      {/* 1. Top Utility Bar */}
+      <div className="bg-[#1E1E24] text-gray-300 text-xs py-2 px-8 flex justify-between items-center border-b border-gray-800">
+        <div className="flex gap-4">
+          <span className="font-semibold text-white">프리미엄 프랜차이즈</span>
+          <span className="text-gray-500">|</span>
+          <span>고객센터: {contact || "1577-4410"}</span>
+        </div>
+        <div className="flex gap-4">
+          <button type="button" onClick={() => onActionClick("가맹 상담")} className="hover:text-white transition-colors cursor-pointer">
+            가맹점 개설 문의 &rarr;
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Corporate Main Nav */}
+      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
+        <div className="flex items-center gap-6">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} alt="Logo" className="h-8 max-w-[160px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
+          ) : (
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavClick("hero", 0)}>
+              <span className="w-4 h-4 rounded-sm" style={{ backgroundColor: brandRed }} />
+              <span className="text-xl font-black tracking-tight text-gray-900">{bizName}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden md:flex gap-8 items-center">
+          {navMenus.map((menu, idx) => (
+            <button
+              key={menu}
+              type="button"
+              onClick={() => onNavClick(menu, idx)}
+              className="text-sm font-bold text-gray-700 hover:text-red-600 transition-colors cursor-pointer"
+            >
+              {menu}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onActionClick("ONLINE ORDER")}
+          className="px-5 py-2.5 rounded-full text-xs font-bold text-white shadow-md transition-transform hover:scale-105 cursor-pointer"
+          style={{ backgroundColor: brandRed }}
+        >
+          매장 주문 / 예약
+        </button>
+      </nav>
+
+      {/* 3. Full-width Hero Banner (16:9 와이드 슬라이더 스타일) */}
+      <header id="hero" className="relative w-full h-[480px] md:h-[540px] overflow-hidden bg-black flex items-center">
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+
+        <div className="relative z-20 max-w-6xl mx-auto px-8 w-full text-left space-y-5">
+          <span
+            className="text-xs font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-md text-white shadow-sm inline-block"
+            style={{ backgroundColor: brandRed }}
+          >
+            SEASON SIGNATURE
+          </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight drop-shadow-md">
+            {bizDesc}
+          </h1>
+          <p className="text-base sm:text-lg text-gray-200 font-medium max-w-xl leading-relaxed">
+            {bizName}가 제안하는 이번 시즌 가장 찬란한 디저트와 깊은 풍미의 스페셜티 블렌드를 만나보세요.
+          </p>
+          <div className="pt-2 flex gap-3.5">
+            <button
+              type="button"
+              onClick={() => onActionClick("신메뉴 보러가기")}
+              className="px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-xl transition-all hover:scale-105 cursor-pointer"
+              style={{ backgroundColor: brandRed }}
+            >
+              신메뉴 자세히 보기 &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => onActionClick("가까운 매장 찾기")}
+              className="px-7 py-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-white/20 text-white backdrop-blur-md hover:bg-white/30 transition-all cursor-pointer border border-white/30"
+            >
+              매장 찾기
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 4. 4단 퀵 메뉴 바 (Quick Navigation Icons) */}
+      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-30 w-full">
+        <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 overflow-hidden">
+          {[
+            { icon: "☕", title: "신제품 소개", desc: "시즌 시그니처 라인업" },
+            { icon: "🎂", title: "홀케이크 예약", desc: "원하는 날짜에 픽업" },
+            { icon: "📍", title: "매장 찾기", desc: "내 주변 가까운 매장" },
+            { icon: "🤝", title: "가맹 개설 문의", desc: "1:1 창업 컨설팅" },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              onClick={() => onActionClick(item.title)}
+              className="p-5 flex items-center gap-3.5 hover:bg-gray-50 transition-colors cursor-pointer text-left"
+            >
+              <span className="text-3xl p-2.5 rounded-xl bg-gray-100 shrink-0">{item.icon}</span>
+              <div>
+                <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
+                <p className="text-xs text-gray-500 font-medium">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. 시그니처 쇼케이스 (좌측 메인 화보 배너 + 우측 베스트 메뉴 2단) */}
+      <main className="flex-1 max-w-6xl mx-auto px-6 py-16 w-full space-y-16">
+        <section id="menu" className="space-y-8 text-left">
+          <div className="flex items-center justify-between border-b-2 border-gray-200 pb-4">
+            <div>
+              <span className="text-xs font-bold text-red-600 tracking-wider uppercase">OUR BEST MENU</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900">시그니처 메뉴 라인업</h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onActionClick("전체 메뉴 보기")}
+              className="text-xs font-bold text-gray-700 hover:text-red-600 transition-colors flex items-center gap-1"
+            >
+              전체 메뉴 보기 &rarr;
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-7 rounded-3xl overflow-hidden border-2 border-gray-200 shadow-md relative min-h-[380px]">
+              <EditableImage sectionKey="menu-hero" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-left">
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">PREMIUM SELECTION</span>
+                <h3 className="text-2xl font-black text-white mb-2">스트로베리 초콜릿 링 생크림</h3>
+                <p className="text-xs text-gray-200 leading-relaxed max-w-md">
+                  신선한 생딸기와 진한 가나슈 생크림이 조화를 이루는 {bizName}의 부동의 No.1 대표 시그니처 케이크입니다.
+                </p>
+              </div>
+            </div>
+
+            <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+              {[
+                { title: "스패니쉬 연유 라떼", desc: "진하고 부드러운 스위트 에스프레소", imgIdx: 2 },
+                { title: "로얄 밀크티 쉐이크", desc: "얼그레이 찻잎을 진하게 우려낸 풍미", imgIdx: 3 },
+              ].map((subItem, idx) => (
+                <div key={idx} className="bg-white rounded-3xl border-2 border-gray-200 p-5 flex gap-4 items-center shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100">
+                    <EditableImage sectionKey={`sub-menu-${idx}`} defaultUrl={images[subItem.imgIdx % images.length]} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 text-left space-y-1">
+                    <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">RECOMMEND</span>
+                    <h4 className="text-sm font-bold text-gray-900">{subItem.title}</h4>
+                    <p className="text-xs text-gray-500 font-medium">{subItem.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. 매장 찾기 & 가맹 개설 2단 스플릿 박스 */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+          <div className="bg-white p-8 rounded-3xl border-2 border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-gray-500 uppercase">STORE LOCATOR</span>
+              <h3 className="text-xl font-black text-gray-900 mt-1">가까운 매장 찾기</h3>
+              <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+                현재 계신 위치에서 가장 가까운 {bizName} 매장의 위치와 영업 시간을 확인해 보세요.
+              </p>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <input
+                type="text"
+                placeholder="매장명 또는 지역 검색 (예: 강남역)"
+                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 text-xs font-semibold text-gray-900 outline-none focus:border-red-600"
+              />
+              <button
+                type="button"
+                onClick={() => onActionClick("매장 검색")}
+                className="px-5 py-3 rounded-xl text-xs font-bold text-white shadow transition-transform hover:scale-105 cursor-pointer shrink-0"
+                style={{ backgroundColor: brandRed }}
+              >
+                검색
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-[#1E1E24] text-white p-8 rounded-3xl border-2 border-gray-800 shadow-md space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-red-400 uppercase">FRANCHISE & BUSINESS</span>
+              <h3 className="text-xl font-black text-white mt-1">성공적인 창업 파트너</h3>
+              <p className="text-xs text-gray-300 mt-2 leading-relaxed">
+                체계적인 상권 분석과 전문 본사 지원 시스템으로 든든한 비즈니스 성장을 함께합니다.
+              </p>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => onActionClick("가맹 절차 알아보기")}
+                className="w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
+                style={{ backgroundColor: brandRed }}
+              >
+                가맹 개설 절차 및 상담 신청 &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* 7. Corporate Standard Footer */}
+      <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-left text-xs text-gray-500 mt-auto">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex flex-wrap gap-6 font-bold text-gray-800 border-b border-gray-100 pb-4">
+            <span className="cursor-pointer hover:text-red-600">회사소개</span>
+            <span className="cursor-pointer hover:text-red-600">이용약관</span>
+            <span className="cursor-pointer hover:text-red-600 text-red-600 font-black">개인정보처리방침</span>
+            <span className="cursor-pointer hover:text-red-600">가맹문의</span>
+            <span className="cursor-pointer hover:text-red-600">고객센터</span>
+          </div>
+          <div className="space-y-1.5 text-[11px] leading-relaxed text-gray-500">
+            <p><strong>(주){bizName}</strong> | 서울특별시 강남구 테헤란로 123 | 고객상담센터: {contact || "1577-4410"}</p>
+            <p className="pt-2 text-gray-400">© 2026 {bizName} Corp. ALL RIGHTS RESERVED. POWERED BY GOOGLE FLOW.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 🌟 2. 글로벌 모던 비즈니스 / 부동산 / 에이전시 (Horizon Realty 스타일)
 // ════════════════════════════════════════════════════════════════════════
 function ModernAgencyRealtyLayout({
   accentColor,
@@ -261,7 +510,6 @@ function ModernAgencyRealtyLayout({
 
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F3F4F6] text-[#111827]">
-      {/* 1. Modern Header */}
       <nav className="flex items-center justify-between px-10 py-5 bg-white/95 backdrop-blur-md sticky top-0 z-30 border-b border-gray-200 shadow-sm">
         <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavClick("hero", 0)}>
           {logoUrl ? (
@@ -293,7 +541,6 @@ function ModernAgencyRealtyLayout({
         </button>
       </nav>
 
-      {/* 2. Asymmetrical Hero (좌: 타이포 & CTA / 우: 대형 모던 건축 화보) */}
       <header id="hero" className="max-w-6xl mx-auto px-8 py-16 w-full grid grid-cols-1 lg:grid-cols-12 gap-10 items-center text-left">
         <div className="lg:col-span-6 space-y-6">
           <span className="text-xs font-bold tracking-widest text-gray-400 uppercase">FIND YOUR PLACE. LIVE YOUR DREAM.</span>
@@ -329,7 +576,6 @@ function ModernAgencyRealtyLayout({
         </div>
       </header>
 
-      {/* 3. 4단 퀵 스탯 바 (KPI Bar) */}
       <section className="max-w-6xl mx-auto px-8 w-full -mt-6 relative z-20">
         <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
           {[
@@ -349,7 +595,6 @@ function ModernAgencyRealtyLayout({
         </div>
       </section>
 
-      {/* 4. 3단 카드 갤러리 섹션 (Handpicked Properties / Featured Cards) */}
       <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
         <section className="space-y-8">
           <div className="flex items-end justify-between border-b-2 border-gray-200 pb-4">
@@ -399,7 +644,6 @@ function ModernAgencyRealtyLayout({
           </div>
         </section>
 
-        {/* 5. 풀와이드 다크 비디오 배너 섹션 */}
         <section className="bg-[#111827] text-white rounded-3xl p-10 sm:p-14 relative overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-7 space-y-4">
             <span className="text-xs font-bold uppercase tracking-widest text-amber-400">EXCLUSIVE SERVICE</span>
@@ -435,20 +679,8 @@ function ModernAgencyRealtyLayout({
             </div>
           </div>
         </section>
-
-        {/* 6. 클라이언트 신뢰 로고 바 */}
-        <section className="pt-4 text-center space-y-4">
-          <p className="text-xs font-bold text-gray-400 tracking-widest uppercase">AS SEEN ON TRUSTED MEDIA</p>
-          <div className="flex flex-wrap justify-center items-center gap-10 text-gray-400 font-black text-base sm:text-lg tracking-widest opacity-60">
-            <span>FORBES</span>
-            <span>ARCHITECTURAL DIGEST</span>
-            <span>ELLE DECOR</span>
-            <span>BLOOMBERG</span>
-          </div>
-        </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-center text-xs font-semibold text-gray-500 mt-auto">
         <p className="font-bold text-gray-900 mb-2 uppercase tracking-widest">{bizName}</p>
         <p className="opacity-70">© 2026 {bizName}. All Rights Reserved. Powered by Google Flow.</p>
@@ -458,7 +690,7 @@ function ModernAgencyRealtyLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 2. 헤리티지 럭셔리 스테이 / 전통 공방 (감찰댁 한옥마을 스타일)
+// 🌟 3. 헤리티지 럭셔리 스테이 / 전통 공방 (감찰댁 한옥마을 스타일)
 // ════════════════════════════════════════════════════════════════════════
 function TraditionalStayHeritageLayout({
   accentColor,
@@ -474,7 +706,6 @@ function TraditionalStayHeritageLayout({
 
   return (
     <div className="min-h-full w-full flex flex-col font-serif-kr bg-[#F5F2EC] text-[#2C2118]">
-      {/* Dark Minimal Heritage Nav */}
       <nav className="flex items-center justify-between px-10 py-5 bg-[#1C1410] text-gray-200 sticky top-0 z-30 shadow-md">
         <div className="cursor-pointer" onClick={() => onNavClick("hero", 0)}>
           {logoUrl ? (
@@ -493,7 +724,6 @@ function TraditionalStayHeritageLayout({
         </div>
       </nav>
 
-      {/* Fullscreen Hanok Hero */}
       <header id="hero" className="relative w-full h-[520px] sm:h-[600px] flex items-center justify-center text-center">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-black/50" />
@@ -508,9 +738,7 @@ function TraditionalStayHeritageLayout({
         </div>
       </header>
 
-      {/* Heritage Sections */}
       <main className="max-w-5xl mx-auto px-6 py-20 w-full space-y-24 text-left font-sans">
-        {/* Section 1: 오버랩 2단 카드 (좌측 야경 + 우측 다크 박스) */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-7 h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
             <EditableImage sectionKey="sec-1" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
@@ -529,7 +757,6 @@ function TraditionalStayHeritageLayout({
           </div>
         </section>
 
-        {/* Section 2: 좌측 텍스트 카드 + 우측 와이드 사진 */}
         <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
           <div className="md:col-span-5 bg-white p-8 sm:p-10 rounded-3xl border border-[#E5D7C5] shadow-md space-y-4">
             <span className="text-xs tracking-widest text-amber-900 uppercase font-serif-kr">MAKING MEMORIES</span>
@@ -544,7 +771,6 @@ function TraditionalStayHeritageLayout({
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-12 px-8 bg-[#1C1410] text-[#E5D7C5] text-center text-xs mt-auto font-sans">
         <p className="font-bold text-base font-serif-kr mb-2">{bizName}</p>
         <p className="text-gray-400 opacity-80">© 2026 {bizName}. All Rights Reserved.</p>
@@ -554,7 +780,7 @@ function TraditionalStayHeritageLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 3. 럭셔리 여행 / 리조트 큐레이션 (The Art of Escape 스타일)
+// 🌟 4. 럭셔리 여행 / 리조트 큐레이션 (The Art of Escape 스타일)
 // ════════════════════════════════════════════════════════════════════════
 function LuxuryTravelResortLayout({
   accentColor,
@@ -570,7 +796,6 @@ function LuxuryTravelResortLayout({
 
   return (
     <div className="min-h-full w-full flex flex-col font-serif-kr bg-[#FAF7F2] text-[#1E293B]">
-      {/* Floating Glassmorphism Nav */}
       <div className="p-6 sticky top-0 z-30">
         <nav className="max-w-4xl mx-auto flex items-center justify-between px-8 py-3.5 rounded-full bg-white/80 backdrop-blur-xl border border-white/60 shadow-lg">
           <div className="cursor-pointer" onClick={() => onNavClick("hero", 0)}>
@@ -591,7 +816,6 @@ function LuxuryTravelResortLayout({
         </nav>
       </div>
 
-      {/* Resort Hero with Floating Reservation Card */}
       <header id="hero" className="max-w-6xl mx-auto px-8 py-10 w-full relative min-h-[500px] rounded-3xl overflow-hidden shadow-2xl flex items-center">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent" />
@@ -607,7 +831,6 @@ function LuxuryTravelResortLayout({
             </p>
           </div>
 
-          {/* Floating Booking Card */}
           <div className="lg:col-span-4 bg-white/90 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white text-gray-900 space-y-4 font-sans">
             <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800">RESERVE YOUR STAY</h4>
             <div className="space-y-2 text-xs font-medium">
@@ -626,7 +849,6 @@ function LuxuryTravelResortLayout({
         </div>
       </header>
 
-      {/* 4단 럭셔리 캐러셀 카드 섹션 */}
       <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
         <section className="space-y-8">
           <div>
@@ -659,7 +881,6 @@ function LuxuryTravelResortLayout({
         </section>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-12 px-8 border-t border-gray-200 text-center text-xs font-sans text-gray-500 mt-auto">
         <p className="font-bold text-gray-900 mb-2 uppercase">{bizName}</p>
         <p className="opacity-70">© 2026 {bizName}. All Rights Reserved.</p>
@@ -669,7 +890,7 @@ function LuxuryTravelResortLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 4. MAIN ROUTER
+// 🌟 5. MAIN ROUTER
 // ════════════════════════════════════════════════════════════════════════
 export default function LivePreviewRenderer() {
   const {
@@ -743,20 +964,28 @@ export default function LivePreviewRenderer() {
     images,
     logoUrl,
     contact,
-    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["OVERVIEW", "PROPERTIES", "ARCHIVE", "CONTACT"],
+    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["신제품 소개", "홀케이크 예약", "매장 찾기", "가맹 개설 문의"],
     onActionClick: handleActionClick,
     onNavClick: handleNavClick,
   };
 
+  const templateId = selectedTemplate.id;
   const layoutType = selectedTemplate.layoutType;
 
   const renderLayout = () => {
-    if (selectedCategory === "traditional") {
+    // 1. 투썸플레이스 / 프랜차이즈 표준 레이아웃
+    if (templateId === "cafe-corporate" || layoutType === "corporate") {
+      return <CorporateFranchiseLayout {...props} />;
+    }
+    // 2. 전통 한옥 스테이 / 전통 공방 레이아웃 (감찰댁 스타일)
+    if (selectedCategory === "traditional" || templateId.includes("traditional")) {
       return <TraditionalStayHeritageLayout {...props} />;
     }
+    // 3. 럭셔리 리조트 / 여행 큐레이션 레이아웃 (The Art of Escape 스타일)
     if (layoutType === "overlay" || selectedCategory === "personal") {
       return <LuxuryTravelResortLayout {...props} />;
     }
+    // 4. 기본: 글로벌 모던 비즈니스 / 부동산 / 에이전시 레이아웃 (Horizon Realty 스타일)
     return <ModernAgencyRealtyLayout {...props} />;
   };
 
