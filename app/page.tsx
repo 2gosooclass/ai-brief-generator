@@ -8,76 +8,18 @@ import TemplateGrid from "@/components/TemplateGrid";
 import LivePreviewModal from "@/components/LivePreviewModal";
 import GuideModal from "@/components/GuideModal";
 
-interface StageData {
-  id: number;
-  type: "classic" | "video";
-  url?: string;
-  label: string;
-}
-
-const STAGES: StageData[] = [
-  { id: 0, type: "classic", label: "AI 순정" },
-  { id: 1, type: "classic", label: "오리지널 미색" },
-  {
-    id: 2,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081127_0992a171-d3c6-4978-8213-0ec5df8b6d63.mp4",
-    label: "골든 아워"
-  },
-  {
-    id: 3,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_092026_dd05b805-ea0f-40b2-8c52-332b88502592.mp4",
-    label: "스틸 워터"
-  },
-  {
-    id: 4,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081042_df7202bf-bd80-4b2b-bbc6-1f09ba2870e9.mp4",
-    label: "딥 우즈"
-  },
-  {
-    id: 5,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4",
-    label: "콰이어트 던"
-  },
-  {
-    id: 6,
-    type: "video",
-    url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260714_113715_c7e0daa0-8bdd-4486-a2da-040901f8f0ea.mp4",
-    label: "심야 질주"
-  }
-];
-
 export default function Home() {
   const { selectedTemplate, openPanel } = useBriefStore();
   const [isGuideOpen, setIsGuideOpen] = useState(false);
 
-  // activeVideo state tracks the selected stage (0 to 6)
-  const [activeVideo, setActiveVideo] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  const handleVideoSwitch = (index: number) => {
-    if (index === activeVideo || isTransitioning) return;
-    setActiveVideo(index);
-    setIsTransitioning(true);
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 1000);
-  };
-
-  const isAISlop = activeVideo === 0;
-  const isClassicTheme = activeVideo === 0 || activeVideo === 1;
-
   return (
-    <div className="min-h-screen bg-black relative flex flex-col justify-between overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAFAF7] relative flex flex-col justify-between overflow-x-hidden font-pretendard text-[#1C1410]">
 
       {/* ── STICKY 헤더 ── */}
       <header className="border-b border-[#E8E0D8]/60 bg-[#FAFAF7]/95 backdrop-blur-md sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-5 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#1C1410] flex items-center justify-center">
+            <div className="w-8 h-8 rounded-lg bg-[#1C1410] flex items-center justify-center shadow-sm">
               <svg className="w-4 h-4 text-[#C8A97E]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
@@ -110,148 +52,26 @@ export default function Home() {
         </div>
       </header>
 
-      {/* ── 히어로 배너: 비대칭 2단 분할 구조 (0단계는 구식 AI 그라데이션 배너 탑재) ── */}
-      <section className={`relative py-16 md:py-24 px-6 overflow-hidden min-h-[460px] flex items-center transition-all duration-700 ${
-        isAISlop
-          ? "bg-gradient-to-br from-[#1C1410] via-[#2A1C12] to-[#1C1410] text-white"
-          : isClassicTheme
-          ? "bg-[#FAFAF7]"
-          : "bg-[#09080A]"
-      }`}>
-        
-        {/* 1. Background Video Layer (key={activeVideo} 핫스왑 단일 인스턴스 설계 - 클래식 및 0단계 테마일 때는 감춤) */}
-        <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${
-          isClassicTheme ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}>
-          {!isClassicTheme && STAGES[activeVideo]?.url && (
-            <video
-              key={activeVideo} // key가 바뀌어 브라우저가 새 비디오를 강제 오토플레이
-              autoPlay
-              muted
-              loop
-              playsInline
-              style={{ filter: "brightness(0.85) contrast(1.0) saturate(0.95)" }}
-              className="absolute inset-0 w-full h-full object-cover select-none pointer-events-none"
-            >
-              <source src={STAGES[activeVideo].url} type="video/mp4" />
-            </video>
-          )}
-          {/* 가독성 전용 다크 그라데이션 마스크 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-black/45 via-black/15 to-transparent pointer-events-none z-10" />
-        </div>
-
-        {/* 2. Figma PNG Texture Overlay (0단계 및 1단계 클래식 테마일 때는 감춤) */}
-        <img
-          src="https://soft-zoom-63098134.figma.site/_assets/v11/0b4a435b2df2747593c43d7a1c9b4578f7d8d90c.png"
-          alt="Figma Texture Overlay"
-          className={`absolute inset-0 z-10 w-full h-full object-cover pointer-events-none animate-train-bob transition-opacity duration-700 ${
-            isClassicTheme ? "opacity-0 pointer-events-none" : "opacity-15"
-          }`}
-        />
-
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center relative z-20 w-full">
+      {/* ── 심플 프리미엄 에디토리얼 히어로 배너 ── */}
+      <section className="relative py-14 md:py-20 px-6 bg-[#FAFAF7] border-b border-[#E8E0D8]/60 overflow-hidden">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center relative z-10 w-full">
           
           {/* 좌측 7열: 타이포그래피 & 소개글 */}
-          <div className="md:col-span-7 flex flex-col justify-center transition-colors duration-700">
-            
-            {/* 배지 및 6단계 스위처 그룹 */}
-            <div className="flex flex-wrap items-center gap-3 mb-6">
-              
-              {isAISlop ? (
-                // 0단계 전용 YC 풍 복구 배지
-                <div className="inline-flex items-center gap-2 bg-[#C8A97E]/15 border border-[#C8A97E]/25 rounded-full px-3.5 py-1.5 text-[11px] font-pretendard text-[#C8A97E]">
-                  <div className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
-                  <span>초보자도 5분이면 완성</span>
-                </div>
-              ) : (
-                // 1~6단계 스위스 에디토리얼 배지
-                <div className={`inline-flex items-center gap-2 border px-3.5 py-1.5 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold transition-all duration-700 ${
-                  isClassicTheme
-                    ? "border-[#C8A97E]/30 bg-[#FDF8F3] text-[#C8A97E]"
-                    : "border-white/20 bg-white/5 text-white/90"
-                }`}>
-                  <span className={`w-1.5 h-1.5 rounded-full animate-pulse transition-colors duration-700 ${
-                    isClassicTheme ? "bg-[#C8A97E]" : "bg-white"
-                  }`} />
-                  <span>Vibe Coding Prompt Engine</span>
-                </div>
-              )}
-
-              {/* 0-6 Step Visual Comparison Switcher */}
-              <div className={`flex flex-wrap items-center gap-1.5 rounded-full p-1 border transition-all duration-700 ${
-                isAISlop
-                  ? "bg-white/10 border-white/20 text-white"
-                  : isClassicTheme
-                  ? "bg-[#F5F0EA] border-[#E8E0D8]"
-                  : "bg-black/35 border-white/10"
-              }`}>
-                {STAGES.map((vid, idx) => (
-                  <button
-                    key={vid.label}
-                    onClick={() => handleVideoSwitch(idx)}
-                    className={`text-[9px] font-pretendard font-bold px-2.5 py-1 rounded-full transition-all duration-300 cursor-pointer ${
-                      idx === activeVideo
-                        ? isAISlop
-                          ? "bg-[#C8A97E] text-[#1C1410] shadow-sm"
-                          : isClassicTheme
-                          ? "bg-[#1C1410] text-white shadow-sm"
-                          : "bg-white text-black"
-                        : isAISlop
-                        ? "text-white/60 hover:text-white"
-                        : isClassicTheme
-                        ? "text-[#8C7A6A] hover:text-[#1C1410]"
-                        : "text-white/60 hover:text-white"
-                    }`}
-                  >
-                    {vid.label}
-                  </button>
-                ))}
-              </div>
+          <div className="md:col-span-7 flex flex-col justify-center text-left">
+            <div className="inline-flex items-center gap-2 border border-[#C8A97E]/30 bg-[#FDF8F3] text-[#C8A97E] px-3 py-1 rounded-full text-[10px] font-pretendard tracking-wider uppercase font-semibold mb-5 w-fit">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#C8A97E] animate-pulse" />
+              <span>Vibe Coding Prompt Engine</span>
             </div>
 
-            {/* 타이틀 명칭 분기 */}
-            {isAISlop ? (
-              // 0단계: 오리지널 AI 기계적 타이틀
-              <h2 className="font-serif-kr text-3xl sm:text-4xl md:text-5xl font-bold leading-tight mb-4 text-white">
-                업종별 템플릿 선택 →<br />
-                <span className="text-[#C8A97E]">바이브 코딩 프롬프트</span> 자동 생성
-              </h2>
-            ) : (
-              // 1~6단계: 수려한 스위스 세리프 이탤릭 타이틀
-              <h2 className={`text-4xl sm:text-5xl md:text-7xl font-light leading-[1.05] tracking-tight mb-6 transition-all duration-700 ${
-                isClassicTheme
-                  ? "text-[#1C1410]"
-                  : "text-white drop-shadow-[0_4px_16px_rgba(0,0,0,0.95)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]"
-              }`}>
-                Architect your layout <br />
-                <span className={`font-instrument italic text-5xl sm:text-6xl md:text-8xl mr-2 transition-colors duration-700 ${
-                  isClassicTheme
-                    ? "text-[#C8A97E]"
-                    : "text-[#F5C88E] drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
-                }`}>in 5 minutes</span>
-                <span className={`font-serif-kr font-normal text-3xl sm:text-4xl block mt-2 transition-colors duration-700 ${
-                  isClassicTheme ? "text-[#1C1410]" : "text-white"
-                }`}>바이브 코딩 프롬프트 생성기</span>
-              </h2>
-            )}
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-light leading-[1.15] tracking-tight mb-5 text-[#1C1410] font-serif-kr">
+              완벽한 웹사이트 아키텍처를 <br />
+              <span className="font-instrument italic text-4xl sm:text-5xl md:text-6xl text-[#C8A97E] mr-2">5분 만에 기획</span>
+              <span className="block mt-1 text-2xl sm:text-3xl font-normal text-[#1C1410]">AI 브리프 자동 생성</span>
+            </h2>
 
-            {/* 본문 설명문 분기 */}
-            {isAISlop ? (
-              // 0단계: 최초 MVP 한글 설명글
-              <p className="font-pretendard text-sm text-white/65 leading-relaxed max-w-xl">
-                카페, 학원, 개인 브랜드 등 업종에 맞는 검증된 웹사이트 구조를 선택하면,
-                사용하시는 AI 에이전트(Antigravity, Codex, Hermes, Lovable, v0, Claude, Cursor 등)에 그대로 붙여넣을 수 있는 프롬프트가 자동으로 만들어집니다.
-              </p>
-            ) : (
-              // 1~6단계: 스위스 디자인 설명문
-              <p className={`font-pretendard text-sm md:text-base leading-relaxed max-w-xl transition-all duration-700 ${
-                isClassicTheme
-                  ? "text-[#8C7A6A]"
-                  : "text-white/95 drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
-              }`}>
-                카페, 학원, 개인 포트폴리오 등 검증된 업종별 레이아웃을 기반으로 고품질의 프롬프트를 자동 설계합니다. 생성된 아키텍처 코드를 Lovable, v0, Claude Code 등의 AI 에이전트에 바로 붙여넣어 완결성 높은 웹사이트를 신속하게 구현하십시오.
-              </p>
-            )}
+            <p className="font-pretendard text-xs sm:text-sm text-[#8C7A6A] leading-relaxed max-w-xl">
+              원하는 디자인 템플릿을 선택하고 브랜드명과 레퍼런스를 지정하면, Lovable, v0, Claude Code, Cursor 등 모든 AI 에이전트에 즉시 입력할 수 있는 최적화된 마크다운(.md) 브리프와 이미지 생성 프롬프트가 자동으로 완성됩니다.
+            </p>
           </div>
 
           {/* 우측 5열: 선택된 템플릿의 간략 정보 */}
@@ -264,42 +84,22 @@ export default function Home() {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -15, scale: 0.98 }}
                   transition={{ duration: 0.3 }}
-                  className={`w-full max-w-md rounded-xl p-6 shadow-xl relative overflow-hidden flex flex-col justify-between min-h-[220px] transition-all duration-700 ${
-                    isAISlop
-                      ? "bg-white/10 border border-white/20 text-white rounded-2xl backdrop-blur-sm"
-                      : isClassicTheme
-                      ? "bg-white border border-[#E8E0D8] text-[#1C1410]"
-                      : "dark-liquid-glass text-white"
-                  }`}
+                  className="w-full max-w-md rounded-2xl p-6 shadow-lg bg-white border border-[#E8E0D8] text-[#1C1410] relative overflow-hidden flex flex-col justify-between min-h-[200px]"
                 >
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-[#C8A97E]/10 rounded-full blur-3xl pointer-events-none" />
-                  
                   <div>
-                    <span className={`text-[10px] uppercase tracking-widest font-semibold block mb-3 transition-colors duration-700 ${
-                      isClassicTheme && !isAISlop
-                        ? "text-[#A09080]"
-                        : "text-white/70"
-                    }`}>Active Spec</span>
+                    <span className="text-[10px] uppercase tracking-widest font-semibold block mb-3 text-[#A09080]">
+                      선택된 템플릿
+                    </span>
                     <div className="flex items-center gap-3.5 mb-4">
                       <div
-                        className={`w-11 h-11 rounded-lg shrink-0 shadow-sm transition-colors duration-700 ${
-                          isClassicTheme && !isAISlop ? "border border-[#E8E0D8]" : "border border-white/10"
-                        }`}
+                        className="w-11 h-11 rounded-xl shrink-0 shadow-sm border border-[#E8E0D8]"
                         style={{ backgroundColor: selectedTemplate.colors.accent }}
                       />
                       <div className="min-w-0">
-                        <h3 className={`font-serif-kr text-base font-bold leading-tight truncate transition-colors duration-700 ${
-                          isClassicTheme && !isAISlop
-                            ? "text-[#1C1410]"
-                            : "text-white"
-                        }`}>
+                        <h3 className="font-serif-kr text-base font-bold leading-tight truncate text-[#1C1410]">
                           {selectedTemplate.name}
                         </h3>
-                        <p className={`text-[11px] font-pretendard leading-tight truncate mt-0.5 transition-colors duration-700 ${
-                          isClassicTheme && !isAISlop
-                            ? "text-[#8C7A6A]"
-                            : "text-white/85"
-                        }`}>
+                        <p className="text-[11px] font-pretendard leading-tight truncate mt-1 text-[#8C7A6A]">
                           {selectedTemplate.tagline}
                         </p>
                       </div>
@@ -308,15 +108,9 @@ export default function Home() {
 
                   <button
                     onClick={openPanel}
-                    className={`w-full py-3 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow active:scale-98 ${
-                      isAISlop
-                        ? "bg-[#C8A97E] hover:bg-[#D4BA8C] text-[#1C1410]"
-                        : isClassicTheme
-                        ? "bg-[#1C1410] hover:bg-[#3A2D27] text-white"
-                        : "bg-white hover:bg-white/90 text-[#1C1410]"
-                    }`}
+                    className="w-full py-2.5 text-xs font-semibold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer bg-[#1C1410] hover:bg-[#3A2D27] text-white shadow"
                   >
-                    <span>View System Prompt</span>
+                    <span>프롬프트 및 세부 설정 열기</span>
                     <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
@@ -328,20 +122,12 @@ export default function Home() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className={`w-full max-w-md rounded-xl p-8 text-center text-xs flex flex-col items-center justify-center min-h-[220px] transition-all duration-700 ${
-                    isAISlop
-                      ? "bg-white/10 border border-white/20 text-white rounded-2xl backdrop-blur-sm"
-                      : isClassicTheme
-                      ? "bg-white border border-[#E8E0D8]/60 text-[#8C7A6A]"
-                      : "dark-liquid-glass text-white"
-                  }`}
+                  className="w-full max-w-md rounded-2xl p-8 text-center text-xs flex flex-col items-center justify-center min-h-[200px] bg-white border border-[#E8E0D8]/80 text-[#8C7A6A] shadow-sm"
                 >
-                  <p className={`mb-2 transition-colors duration-700 ${
-                    isClassicTheme && !isAISlop ? "text-[#8C7A6A]" : "text-white/80"
-                  }`}>아래에서 업종 템플릿을 선택하여</p>
-                  <p className={`font-serif-kr text-sm font-medium transition-colors duration-700 ${
-                    isClassicTheme && !isAISlop ? "text-[#1C1410]" : "text-white"
-                  }`}>프롬프트 빌드 아키텍처를 활성화하십시오.</p>
+                  <p className="mb-1 text-[#8C7A6A]">아래 목록에서 디자인 템플릿을 선택하시면</p>
+                  <p className="font-serif-kr text-sm font-semibold text-[#1C1410]">
+                    즉시 시스템 프롬프트가 조립됩니다.
+                  </p>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -350,68 +136,45 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── 메인 콘텐츠: 2단 비대칭 Split 구조 (백드롭 필터 및 실시간 테마 트랜지션) ── */}
-      <div className={`transition-colors duration-700 border-t relative z-20 ${
-        isClassicTheme
-          ? "bg-[#FAFAF7]/95 border-[#E8E0D8]/60"
-          : "bg-[#0A090B]/95 border-white/10"
-      }`}>
-        <main className="max-w-7xl mx-auto px-6 py-12 md:py-20 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
+      {/* ── 메인 콘텐츠: 템플릿 그리드 & 사이드 가이드 ── */}
+      <div className="border-t border-[#E8E0D8]/60 bg-[#FAFAF7]">
+        <main className="max-w-7xl mx-auto px-6 py-12 md:py-16 grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12">
           
-          {/* 좌측 4열: 카테고리 선택 및 사용 가이드 */}
+          {/* 좌측 4열: 사용 가이드 */}
           <div className="md:col-span-4 lg:col-span-3">
-            <div className="md:sticky md:top-24 space-y-10">
+            <div className="md:sticky md:top-24 space-y-8 text-left">
               
-              {/* Step 01: 안내 가이드 */}
-              <div className="space-y-4">
-                <div>
-                  <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
-                    isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
-                  }`}>Guide</span>
-                  <h3 className={`font-serif-kr text-lg font-bold transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#1C1410]" : "text-white"
-                  }`}>시작하는 방법</h3>
-                  <p className={`text-[11px] leading-relaxed mt-0.5 transition-colors duration-700 ${
-                    isClassicTheme ? "text-[#8C7A6A]" : "text-white/60"
-                  }`}>
-                    우측 디자인 목록에서 원하는 템플릿 카드를 선택하십시오. 상세 패널에서 브랜드 설정(이름, 로고, 메인 비주얼)을 완수한 후, AI 프롬프트를 원클릭 복사하여 연동할 수 있습니다.
-                  </p>
-                </div>
+              <div className="space-y-3">
+                <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C8A97E] block">Guide</span>
+                <h3 className="font-serif-kr text-base font-bold text-[#1C1410]">사용 방법</h3>
+                <p className="text-[11px] leading-relaxed text-[#8C7A6A]">
+                  우측 목록에서 마음에 드는 디자인 카드를 클릭하세요. 상세 설정 창에서 브랜드명과 레퍼런스, 이미지 비율을 정하고 프롬프트를 복사하여 AI 에이전트에 붙여넣으면 됩니다.
+                </p>
               </div>
 
-              {/* 사용 가이드 컴팩트 리뉴얼 */}
-              <div className={`pt-8 border-t space-y-4 transition-colors duration-700 ${
-                isClassicTheme ? "border-[#E8E0D8]/60" : "border-white/10"
-              }`}>
+              {/* 간단 단계 안내 */}
+              <div className="pt-6 border-t border-[#E8E0D8]/80 space-y-4">
                 <div className="flex items-center justify-between">
-                  <span className={`text-[10px] font-semibold tracking-widest uppercase ${
-                    isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
-                  }`}>Documentation</span>
+                  <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C8A97E]">Workflow</span>
                   <button
                     onClick={() => setIsGuideOpen(true)}
-                    className={`text-[10px] font-pretendard font-semibold transition-colors cursor-pointer ${
-                      isClassicTheme ? "text-[#C8A97E] hover:text-[#A08060]" : "text-[#F5C88E] hover:text-[#FFF]"
-                    }`}
+                    className="text-[10px] font-pretendard font-semibold text-[#C8A97E] hover:text-[#A08060] transition-colors cursor-pointer"
                   >
-                    상세 설명서 📖
+                    상세 가이드 📖
                   </button>
                 </div>
                 
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {[
-                    { title: "템플릿 선택", desc: "우측 그리드에서 카드를 선택해 상세 옵션 패널을 엽니다." },
-                    { title: "옵션 조율", desc: "브랜드명, 커스텀 컬러, 섹션 배치 순서를 설계합니다." },
-                    { title: "프롬프트 복사", desc: "사출된 원천 코드를 AI 요원(Lovable, v0 등)에 주입합니다." },
+                    { title: "템플릿 선택", desc: "우측 그리드에서 카드를 선택해 상세 설정 패널을 엽니다." },
+                    { title: "옵션 조율", desc: "브랜드명, 레퍼런스 URL/스크린샷, 이미지 비율을 설정합니다." },
+                    { title: "프롬프트 복사/다운로드", desc: "사출된 마크다운을 복사하거나 .md 파일로 저장합니다." },
                   ].map((item) => (
                     <div key={item.title} className="flex gap-2 items-start">
                       <span className="text-xs text-[#C8A97E] shrink-0 mt-0.5">✦</span>
                       <div>
-                        <p className={`text-xs font-pretendard font-semibold transition-colors duration-700 ${
-                          isClassicTheme ? "text-[#1C1410]" : "text-white"
-                        }`}>{item.title}</p>
-                        <p className={`text-[10px] font-pretendard leading-normal mt-0.5 transition-colors duration-700 ${
-                          isClassicTheme ? "text-[#8C7A6A]" : "text-white/60"
-                        }`}>{item.desc}</p>
+                        <p className="text-xs font-pretendard font-semibold text-[#1C1410]">{item.title}</p>
+                        <p className="text-[10px] font-pretendard leading-normal mt-0.5 text-[#8C7A6A]">{item.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -422,14 +185,10 @@ export default function Home() {
           </div>
 
           {/* 우측 8열: 템플릿 그리드 */}
-          <div className="md:col-span-8 lg:col-span-9 space-y-6">
+          <div className="md:col-span-8 lg:col-span-9 space-y-6 text-left">
             <div>
-              <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
-                isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
-              }`}>Templates</span>
-              <h3 className={`font-serif-kr text-lg font-bold mb-4 transition-colors duration-700 ${
-                isClassicTheme ? "text-[#1C1410]" : "text-white"
-              }`}>구조적 템플릿 컬렉션</h3>
+              <span className="text-[10px] font-semibold tracking-widest uppercase text-[#C8A97E] block mb-1">Templates</span>
+              <h3 className="font-serif-kr text-lg font-bold text-[#1C1410]">구조적 템플릿 컬렉션</h3>
             </div>
             <TemplateGrid />
           </div>
@@ -438,11 +197,7 @@ export default function Home() {
       </div>
 
       {/* ── 푸터 ── */}
-      <footer className={`border-t py-5 px-5 relative z-20 transition-colors duration-700 ${
-        isClassicTheme
-          ? "bg-[#FAFAF7] border-[#E8E0D8]/60 text-[#A09080]"
-          : "bg-[#09080A] border-white/10 text-white/40"
-      }`}>
+      <footer className="border-t border-[#E8E0D8]/80 py-5 px-5 bg-[#FAFAF7] text-[#A09080]">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <p className="text-xs font-pretendard">
             © 2026 2GOSOO AI LAB. AI 웹사이트 브리프 생성기.
