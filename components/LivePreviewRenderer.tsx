@@ -290,6 +290,75 @@ function EditableImage({
 }
 
 // ── 3. 패턴 렌더러 (포인트 컬러 완벽 바인딩) ──
+const SECTION_PRESETS: Record<string, { badge: string; subHeading: string; subDesc: string; btnText: string }> = {
+  about: {
+    badge: "BRAND STORY",
+    subHeading: "본질에 집중하는 공간 철학",
+    subDesc: "정제된 미학과 편안한 분위기 속에서 머무는 모든 순간이 특별한 기억이 됩니다.",
+    btnText: "브랜드 스토리 전체보기",
+  },
+  menu: {
+    badge: "SIGNATURE MENU",
+    subHeading: "엄선된 프리미엄 메뉴 라인업",
+    subDesc: "신선한 스페셜티 원두와 정성으로 구워낸 수제 디저트의 완벽한 페어링을 선사합니다.",
+    btnText: "전체 메뉴 보러가기",
+  },
+  gallery: {
+    badge: "SPACE ARCHIVE",
+    subHeading: "빛과 여백이 머무는 공간",
+    subDesc: "자연광이 스며드는 따뜻한 감성과 세련된 인테리어의 조화를 경험해 보세요.",
+    btnText: "갤러리 둘러보기",
+  },
+  location: {
+    badge: "LOCATION & HOURS",
+    subHeading: "찾아오시는 길 & 운영 안내",
+    subDesc: "도심 속 조용한 쉼터, 일상의 온전한 휴식을 만끽할 수 있는 최적의 공간으로 안내합니다.",
+    btnText: "오시는 길 안내",
+  },
+  instagram: {
+    badge: "SOCIAL FEED",
+    subHeading: "일상의 감각적인 순간들",
+    subDesc: "매일 새롭게 업데이트되는 시즌 메뉴와 매장의 생생한 소식을 확인해 보세요.",
+    btnText: "인스타그램 피드 보기",
+  },
+  contact: {
+    badge: "GET IN TOUCH",
+    subHeading: "프라이빗 예약 및 상담 문의",
+    subDesc: "궁금하신 점이나 특별한 요청 사항을 남겨주시면 정성껏 안내해 드리겠습니다.",
+    btnText: "예약 및 문의 접수하기",
+  },
+  services: {
+    badge: "OUR SERVICES",
+    subHeading: "맞춤형 프리미엄 솔루션",
+    subDesc: "고객 한 분 한 분의 니즈에 맞춘 차별화된 프로그램과 전문적인 케어를 제공합니다.",
+    btnText: "서비스 상세 안내",
+  },
+  results: {
+    badge: "PERFORMANCE",
+    subHeading: "수치로 증명하는 압도적 성과",
+    subDesc: "수많은 성공 사례와 고객 만족도를 통해 검증된 최고의 퀄리티를 확인해 보세요.",
+    btnText: "실적 데이터 확인하기",
+  },
+  curriculum: {
+    badge: "CURRICULUM",
+    subHeading: "체계적인 단계별 마스터 코스",
+    subDesc: "기초부터 심화 실무까지 단기간에 최고 수준으로 이끌어주는 집중 로드맵입니다.",
+    btnText: "커리큘럼 전체보기",
+  },
+  teachers: {
+    badge: "INSTRUCTORS",
+    subHeading: "분야별 정상급 전문 강사진",
+    subDesc: "현업 15년 이상의 노하우를 갖춘 마스터들이 밀착 코칭을 진행합니다.",
+    btnText: "강사진 프로필 보기",
+  },
+  works: {
+    badge: "PORTFOLIO",
+    subHeading: "최고 수준의 완성작 아카이브",
+    subDesc: "엄격한 기준과 독창적인 감각으로 완성해낸 대표 프로젝트들을 만나보세요.",
+    btnText: "포트폴리오 보러가기",
+  },
+};
+
 function PatternSectionRenderer({
   sec,
   idx,
@@ -309,39 +378,45 @@ function PatternSectionRenderer({
   const imageUrl = images[idx % images.length] || images[0];
   const koreanTitle = SECTION_KR[sec] ?? sec;
   const contentText = SECTION_CONTENTS[sec] ?? `${bizName}의 독창적인 ${koreanTitle} 세부 구성안입니다.`;
+  const preset = SECTION_PRESETS[sec] || {
+    badge: `${koreanTitle.toUpperCase()}`,
+    subHeading: `${koreanTitle} 상세 안내`,
+    subDesc: "고객에게 최적화된 맞춤 구성과 감각적인 경험을 선사합니다.",
+    btnText: `${koreanTitle} 자세히 보기`,
+  };
 
   return (
     <section id={sec} className="py-12 px-8 rounded-3xl border-2 border-[#E5E7EB] bg-white shadow-sm space-y-6 text-left">
       <div className="flex items-center justify-between border-b-2 border-gray-100 pb-4">
         <div className="flex items-center gap-3">
-          <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: accentColor }} />
+          <div className="w-3.5 h-3.5 rounded-full shadow-sm" style={{ backgroundColor: accentColor }} />
           <h3 className="text-xl font-bold text-[#111827]">{koreanTitle}</h3>
         </div>
         <span
           className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm"
           style={{ backgroundColor: accentColor }}
         >
-          {koreanTitle} 아키텍처
+          {preset.badge}
         </span>
       </div>
 
       <p className="text-sm text-[#4B5563] leading-relaxed font-medium">{contentText}</p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center pt-2">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-2">
         <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="h-64 rounded-2xl shadow-md w-full" />
         <div className="space-y-4 flex flex-col justify-center">
-          <h4 className="text-base font-bold text-[#111827]">핵심 기능 및 상세 설명</h4>
-          <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed">
-            고객의 니즈에 최적화된 반응형 UI 레이아웃과 매끄러운 인터랙션을 제공합니다.
+          <h4 className="text-base font-bold text-[#111827]">{preset.subHeading}</h4>
+          <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed font-medium">
+            {preset.subDesc}
           </p>
-          <div>
+          <div className="pt-1">
             <button
               type="button"
-              onClick={() => onActionClick && onActionClick(`${koreanTitle} 상세 보기`)}
-              className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-transform hover:scale-105 cursor-pointer shadow"
+              onClick={() => onActionClick && onActionClick(preset.btnText)}
+              className="px-6 py-3 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 cursor-pointer shadow-md"
               style={{ backgroundColor: accentColor }}
             >
-              {koreanTitle} 알아보기
+              {preset.btnText}
             </button>
           </div>
         </div>
