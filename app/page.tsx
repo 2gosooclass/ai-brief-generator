@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useBriefStore } from "@/store/briefStore";
 import { motion, AnimatePresence } from "framer-motion";
-import CategoryTabs from "@/components/CategoryTabs";
+
 import TemplateGrid from "@/components/TemplateGrid";
 import LivePreviewModal from "@/components/LivePreviewModal";
 import GuideModal from "@/components/GuideModal";
@@ -362,20 +362,21 @@ export default function Home() {
           <div className="md:col-span-4 lg:col-span-3">
             <div className="md:sticky md:top-24 space-y-10">
               
-              {/* Step 01: 업종 선택 */}
+              {/* Step 01: 안내 가이드 */}
               <div className="space-y-4">
                 <div>
                   <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
                     isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
-                  }`}>Step 01</span>
+                  }`}>Guide</span>
                   <h3 className={`font-serif-kr text-lg font-bold transition-colors duration-700 ${
                     isClassicTheme ? "text-[#1C1410]" : "text-white"
-                  }`}>업종 카테고리</h3>
+                  }`}>시작하는 방법</h3>
                   <p className={`text-[11px] leading-relaxed mt-0.5 transition-colors duration-700 ${
                     isClassicTheme ? "text-[#8C7A6A]" : "text-white/60"
-                  }`}>제작 목적에 부합하는 업종 구조를 선택해 주십시오.</p>
+                  }`}>
+                    우측 디자인 목록에서 원하는 템플릿 카드를 선택하십시오. 상세 패널에서 브랜드 설정(이름, 로고, 메인 비주얼)을 완수한 후, AI 프롬프트를 원클릭 복사하여 연동할 수 있습니다.
+                  </p>
                 </div>
-                <CategoryTabs />
               </div>
 
               {/* 사용 가이드 컴팩트 리뉴얼 */}

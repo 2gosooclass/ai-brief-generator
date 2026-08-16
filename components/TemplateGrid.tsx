@@ -5,22 +5,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
 import TemplateCard from "./TemplateCard";
 import templatesData from "@/data/templates.json";
-import type { TemplatesData } from "@/lib/types";
+import type { TemplatesData, Template } from "@/lib/types";
 
 const data = templatesData as TemplatesData;
 
 export default function TemplateGrid() {
-  const { selectedCategory } = useBriefStore();
-
   const templates = useMemo(() => {
-    return data[selectedCategory] ?? [];
-  }, [selectedCategory]);
+    return Object.entries(data).flatMap(([catId, templatesList]) =>
+      templatesList.map((t: Template) => ({ ...t, categoryId: catId }))
+    );
+  }, []);
 
   return (
     <div>
       <AnimatePresence mode="wait">
         <motion.div
-          key={selectedCategory}
+          key="all-templates"
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -12 }}

@@ -28,6 +28,7 @@ export interface Template {
   badge: string | null;
   badgeColor: string | null;
   layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual";
+  categoryId?: string;
 }
 
 export interface TemplatesData {

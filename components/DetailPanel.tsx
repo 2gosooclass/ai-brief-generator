@@ -164,81 +164,115 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 🖼️ STEP 2: 이미지 처리 아코디언 ── */}
-              <div className="mx-3 mt-2">
-                <AccordionHeader
-                  title="이미지 처리 방식"
-                  icon="🖼️"
-                  isOpen={imageOpen}
-                  onToggle={() => setImageOpen(v => !v)}
-                  badge={imageMode === "stock" ? "스톡 자동" : "직접 업로드"}
-                />
+              {/* ── 🏷️ 브랜드 기본 설정 (상시 노출) ── */}
+              <div className="px-5 py-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
+                    1
+                  </div>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">브랜드 및 로고 설정</h3>
+                </div>
+                
+                <div className="space-y-3 bg-white p-4 rounded-xl border border-[#E8E0D8]">
+                  {/* 브랜드명 */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">브랜드명 (업체명)</label>
+                    <input
+                      type="text"
+                      placeholder="예: 블루문 카페"
+                      value={userInputs.businessName}
+                      onChange={(e) => setUserInput("businessName", e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                    />
+                  </div>
 
-                <AnimatePresence initial={false}>
-                  {imageOpen && (
-                    <motion.div
-                      key="image-content"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.25, ease: "easeInOut" }}
-                      className="overflow-hidden"
-                    >
-                      <div className="px-3 pb-4 pt-1">
-                        {/* 방식 토글 */}
-                        <div className="flex rounded-xl border border-[#E0D8D0] overflow-hidden mb-3">
-                          {(["stock", "upload"] as const).map((mode) => (
-                            <button
-                              key={mode}
-                              onClick={() => setImageMode(mode)}
-                              className={`flex-1 py-2 text-xs font-pretendard font-medium transition-all duration-200 flex items-center justify-center gap-1.5 ${
-                                imageMode === mode
-                                  ? "bg-[#1C1410] text-white"
-                                  : "bg-white text-[#5C4A3A] hover:bg-[#F5F0EA]"
-                              }`}
-                            >
-                              <span>{mode === "stock" ? "🖼️" : "📤"}</span>
-                              {mode === "stock" ? "스톡 이미지 자동" : "내 사진 업로드"}
-                            </button>
-                          ))}
+                  {/* 로고 설정 */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">로고 이미지</label>
+                    <div className="flex items-center gap-2">
+                      {logoUrl ? (
+                        <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setLogoUrl(null);
+                            }}
+                            className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
+                          >
+                            삭제
+                          </button>
                         </div>
-
-                        {/* 방식별 콘텐츠 */}
-                        <AnimatePresence mode="wait">
-                          {imageMode === "stock" ? (
-                            <motion.div key="stock"
-                              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
-                              <UnsplashPreview keyword={selectedTemplate.unsplashKeyword} />
-                            </motion.div>
-                          ) : (
-                            <motion.div key="upload"
-                              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}>
-                              <ImageUploader />
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      ) : (
+                        <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-[#FAFAF7] hover:bg-white transition-all">
+                          <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 로고 파일 업로드 (PNG, SVG)</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleLogoUpload}
+                            onClick={(e) => e.stopPropagation()}
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── ✏️ STEP 3: 수정 항목 아코디언 ── */}
-              <div className="mx-3 mt-2 mb-4">
+              {/* ── 🖼️ 대표 이미지 설정 (상시 노출) ── */}
+              <div className="px-5 py-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
+                    2
+                  </div>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">대표 이미지 설정</h3>
+                </div>
+
+                <div className="space-y-3">
+                  {/* 방식 토글 */}
+                  <div className="flex rounded-xl border border-[#E0D8D0] overflow-hidden">
+                    {(["stock", "upload"] as const).map((mode) => (
+                      <button
+                        key={mode}
+                        onClick={() => setImageMode(mode)}
+                        className={`flex-1 py-2 text-xs font-pretendard font-medium transition-all duration-200 flex items-center justify-center gap-1.5 cursor-pointer ${
+                          imageMode === mode
+                            ? "bg-[#1C1410] text-white"
+                            : "bg-white text-[#5C4A3A] hover:bg-[#F5F0EA]"
+                        }`}
+                      >
+                        <span>{mode === "stock" ? "🖼️" : "📤"}</span>
+                        {mode === "stock" ? "스톡 자동" : "직접 업로드"}
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* 방식별 콘텐츠 */}
+                  <div className="bg-white p-3 rounded-xl border border-[#E8E0D8]">
+                    {imageMode === "stock" ? (
+                      <UnsplashPreview keyword={selectedTemplate.unsplashKeyword} />
+                    ) : (
+                      <ImageUploader />
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <div className="mx-5 border-t border-[#E8E0D8]" />
+
+              {/* ── ⚙️ 세부 조정 아코디언 ── */}
+              <div className="mx-3 mt-2 mb-6">
                 <AccordionHeader
-                  title="수정 요청 항목"
+                  title="세부 정보 및 레이아웃 조정"
                   icon="⚙️"
                   isOpen={modifyOpen}
                   onToggle={() => setModifyOpen(v => !v)}
-                  badge={
-                    Object.values(modifyOptions).filter(Boolean).length > 0
-                      ? `${Object.values(modifyOptions).filter(Boolean).length}개 선택`
-                      : undefined
-                  }
                 />
 
                 <AnimatePresence initial={false}>
@@ -251,190 +285,85 @@ export default function DetailPanel() {
                       transition={{ duration: 0.25, ease: "easeInOut" }}
                       className="overflow-hidden"
                     >
-                      <div className="px-3 pb-4 pt-1 space-y-2">
-                        {MODIFY_OPTIONS.map((opt) => {
-                          const isChecked = modifyOptions[opt.key];
-                          return (
-                            <div key={opt.key}>
-                              {/* 체크박스 행 */}
-                              <div
-                                role="checkbox"
-                                aria-checked={isChecked}
-                                tabIndex={0}
-                                onClick={() => toggleModifyOption(opt.key)}
-                                onKeyDown={(e) => {
-                                  if (e.key === " " || e.key === "Enter") {
-                                    e.preventDefault();
-                                    toggleModifyOption(opt.key);
-                                  }
-                                }}
-                                className={`flex items-center gap-3 p-3 rounded-xl cursor-pointer border-2 select-none transition-all duration-200 ${
-                                  isChecked
-                                    ? "border-[#C8A97E] bg-[#FDF8F3]"
-                                    : "border-[#E8E0D8] bg-white hover:border-[#C8A97E]/50"
-                                }`}
-                              >
-                                {/* 시각적 체크박스 */}
-                                <div className={`w-5 h-5 rounded-md border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
-                                  isChecked ? "border-[#C8A97E] bg-[#C8A97E]" : "border-[#C5BBB0] bg-white"
-                                }`}>
-                                  {isChecked && (
-                                    <motion.svg
-                                      initial={{ scale: 0 }} animate={{ scale: 1 }}
-                                      className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
-                                    </motion.svg>
-                                  )}
-                                </div>
+                      <div className="px-3 pb-4 pt-1 space-y-3">
+                        
+                        {/* 1. 소개 문구 및 연락처 */}
+                        <div className="bg-white p-4 rounded-xl border border-[#E8E0D8] space-y-3">
+                          <h4 className="text-xs font-pretendard font-semibold text-[#1C1410] flex items-center gap-1.5">
+                            <span>📝</span> 소개 문구 및 연락처
+                          </h4>
+                          
+                          <div className="space-y-1">
+                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">한줄 소개</label>
+                            <textarea
+                              placeholder="예: 제주의 바람을 담은 핸드드립 카페"
+                              value={userInputs.description}
+                              onChange={(e) => setUserInput("description", e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                              rows={2}
+                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0] resize-none"
+                            />
+                          </div>
 
-                                {/* 텍스트 */}
-                                <div className="flex-1 min-w-0">
-                                  <div className="flex items-center gap-1.5">
-                                    <span className="text-sm">{opt.icon}</span>
-                                    <span className="text-xs font-pretendard font-medium text-[#1C1410]">{opt.label}</span>
-                                  </div>
-                                  <p className="text-[10px] text-[#8C7A6A] font-pretendard mt-0.5">{opt.desc}</p>
-                                </div>
+                          <div className="space-y-1">
+                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">연락처 및 링크</label>
+                            <input
+                              type="text"
+                              placeholder="예: 02-1234-5678 / info@cafe.com"
+                              value={userInputs.contact}
+                              onChange={(e) => setUserInput("contact", e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                            />
+                          </div>
+                        </div>
 
-                                {/* 화살표 */}
-                                <motion.svg
-                                  animate={{ rotate: isChecked ? 180 : 0 }} transition={{ duration: 0.2 }}
-                                  className="w-3.5 h-3.5 text-[#A09080] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                </motion.svg>
-                              </div>
+                        {/* 2. 포인트 컬러 변경 */}
+                        <div className="bg-white p-4 rounded-xl border border-[#E8E0D8] space-y-3">
+                          <h4 className="text-xs font-pretendard font-semibold text-[#1C1410] flex items-center gap-1.5">
+                            <span>🎨</span> 포인트 컬러 커스터마이징
+                          </h4>
+                          <div className="space-y-2">
+                            <p className="text-[10px] text-[#8C7A6A] font-pretendard flex items-center gap-1.5">
+                              기본 포인트 컬러:
+                              <span className="inline-block w-3 h-3 rounded-full border border-black/10 animate-pulse"
+                                style={{ backgroundColor: selectedTemplate.colors.accent }} />
+                              <code className="text-[#5C4A3A] font-mono">{selectedTemplate.colors.accent}</code>
+                            </p>
+                            <input
+                              type="text"
+                              placeholder="변경할 컬러 (예: 딥 네이비, #1A3A5C, 민트 계열)"
+                              value={userInputs.customColor}
+                              onChange={(e) => setUserInput("customColor", e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                            />
+                          </div>
+                        </div>
 
-                              {/* 입력 필드 */}
-                              <AnimatePresence>
-                                {isChecked && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.22 }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="pt-2 pb-1 px-1 space-y-2">
-                                      {opt.key === "textChange" && (
-                                        <div className="space-y-3">
-                                          {/* 로고 업로드 영역 */}
-                                          <div className="space-y-1">
-                                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">로고 이미지 설정</label>
-                                            <div className="flex items-center gap-2">
-                                              {logoUrl ? (
-                                                <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
-                                                  <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
-                                                  <button
-                                                    type="button"
-                                                    onClick={(e) => {
-                                                      e.stopPropagation();
-                                                      setLogoUrl(null);
-                                                    }}
-                                                    className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
-                                                  >
-                                                    삭제
-                                                  </button>
-                                                </div>
-                                              ) : (
-                                                <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-white transition-colors">
-                                                  <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 로고 파일 업로드 (PNG, SVG)</span>
-                                                  <input
-                                                    type="file"
-                                                    accept="image/*"
-                                                    onChange={handleLogoUpload}
-                                                    onClick={(e) => e.stopPropagation()}
-                                                    className="hidden"
-                                                  />
-                                                </label>
-                                              )}
-                                            </div>
-                                          </div>
+                        {/* 3. 섹션 배치 재구성 */}
+                        <div className="bg-white p-4 rounded-xl border border-[#E8E0D8] space-y-3">
+                          <h4 className="text-xs font-pretendard font-semibold text-[#1C1410] flex items-center gap-1.5">
+                            <span>↕️</span> 섹션 배치 구성
+                          </h4>
+                          <div className="space-y-2">
+                            <p className="text-[10px] text-[#8C7A6A] font-pretendard leading-relaxed">
+                              기본 배치 순서:<br />
+                              <span className="text-[#5C4A3A] font-mono font-semibold block mt-1">
+                                {selectedTemplate.sections.join(" → ")}
+                              </span>
+                            </p>
+                            <input
+                              type="text"
+                              placeholder="예: hero → about → gallery → contact"
+                              value={userInputs.sectionOrder}
+                              onChange={(e) => setUserInput("sectionOrder", e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                            />
+                          </div>
+                        </div>
 
-                                          {/* 업체명 */}
-                                          <div className="space-y-1">
-                                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">업체명</label>
-                                            <input
-                                              type="text"
-                                              placeholder="업체명 (예: 블루문 카페)"
-                                              value={userInputs.businessName}
-                                              onChange={(e) => setUserInput("businessName", e.target.value)}
-                                              onClick={(e) => e.stopPropagation()}
-                                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
-                                            />
-                                          </div>
-
-                                          {/* 한줄 소개 */}
-                                          <div className="space-y-1">
-                                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">한줄 소개</label>
-                                            <textarea
-                                              placeholder="한줄 소개 (예: 제주의 바람을 담은 핸드드립 카페)"
-                                              value={userInputs.description}
-                                              onChange={(e) => setUserInput("description", e.target.value)}
-                                              onClick={(e) => e.stopPropagation()}
-                                              rows={2}
-                                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0] resize-none"
-                                            />
-                                          </div>
-
-                                          {/* 연락처 */}
-                                          <div className="space-y-1">
-                                            <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">연락처</label>
-                                            <input
-                                              type="text"
-                                              placeholder="연락처 (예: 02-1234-5678 / info@cafe.com)"
-                                              value={userInputs.contact}
-                                              onChange={(e) => setUserInput("contact", e.target.value)}
-                                              onClick={(e) => e.stopPropagation()}
-                                              className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
-                                            />
-                                          </div>
-                                        </div>
-                                      )}
-
-                                      {opt.key === "colorChange" && (
-                                        <div className="space-y-1">
-                                          <p className="text-[10px] text-[#8C7A6A] font-pretendard flex items-center gap-1.5">
-                                            현재 포인트 컬러:
-                                            <span className="inline-block w-3 h-3 rounded-full border border-black/10"
-                                              style={{ backgroundColor: selectedTemplate.colors.accent }} />
-                                            <code className="text-[#5C4A3A]">{selectedTemplate.colors.accent}</code>
-                                          </p>
-                                          <input
-                                            type="text"
-                                            placeholder="변경할 컬러 (예: 딥 네이비, #1A3A5C, 민트 계열)"
-                                            value={userInputs.customColor}
-                                            onChange={(e) => setUserInput("customColor", e.target.value)}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
-                                          />
-                                        </div>
-                                      )}
-
-                                      {opt.key === "sectionReorder" && (
-                                        <div className="space-y-1">
-                                          <p className="text-[10px] text-[#8C7A6A] font-pretendard leading-relaxed">
-                                            기본 순서:{" "}
-                                            <span className="text-[#5C4A3A]">
-                                              {selectedTemplate.sections.join(" → ")}
-                                            </span>
-                                          </p>
-                                          <input
-                                            type="text"
-                                            placeholder="원하는 순서 (예: hero → gallery → menu → location)"
-                                            value={userInputs.sectionOrder}
-                                            onChange={(e) => setUserInput("sectionOrder", e.target.value)}
-                                            onClick={(e) => e.stopPropagation()}
-                                            className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
-                                          />
-                                        </div>
-                                      )}
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
                       </div>
                     </motion.div>
                   )}

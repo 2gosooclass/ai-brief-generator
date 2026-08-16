@@ -181,6 +181,7 @@ export function buildPrompt({
   selectedStockImages = [],
   modifyOptions,
   userInputs,
+  logoUrl,
 }: {
   template: Template;
   categoryId: string;
@@ -189,6 +190,7 @@ export function buildPrompt({
   selectedStockImages?: string[];
   modifyOptions: ModifyOptions;
   userInputs: UserInputs;
+  logoUrl: string | null;
 }): string {
   const categoryLabel = CATEGORY_LABELS[categoryId] ?? categoryId;
   const templateId = template.id;
@@ -199,7 +201,7 @@ export function buildPrompt({
       
       // 히어로나 첫 섹션은 Full Screen Layout
       if (s === "hero" || idx === 0) {
-        return `[섹션 ${idx + 1} 구조 패턴 유형: 전체 화면 레이아웃 (Full Screen Layout - Z-패턴 기본 반영)]\n  - ${label}: 화면 전체를 하나의 압도적인 비주얼로 채우고 미니멀 타이포그래피만 배치하여 브랜드 감성을 각인하십시오. 요소의 시선 흐름이 마지막에 CTA(행동 유도 버튼)로 명확히 꽂히게 유도해 주세요.`;
+        return `[섹션 ${idx + 1} 구조 패턴 유형: 전체 화면 레이아웃 (Full Screen Layout)]\n  - ${label}: 화면 전체를 하나의 압도적인 비주얼로 채우고 미니멀 타이포그래피만 배치하여 브랜드 감성을 각인하십시오. 요소의 시선 흐름이 마지막에 CTA(행동 유도 버튼)로 명확히 꽂히게 유도해 주세요.`;
       }
       
       // 템플릿별로 각 섹션 고유 레이아웃 인덱스 조회 (정의되지 않은 경우 i % 12 매핑)
@@ -251,49 +253,51 @@ ${urlsText}
     }
   }
 
-  // 수정 항목 섹션
+  // 수정 항목 섹션 (사용자가 입력을 작성했으면 자동으로 프롬프트 조립에 포함)
   const modifyParts: string[] = [];
 
-  if (modifyOptions.textChange) {
-    const bizName = userInputs.businessName
-      ? `"${userInputs.businessName}"`
-      : "[업체명을 여기에 적어주세요]";
-    const bizDesc = userInputs.description
-      ? `"${userInputs.description}"`
-      : "[업체 소개 문구를 여기에 적어주세요]";
+  const bizName = userInputs.businessName || template.name;
+  const bizDesc = userInputs.description || template.tagline;
+
+  // 브랜드명 및 설명 변경 지침 기본 적용
+  modifyParts.push(
+    `- **브랜드 정보 변경**: 업체명은 "${bizName}"으로 적용하고, 소개 문구(태그라인)는 "${bizDesc}"으로 반영해 주세요.`
+  );
+
+  if (logoUrl) {
     modifyParts.push(
-      `- **텍스트 변경**: 업체명은 ${bizName}으로, 소개 문구는 ${bizDesc}으로 교체해 주세요.`
+      `- **브랜드 로고 사용**: 제공된 로고 파일 URL(\`${logoUrl}\`)을 헤더 영역과 푸터 영역에 텍스트 대신 깔끔하고 균형 잡힌 비율로 삽입해 주세요.`
     );
   }
 
-  if (modifyOptions.colorChange) {
-    const targetColor = userInputs.customColor
-      ? `"${userInputs.customColor}" 계열`
-      : "[원하는 컬러를 여기에 적어주세요] 계열";
+  if (userInputs.contact) {
     modifyParts.push(
-      `- **컬러 변경**: 포인트 컬러(${template.colors.accent})를 ${targetColor}로 변경해 주세요. 전체 컬러 시스템이 자연스럽게 어우러지도록 조정해 주세요.`
+      `- **연락처 정보**: 연락처 및 문의하기 수단 정보로 "${userInputs.contact}"를 명시적으로 삽입해 주세요.`
     );
   }
 
-  if (modifyOptions.sectionReorder) {
-    const order = userInputs.sectionOrder
-      ? `"${userInputs.sectionOrder}"`
-      : "[원하는 섹션 순서를 여기에 적어주세요. 예: 히어로 > 메뉴 > 갤러리 > 위치]";
+  if (userInputs.customColor) {
     modifyParts.push(
-      `- **섹션 순서 변경**: 섹션을 다음 순서로 재배치해 주세요: ${order}`
+      `- **컬러 변경**: 포인트 컬러(액센트)를 기본값 대신 "${userInputs.customColor}" 계열로 변경하여 전체 컬러 시스템(메인, 서브, 배경)에 자연스럽고 미려하게 어우러지도록 설계해 주세요.`
+    );
+  }
+
+  if (userInputs.sectionOrder) {
+    modifyParts.push(
+      `- **섹션 순서 변경**: 섹션을 다음 순서대로 재배치해 주세요: "${userInputs.sectionOrder}"`
     );
   }
 
   const modifySection =
     modifyParts.length > 0
-      ? `\n## 수정 요청 사항\n${modifyParts.join("\n")}`
+      ? `\n## 상세 디자인 및 수정 요청 사항\n${modifyParts.join("\n")}`
       : "";
 
   // 최종 프롬프트 조합
   return `# ${categoryLabel} 웹사이트 제작 요청
 
 ## 기본 설정
-아래 디자인 스타일을 참고하여 "${template.name}" 스타일의 ${categoryLabel} 웹사이트를 만들어 주세요.
+아래 디자인 스타일을 참고하여 "${template.name}" 스타일의 ${categoryLabel} 웹사이트를 제작해 주세요.
 디자인 컨셉: ${template.tagline}
 레퍼런스 스타일: ${template.referenceStyle}
 

@@ -90,11 +90,12 @@ export const useBriefStore = create<BriefState>((set) => ({
     }),
 
   selectTemplate: (template) =>
-    set({
+    set((state) => ({
       selectedTemplate: template,
       isPanelOpen: true,
       selectedStockImages: [],
-    }),
+      selectedCategory: (template.categoryId as any) || state.selectedCategory,
+    })),
 
   openPanel: () =>
     set({

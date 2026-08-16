@@ -19,6 +19,7 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
     selectedStockImages,
     modifyOptions,
     userInputs,
+    logoUrl,
   } = useBriefStore();
 
   const [copied, setCopied] = useState(false);
@@ -34,9 +35,10 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
       selectedStockImages,
       modifyOptions,
       userInputs,
+      logoUrl,
     });
     setPrompt(built);
-  }, [selectedTemplate, selectedCategory, imageMode, uploadedImageUrl, selectedStockImages, modifyOptions, userInputs]);
+  }, [selectedTemplate, selectedCategory, imageMode, uploadedImageUrl, selectedStockImages, modifyOptions, userInputs, logoUrl]);
 
   const handleCopy = async () => {
     try {
