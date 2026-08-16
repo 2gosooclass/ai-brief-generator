@@ -14,16 +14,29 @@ const SECTION_KR: Record<string, string> = {
   skills: "보유 스킬", services: "제공 서비스", booking: "예약하기", links: "링크 모음",
   "latest-content": "최신 콘텐츠", shop: "쇼핑몰", newsletter: "뉴스레터",
   philosophy: "공간 철학", barista: "전문가 소개", reservations: "예약 안내",
-  stay: "객실 및 공간", architecture: "건축 이야기", reservation: "테이블 예약"
+  stay: "객실 및 공간", architecture: "건축 이야기", reservation: "테이블 예약",
+  chef: "셰프 소개", "course-menu": "코스 메뉴", "private-room": "프라이빗 룸"
 };
 
 const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
   cafe: [
-    "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80", // Korean BBQ Galbi / Meat Grill
+    "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80",
     "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80",
     "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
     "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
     "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80"
+  ],
+  academy: [
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80",
+    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80"
+  ],
+  personal: [
+    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1200&q=80",
+    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
+    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80",
+    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80"
   ],
   traditional: [
     "https://images.unsplash.com/photo-1590418606746-018840f9cd0f?w=1200&q=80",
@@ -31,11 +44,10 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=1200&q=80",
     "https://images.unsplash.com/photo-1538485399081-7191377e8241?w=1200&q=80"
   ],
-  personal: [
-    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1200&q=80",
-    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=1200&q=80",
-    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=1200&q=80",
-    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1200&q=80"
+  religion: [
+    "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1200&q=80",
+    "https://images.unsplash.com/photo-1548625361-195fe612b7a4?w=1200&q=80",
+    "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200&q=80"
   ],
   default: [
     "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80",
@@ -245,7 +257,7 @@ interface LayoutProps {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 1. 정통 K-BBQ & 갈비 하우스 (김치BBQ / 시카고 갈비 하우스 스타일)
+// 🌟 1. 정통 숯불 다이닝 & 그릴 레이아웃 (K-BBQ & Dining)
 // ════════════════════════════════════════════════════════════════════════
 function KoreanBBQRestaurantLayout({
   accentColor,
@@ -265,12 +277,12 @@ function KoreanBBQRestaurantLayout({
       {/* 1. Top Utility Bar */}
       <div className="bg-[#18181B] text-gray-300 text-xs py-2 px-8 flex justify-between items-center border-b border-white/10">
         <div className="flex gap-4 items-center">
-          <span className="text-red-500 font-bold">🔥 AUTHENTIC KOREAN BBQ</span>
+          <span className="text-red-500 font-bold">🔥 AUTHENTIC SIZZLING DINING</span>
           <span className="text-gray-600">|</span>
-          <span>RESERVATION & PICKUP: {contact || "(847) 983-8282"}</span>
+          <span>RESERVATION & INQUIRY: {contact || "(847) 983-8282"}</span>
         </div>
         <div className="flex gap-4">
-          <span className="text-amber-400 font-bold">★ 4.9 (Google & Yelp Reviews)</span>
+          <span className="text-amber-400 font-bold">★ 4.9 (Verified Gourmet Reviews)</span>
         </div>
       </div>
 
@@ -285,7 +297,7 @@ function KoreanBBQRestaurantLayout({
               <span className="text-2xl">🥩</span>
               <div>
                 <span className="text-lg font-black tracking-tight text-white uppercase">{bizName}</span>
-                <span className="block text-[10px] text-red-500 font-bold tracking-widest -mt-1">KOREAN BBQ & GALBI</span>
+                <span className="block text-[10px] text-red-500 font-bold tracking-widest -mt-1">PREMIUM GRILL & DINING</span>
               </div>
             </div>
           )}
@@ -302,14 +314,14 @@ function KoreanBBQRestaurantLayout({
         <div className="flex items-center gap-2.5">
           <button
             type="button"
-            onClick={() => onActionClick("ORDER ONLINE (DoorDash/UberEats)")}
+            onClick={() => onActionClick("ORDER ONLINE")}
             className="px-4 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-600 text-black shadow-md transition-transform hover:scale-105 cursor-pointer"
           >
-            ORDER ONLINE 🛵
+            ONLINE ORDER 🛵
           </button>
           <button
             type="button"
-            onClick={() => onActionClick("TABLE BOOKING")}
+            onClick={() => onActionClick("TABLE RESERVATION")}
             className="px-4 py-2 rounded-xl text-xs font-bold text-white shadow-md transition-transform hover:scale-105 cursor-pointer"
             style={{ backgroundColor: sizzleRed }}
           >
@@ -318,31 +330,30 @@ function KoreanBBQRestaurantLayout({
         </div>
       </nav>
 
-      {/* 3. Dark Sizzling Hero Banner (16:9 숯불 구이 화보) */}
+      {/* 3. Dark Sizzling Hero Banner */}
       <header id="hero" className="relative w-full h-[500px] md:h-[560px] overflow-hidden bg-black flex items-center justify-center">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090B] via-black/40 to-black/70" />
 
         <div className="relative z-20 max-w-5xl mx-auto px-6 w-full text-center space-y-6">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-red-950/80 border border-red-500/40 text-red-400 text-xs font-bold uppercase tracking-widest">
-            <span>🔥</span> SIZZLING PREMIUM PRIME GALBI & PORK BELLY
+            <span>🔥</span> SIZZLING PREMIUM PRIME STEAK & BBQ
           </div>
           <h1 className="text-4xl sm:text-6xl font-black text-white leading-tight drop-shadow-2xl">
-            AUTHENTIC KOREAN BBQ <br />
+            AUTHENTIC SIZZLING <br />
             <span style={{ color: sizzleRed }}>EXPERIENCE.</span>
           </h1>
           <p className="text-sm sm:text-base text-gray-300 font-medium max-w-xl mx-auto leading-relaxed">
-            {bizDesc || "참숯 위에서 완벽하게 구워내는 최상급 프라임 꽃갈비와 정통 한식 요리의 진수를 경험해 보세요."}
+            {bizDesc || "참숯 위에서 완벽하게 구워내는 최상급 프라임 꽃갈비와 정통 다이닝 요리의 진수를 경험해 보세요."}
           </p>
 
-          {/* 하단 실시간 테이블 예약 퀵 바 */}
           <div className="max-w-2xl mx-auto bg-[#18181B]/90 backdrop-blur-md p-4 rounded-2xl border border-white/20 shadow-2xl grid grid-cols-1 sm:grid-cols-4 gap-2 text-xs font-medium text-left">
             <input type="text" placeholder="📅 Date: Today" className="px-3 py-2 rounded-xl bg-black/50 border border-white/10 text-white outline-none" />
             <input type="text" placeholder="⏰ Time: 6:30 PM" className="px-3 py-2 rounded-xl bg-black/50 border border-white/10 text-white outline-none" />
             <input type="text" placeholder="👤 4 Guests" className="px-3 py-2 rounded-xl bg-black/50 border border-white/10 text-white outline-none" />
             <button
               type="button"
-              onClick={() => onActionClick("FIND A TABLE")}
+              onClick={() => onActionClick("FIND TABLE")}
               className="py-2 rounded-xl font-bold text-white shadow transition-transform hover:scale-105 cursor-pointer text-center"
               style={{ backgroundColor: sizzleRed }}
             >
@@ -376,7 +387,7 @@ function KoreanBBQRestaurantLayout({
         </div>
       </section>
 
-      {/* 5. 시그니처 K-BBQ 메뉴 쇼케이스 (3열 카드) */}
+      {/* 5. 시그니처 메뉴 쇼케이스 (3열 카드) */}
       <main className="max-w-6xl mx-auto px-6 py-16 w-full space-y-16 text-left">
         <section id="menu" className="space-y-8">
           <div className="flex items-end justify-between border-b border-white/10 pb-4">
@@ -437,7 +448,7 @@ function KoreanBBQRestaurantLayout({
               단체 회식 & 프라이빗 파티 룸 완비
             </h3>
             <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-lg">
-              10인부터 50인까지 수용 가능한 프라이빗 다이닝 룸과 최신식 환기 시스템으로 쾌적한 K-BBQ 파티를 즐기실 수 있습니다.
+              10인부터 50인까지 수용 가능한 프라이빗 다이닝 룸과 최신식 환기 시스템으로 쾌적한 다이닝 파티를 즐기실 수 있습니다.
             </p>
           </div>
           <div className="md:col-span-4 flex justify-start md:justify-end">
@@ -468,7 +479,7 @@ function KoreanBBQRestaurantLayout({
             <span className="text-xs font-bold text-red-500 uppercase">LOCATION & PARKING</span>
             <h3 className="text-lg font-bold text-white">매장 위치 및 주차 안내</h3>
             <p className="text-xs text-gray-300 leading-relaxed font-mono">
-              📍 8520 Golf Rd, Niles, IL 60714 (시카고 인근)<br />
+              📍 8520 Golf Rd, Niles, IL 60714<br />
               🚗 대형 무료 주차장 완비 (전용 파킹랏 제공)
             </p>
             <button
@@ -484,7 +495,7 @@ function KoreanBBQRestaurantLayout({
 
       {/* 8. K-BBQ Footer */}
       <footer className="w-full py-12 px-8 border-t border-white/10 bg-black text-center text-xs text-gray-500 mt-auto">
-        <p className="font-bold text-white mb-2 uppercase tracking-widest">{bizName} KOREAN BBQ</p>
+        <p className="font-bold text-white mb-2 uppercase tracking-widest">{bizName}</p>
         <p className="text-gray-400 mb-2">PHONE: {contact || "(847) 983-8282"}</p>
         <p className="opacity-60">© 2026 {bizName}. All Rights Reserved. Powered by Google Flow.</p>
       </footer>
@@ -493,7 +504,7 @@ function KoreanBBQRestaurantLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 2. 프리미엄 프랜차이즈 표준 풀와이드 (투썸플레이스 / 스타벅스 스타일)
+// 🌟 2. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
 // ════════════════════════════════════════════════════════════════════════
 function CorporateFranchiseLayout({
   accentColor,
@@ -666,6 +677,53 @@ function CorporateFranchiseLayout({
             </div>
           </div>
         </section>
+
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+          <div className="bg-white p-8 rounded-3xl border-2 border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-gray-500 uppercase">STORE LOCATOR</span>
+              <h3 className="text-xl font-black text-gray-900 mt-1">가까운 매장 찾기</h3>
+              <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+                현재 계신 위치에서 가장 가까운 {bizName} 매장의 위치와 영업 시간을 확인해 보세요.
+              </p>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <input
+                type="text"
+                placeholder="매장명 또는 지역 검색"
+                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 text-xs font-semibold text-gray-900 outline-none"
+              />
+              <button
+                type="button"
+                onClick={() => onActionClick("매장 검색")}
+                className="px-5 py-3 rounded-xl text-xs font-bold text-white shadow transition-transform hover:scale-105"
+                style={{ backgroundColor: brandRed }}
+              >
+                검색
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-[#1E1E24] text-white p-8 rounded-3xl border-2 border-gray-800 shadow-md space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-red-400 uppercase">FRANCHISE & BUSINESS</span>
+              <h3 className="text-xl font-black text-white mt-1">성공적인 창업 파트너</h3>
+              <p className="text-xs text-gray-300 mt-2 leading-relaxed">
+                체계적인 상권 분석과 전문 본사 지원 시스템으로 든든한 비즈니스 성장을 함께합니다.
+              </p>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => onActionClick("가맹 절차 알아보기")}
+                className="w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg"
+                style={{ backgroundColor: brandRed }}
+              >
+                가맹 개설 절차 및 상담 신청 &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
       </main>
 
       <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-left text-xs text-gray-500 mt-auto">
@@ -679,7 +737,7 @@ function CorporateFranchiseLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 3. 글로벌 모던 비즈니스 / 부동산 / 에이전시 (Horizon Realty 스타일)
+// 🌟 3. 글로벌 모던 비즈니스 / 부동산 / 에이전시 (완성형 풀 롱페이지)
 // ════════════════════════════════════════════════════════════════════════
 function ModernAgencyRealtyLayout({
   accentColor,
@@ -702,7 +760,7 @@ function ModernAgencyRealtyLayout({
             <img src={logoUrl} alt="Logo" className="h-8 object-contain" />
           ) : (
             <div className="flex items-center gap-2">
-              <span className="text-xl">🏠</span>
+              <span className="text-xl">🏢</span>
               <span className="text-lg font-black tracking-tight text-gray-900 uppercase">{bizName}</span>
             </div>
           )}
@@ -760,12 +818,132 @@ function ModernAgencyRealtyLayout({
           </div>
         </div>
       </header>
+
+      <section className="max-w-6xl mx-auto px-8 w-full -mt-6 relative z-20">
+        <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
+          {[
+            { num: "250+", label: "Properties Curated", desc: "엄선된 프리미엄 공간" },
+            { num: "120+", label: "Happy Clients", desc: "100% 검증된 고객 만족도" },
+            { num: "15+", label: "Years Experience", desc: "현업 15년 이상의 노하우" },
+            { num: "20+", label: "Global Locations", desc: "핵심 요충지 네트워크" },
+          ].map((stat, i) => (
+            <div key={i} className="space-y-1">
+              <h3 className="text-2xl sm:text-3xl font-black text-gray-900" style={{ color: i === 0 ? brandColor : undefined }}>
+                {stat.num}
+              </h3>
+              <p className="text-xs font-bold text-gray-800">{stat.label}</p>
+              <p className="text-[11px] text-gray-500 font-medium">{stat.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
+        <section className="space-y-8">
+          <div className="flex items-end justify-between border-b-2 border-gray-200 pb-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">FEATURED ARCHIVE</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-1">
+                Handpicked Spaces Just For <span style={{ color: brandColor }}>You.</span>
+              </h2>
+            </div>
+            <button type="button" onClick={() => onActionClick("View All")} className="text-xs font-bold text-gray-700 hover:text-black flex items-center gap-1">
+              전체 보기 &rarr;
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: "Modern Villa Residence", price: "₩ 1,450,000,000", loc: "서울 용산구 한남동", imgIdx: 1 },
+              { title: "Minimal Penthouse Studio", price: "₩ 2,100,000,000", loc: "서울 강남구 청담동", imgIdx: 2 },
+              { title: "Contemporary Heritage House", price: "₩ 1,850,000,000", loc: "경기도 성남시 판교동", imgIdx: 3 },
+            ].map((card, idx) => (
+              <div key={idx} className="bg-white rounded-3xl border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                <div className="h-52 overflow-hidden relative">
+                  <EditableImage sectionKey={`card-${idx}`} defaultUrl={images[card.imgIdx % images.length]} className="w-full h-full object-cover" />
+                  <span className="absolute top-3 left-3 bg-black/70 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
+                    EXCLUSIVE
+                  </span>
+                </div>
+                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-base font-bold text-gray-900">{card.title}</h4>
+                    <p className="text-xs text-gray-500 font-medium mt-1">📍 {card.loc}</p>
+                  </div>
+                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
+                    <span className="text-sm font-black text-gray-900">{card.price}</span>
+                    <button
+                      type="button"
+                      onClick={() => onActionClick(card.title)}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm"
+                      style={{ backgroundColor: brandColor }}
+                    >
+                      상세 보기
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="bg-[#111827] text-white rounded-3xl p-10 sm:p-14 relative overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div className="md:col-span-7 space-y-4">
+            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">EXCLUSIVE SERVICE</span>
+            <h3 className="text-3xl sm:text-4xl font-black leading-tight">
+              Let&apos;s Get You <br />The <span style={{ color: brandColor }}>Best Value.</span>
+            </h3>
+            <p className="text-xs sm:text-sm text-gray-300 font-medium leading-relaxed max-w-lg">
+              완벽한 시장 분석과 데이터 기반 전략으로 고객에게 가장 탁월한 결과만을 약속드립니다.
+            </p>
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => onActionClick("Free Consultation")}
+                className="px-7 py-3.5 rounded-xl text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
+                style={{ backgroundColor: brandColor }}
+              >
+                무료 상담 신청하기 &rarr;
+              </button>
+            </div>
+          </div>
+          <div className="md:col-span-5 flex justify-center">
+            <div className="w-full h-48 sm:h-60 rounded-2xl overflow-hidden relative shadow-2xl border-2 border-white/20">
+              <EditableImage sectionKey="video-banner" defaultUrl={images[4 % images.length]} className="w-full h-full object-cover opacity-80" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <button
+                  type="button"
+                  onClick={() => onActionClick("Play Video")}
+                  className="w-14 h-14 rounded-full bg-white/90 text-black flex items-center justify-center text-xl shadow-2xl hover:scale-110 transition-transform cursor-pointer"
+                >
+                  ▶
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="pt-4 text-center space-y-4">
+          <p className="text-xs font-bold text-gray-400 tracking-widest uppercase">AS SEEN ON TRUSTED MEDIA</p>
+          <div className="flex flex-wrap justify-center items-center gap-10 text-gray-400 font-black text-base sm:text-lg tracking-widest opacity-60">
+            <span>FORBES</span>
+            <span>ARCHITECTURAL DIGEST</span>
+            <span>ELLE DECOR</span>
+            <span>BLOOMBERG</span>
+          </div>
+        </section>
+      </main>
+
+      <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-center text-xs font-semibold text-gray-500 mt-auto">
+        <p className="font-bold text-gray-900 mb-2 uppercase tracking-widest">{bizName}</p>
+        <p className="opacity-70">© 2026 {bizName}. All Rights Reserved. Powered by Google Flow.</p>
+      </footer>
     </div>
   );
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 4. 헤리티지 럭셔리 스테이 / 전통 공방 (감찰댁 한옥마을 스타일)
+// 🌟 4. 헤리티지 럭셔리 스테이 / 전통 공방 (완성형 풀 롱페이지)
 // ════════════════════════════════════════════════════════════════════════
 function TraditionalStayHeritageLayout({
   accentColor,
@@ -807,14 +985,55 @@ function TraditionalStayHeritageLayout({
           <h1 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-md">
             {bizDesc || "사계절이 머무는 고즈넉한 쉼터"}
           </h1>
+          <p className="text-xs sm:text-sm text-gray-200 font-sans leading-relaxed max-w-lg mx-auto pt-2">
+            수백 년의 시간과 자연의 숨결이 깃든 공간에서 온전한 휴식과 사유의 시간을 경험해 보세요.
+          </p>
         </div>
       </header>
+
+      <main className="max-w-5xl mx-auto px-6 py-20 w-full space-y-24 text-left font-sans">
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div className="md:col-span-7 h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+            <EditableImage sectionKey="sec-1" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
+          </div>
+          <div className="md:col-span-5 bg-[#2C2118] text-[#F5F2EC] p-8 sm:p-10 rounded-3xl shadow-xl space-y-4 -mt-10 md:-mt-0 md:-ml-12 relative z-20">
+            <span className="text-xs tracking-widest text-[#C8A97E] uppercase font-serif-kr">HERITAGE STAY & RETREAT</span>
+            <h3 className="text-xl sm:text-2xl font-bold font-serif-kr">사계절이 아름다운 공간</h3>
+            <p className="text-xs text-gray-300 leading-relaxed">
+              정갈하게 손질된 소나무 정원과 창호 너머로 스며드는 달빛. 바쁜 도심에서 벗어나 자연과 호흡하는 완벽한 힐링을 선사합니다.
+            </p>
+            <div className="pt-2">
+              <button type="button" onClick={() => onActionClick("객실 안내")} className="px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow" style={{ backgroundColor: deepColor }}>
+                공간 둘러보기 &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+          <div className="md:col-span-5 bg-white p-8 sm:p-10 rounded-3xl border border-[#E5D7C5] shadow-md space-y-4">
+            <span className="text-xs tracking-widest text-amber-900 uppercase font-serif-kr">MAKING MEMORIES</span>
+            <h3 className="text-xl sm:text-2xl font-bold text-[#2C2118] font-serif-kr">소중한 사람과 함께하는 추억</h3>
+            <p className="text-xs text-gray-600 leading-relaxed">
+              흙과 나무로 지어진 전통 공간 속에서 다도 체험과 계절별 프로그램을 프라이빗하게 즐기실 수 있습니다.
+            </p>
+          </div>
+          <div className="md:col-span-7 h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
+            <EditableImage sectionKey="sec-2" defaultUrl={images[2 % images.length]} className="w-full h-full object-cover" />
+          </div>
+        </section>
+      </main>
+
+      <footer className="w-full py-12 px-8 bg-[#1C1410] text-[#E5D7C5] text-center text-xs mt-auto font-sans">
+        <p className="font-bold text-base font-serif-kr mb-2">{bizName}</p>
+        <p className="text-gray-400 opacity-80">© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 5. 럭셔리 여행 / 리조트 큐레이션 (The Art of Escape 스타일)
+// 🌟 5. 럭셔리 여행 / 리조트 큐레이션 (완성형 풀 롱페이지)
 // ════════════════════════════════════════════════════════════════════════
 function LuxuryTravelResortLayout({
   accentColor,
@@ -864,8 +1083,61 @@ function LuxuryTravelResortLayout({
               {bizDesc || "전 세계 가장 프라이빗하고 감각적인 럭셔리 리조트 아카이브를 선사합니다."}
             </p>
           </div>
+
+          <div className="lg:col-span-4 bg-white/90 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white text-gray-900 space-y-4 font-sans">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800">RESERVE YOUR STAY</h4>
+            <div className="space-y-2 text-xs font-medium">
+              <input type="text" placeholder="📅 Check-in — Check-out" className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white" />
+              <input type="text" placeholder="👤 2 Guests · 1 Suite" className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white" />
+            </div>
+            <button
+              type="button"
+              onClick={() => onActionClick("Request a Quote")}
+              className="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-transform hover:scale-102 cursor-pointer"
+              style={{ backgroundColor: luxuryGold }}
+            >
+              REQUEST A QUOTE
+            </button>
+          </div>
         </div>
       </header>
+
+      <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
+        <section className="space-y-8">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
+              JOURNEYS WORTH <br />REMEMBERING.
+            </h2>
+            <p className="text-xs sm:text-sm font-sans text-gray-600 mt-2">
+              오직 당신만을 위해 준비된 특별한 목적지들을 확인해 보세요.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
+            {[
+              { dest: "AMALFI COAST", sub: "Mediterranean Elegance", imgIdx: 1 },
+              { dest: "MALDIVES", sub: "Island Serenity", imgIdx: 2 },
+              { dest: "SERENGETI", sub: "Wild Sophistication", imgIdx: 3 },
+              { dest: "SANTORINI", sub: "Aegean Sunset Suite", imgIdx: 0 },
+            ].map((card, idx) => (
+              <div key={idx} className="bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
+                <div className="h-48 overflow-hidden">
+                  <EditableImage sectionKey={`resort-${idx}`} defaultUrl={images[card.imgIdx % images.length]} className="w-full h-full object-cover" />
+                </div>
+                <div className="p-4 space-y-1">
+                  <h4 className="text-xs font-bold text-gray-900 uppercase">{card.dest}</h4>
+                  <p className="text-[11px] text-gray-500">{card.sub}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      <footer className="w-full py-12 px-8 border-t border-gray-200 text-center text-xs font-sans text-gray-500 mt-auto">
+        <p className="font-bold text-gray-900 mb-2 uppercase">{bizName}</p>
+        <p className="opacity-70">© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -945,7 +1217,7 @@ export default function LivePreviewRenderer() {
     images,
     logoUrl,
     contact,
-    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["BBQ MENU", "TABLE RESERVATION", "ONLINE ORDER", "LOCATION"],
+    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["OVERVIEW", "SIGNATURE MENU", "RESERVATION", "LOCATION"],
     onActionClick: handleActionClick,
     onNavClick: handleNavClick,
   };
@@ -954,23 +1226,23 @@ export default function LivePreviewRenderer() {
   const layoutType = selectedTemplate.layoutType;
 
   const renderLayout = () => {
-    // 1. K-BBQ & 갈비 하우스 (김치BBQ / 시카고 갈비 하우스 스타일)
-    if (templateId === "cafe-kbbq" || layoutType === "kbbq") {
+    // 1. 정통 숯불 다이닝 & 그릴 레이아웃
+    if (templateId === "cafe-kbbq" || layoutType === "kbbq" || templateId.includes("finedining") || templateId.includes("modern")) {
       return <KoreanBBQRestaurantLayout {...props} />;
     }
-    // 2. 투썸플레이스 / 대형 브랜드 프랜차이즈 표준 레이아웃
+    // 2. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
     if (templateId === "cafe-corporate" || layoutType === "corporate") {
       return <CorporateFranchiseLayout {...props} />;
     }
-    // 3. 전통 한옥 스테이 / 전통 공방 (감찰댁 스타일)
+    // 3. 전통 한옥 스테이 / 전통 공방 레이아웃
     if (selectedCategory === "traditional" || templateId.includes("traditional")) {
       return <TraditionalStayHeritageLayout {...props} />;
     }
-    // 4. 럭셔리 리조트 / 여행 큐레이션 (The Art of Escape 스타일)
-    if (layoutType === "overlay" || selectedCategory === "personal") {
+    // 4. 럭셔리 여행 / 리조트 큐레이션 레이아웃
+    if (layoutType === "overlay" || selectedCategory === "personal" || selectedCategory === "religion") {
       return <LuxuryTravelResortLayout {...props} />;
     }
-    // 5. 기본: 글로벌 모던 비즈니스 / 부동산 / 에이전시 (Horizon Realty 스타일)
+    // 5. 기본: 글로벌 모던 비즈니스 / 부동산 / 에이전시 레이아웃
     return <ModernAgencyRealtyLayout {...props} />;
   };
 

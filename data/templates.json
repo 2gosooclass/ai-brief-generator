@@ -2,9 +2,9 @@
   "cafe": [
     {
       "id": "cafe-kbbq",
-      "name": "정통 K-BBQ & 갈비 하우스 (김치BBQ 스타일)",
-      "tagline": "시즐링 숯불구이 & 글로벌 K-다이닝 표준 아키텍처",
-      "description": "kimchibbq.com, chicagogalbihouse.com 스타일의 다크 시즐링 히어로, 테이블 실시간 예약 위젯, 프라임 갈비/삼겹살 메뉴 쇼케이스, 온라인 오더(DoorDash/UberEats) 표준 레이아웃입니다.",
+      "name": "정통 숯불 다이닝 & 그릴",
+      "tagline": "시즐링 숯불구이 & 프리미엄 다이닝 표준 아키텍처",
+      "description": "다크 시즐링 히어로, 테이블 실시간 예약 위젯, 프라임 구이 메뉴 쇼케이스, 온라인 오더 연동을 갖춘 프리미엄 다이닝 표준 레이아웃입니다.",
       "colors": {
         "primary": "#DC2626",
         "secondary": "#18181B",
@@ -19,17 +19,17 @@
       },
       "sections": ["hero", "menu", "story", "reservation", "location", "instagram"],
       "unsplashKeyword": "korean bbq galbi meat grill sizzling",
-      "referenceStyle": "authentic korean bbq restaurant dark sizzling",
-      "promptKeywords": ["K-BBQ", "갈비", "삼겹살", "김치BBQ", "시카고갈비", "한식당", "테이블예약"],
+      "referenceStyle": "authentic dining restaurant dark sizzling",
+      "promptKeywords": ["숯불구이", "다이닝", "프라임갈비", "레스토랑", "테이블예약"],
       "badge": "HOT TREND",
       "badgeColor": "red",
       "layoutType": "kbbq"
     },
     {
       "id": "cafe-corporate",
-      "name": "프리미엄 프랜차이즈 (투썸 스타일)",
+      "name": "프리미엄 프랜차이즈 & 코퍼레이트",
       "tagline": "대형 브랜드 & 프랜차이즈 표준 풀와이드 아키텍처",
-      "description": "투썸플레이스, 스타벅스 스타일의 풀와이드 슬라이더, 4단 퀵메뉴, 신제품 프로모션 쇼케이스, 매장 찾기/가맹 안내 표준 레이아웃입니다.",
+      "description": "풀와이드 슬라이더, 4단 퀵메뉴 바, 신제품 프로모션 쇼케이스, 매장 찾기 및 가맹 개설 안내 표준 레이아웃입니다.",
       "colors": {
         "primary": "#D62828",
         "secondary": "#1E1E24",
@@ -44,8 +44,8 @@
       },
       "sections": ["hero", "menu", "story", "location", "contact", "instagram"],
       "unsplashKeyword": "premium cafe dessert coffee",
-      "referenceStyle": "twosome corporate franchise standard",
-      "promptKeywords": ["투썸", "프랜차이즈", "대형카페", "디저트", "신메뉴", "매장찾기"],
+      "referenceStyle": "corporate franchise standard fullwidth",
+      "promptKeywords": ["프랜차이즈", "대형브랜드", "시그니처메뉴", "매장찾기", "가맹안내"],
       "badge": "BEST STANDARD",
       "badgeColor": "amber",
       "layoutType": "corporate"
