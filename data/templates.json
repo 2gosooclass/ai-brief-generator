@@ -382,79 +382,79 @@
   ],
   "religion": [
     {
-      "id": "religion-church",
-      "name": "성스러운 교회",
-      "tagline": "사랑과 은혜가 넘치는 공동체",
-      "description": "화이트와 골드 톤으로 성스럽고 포용적인 분위기를 전달합니다.",
+      "id": "religion-gateway",
+      "name": "모던 워십 & 글로벌 교회",
+      "tagline": "하나님의 사랑과 은혜가 머무는 믿음의 공동체",
+      "description": "상단 4단 핵심 블록(NEW HERE, ABOUT US, MINISTRIES, GIVE), 찬양 집회 대형 히어로, 3단 퀵 안내 바(예배시간/오시는길/설교듣기), 최신 설교 말씀 3열 카드를 갖춘 모던 교회 표준 레이아웃입니다.",
       "colors": {
-        "primary": "#3B4A6B",
-        "secondary": "#E8D8C0",
-        "accent": "#C8A97E",
-        "bg": "#FAFAFA",
-        "surface": "#F2F2F2",
-        "text": "#2C3539"
+        "primary": "#0D9488",
+        "secondary": "#115E59",
+        "accent": "#0D9488",
+        "bg": "#FFFFFF",
+        "surface": "#F0FDFA",
+        "text": "#0F172A"
       },
       "fonts": {
-        "heading": "Nanum Myeongjo",
-        "body": "Gowun Batang"
+        "heading": "Pretendard",
+        "body": "Pretendard"
       },
       "sections": ["hero", "about", "events", "gallery", "location", "contact"],
-      "unsplashKeyword": "church worship community",
-      "referenceStyle": "elegant church religious",
-      "promptKeywords": ["교회", "성당", "예배", "종교", "공동체"],
-      "badge": "추천",
-      "badgeColor": "yellow",
+      "unsplashKeyword": "church worship praising crowd concert community",
+      "referenceStyle": "modern worship church community gateway",
+      "promptKeywords": ["교회", "주일예배", "설교말씀", "새가족", "온라인헌금", "찬양"],
+      "badge": "BEST STANDARD",
+      "badgeColor": "green",
+      "layoutType": "corporate"
+    },
+    {
+      "id": "religion-heritage",
+      "name": "전통 한인 장로 & 감리교회",
+      "tagline": "말씀과 기도로 든든히 서가는 경건한 신앙 공동체",
+      "description": "주일 대예배 실시간 라이브 중계, 담임목사 환영사, 주보 PDF 다운로드, 다음세대 교회학교 및 구역 사역 안내 표준 레이아웃입니다.",
+      "colors": {
+        "primary": "#1E3A8A",
+        "secondary": "#172554",
+        "accent": "#2563EB",
+        "bg": "#F8FAFC",
+        "surface": "#EFF6FF",
+        "text": "#0F172A"
+      },
+      "fonts": {
+        "heading": "Pretendard",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "about", "events", "gallery", "location", "contact"],
+      "unsplashKeyword": "korean church sanctuary bible worship cross",
+      "referenceStyle": "traditional korean methodist presbyterian church",
+      "promptKeywords": ["한인교회", "장로교회", "감리교회", "주일대예배", "주보다운로드"],
+      "badge": "HERITAGE",
+      "badgeColor": "blue",
       "layoutType": "vertical"
     },
     {
       "id": "religion-ngo",
-      "name": "희망 비영리단체",
-      "tagline": "세상을 바꾸는 작은 실천",
-      "description": "그린 계열의 색상으로 희망과 연대의 메시지를 강조합니다.",
+      "name": "나눔 & 비영리 NGO 커뮤니티",
+      "tagline": "세상을 바꾸는 따뜻한 연대와 사랑의 실천",
+      "description": "국내외 선교 및 구호 활동 스토리, 정기 후원 신청, 투명한 후원금 내역을 갖춘 비영리 단체 표준 레이아웃입니다.",
       "colors": {
-        "primary": "#2D6A4F",
-        "secondary": "#52B788",
-        "accent": "#95D5B2",
-        "bg": "#F5FAF7",
-        "surface": "#E8F5E9",
-        "text": "#1B4332"
+        "primary": "#15803D",
+        "secondary": "#166534",
+        "accent": "#22C55E",
+        "bg": "#F0FDF4",
+        "surface": "#DCFCE7",
+        "text": "#14532D"
       },
       "fonts": {
-        "heading": "Gothic A1",
+        "heading": "Pretendard",
         "body": "Pretendard"
       },
       "sections": ["hero", "story", "events", "gallery", "contact"],
-      "unsplashKeyword": "charity volunteer hope",
-      "referenceStyle": "ngo charity organization",
-      "promptKeywords": ["비영리단체", "NGO", "기부", "봉사", "희망"],
-      "badge": null,
-      "badgeColor": null,
-      "layoutType": "grid"
-    },
-    {
-      "id": "religion-community",
-      "name": "온기 지역 커뮤니티",
-      "tagline": "함께 만들어가는 따뜻한 이웃",
-      "description": "오렌지와 따뜻한 브라운 컬러로 친근하고 활동적인 커뮤니티를 표현합니다.",
-      "colors": {
-        "primary": "#D08C60",
-        "secondary": "#997B66",
-        "accent": "#E5989B",
-        "bg": "#FFF1E6",
-        "surface": "#FDE2E4",
-        "text": "#6D6875"
-      },
-      "fonts": {
-        "heading": "Gowun Batang",
-        "body": "Pretendard"
-      },
-      "sections": ["hero", "about", "events", "gallery", "contact"],
-      "unsplashKeyword": "community people gathering",
-      "referenceStyle": "community friendly local",
-      "promptKeywords": ["커뮤니티", "모임", "이웃", "활동", "친목"],
-      "badge": "신규",
-      "badgeColor": "orange",
-      "layoutType": "overlay"
+      "unsplashKeyword": "charity volunteer hope community sharing",
+      "referenceStyle": "ngo charity volunteer community",
+      "promptKeywords": ["비영리단체", "NGO", "후원신청", "봉사활동", "선교"],
+      "badge": "COMMUNITY",
+      "badgeColor": "green",
+      "layoutType": "casual"
     }
   ],
   "traditional": [
