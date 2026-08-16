@@ -23,6 +23,7 @@ interface BriefState {
   sectionImages: Record<string, string>; // 섹션별 개별 이미지 설정
   activeEditingSection: string | null; // 현재 편집 중인 섹션 키
   logoUrl: string | null; // 사용자 업로드 로고 URL
+  referenceScreenshotUrl: string | null; // 레퍼런스 스크린샷 이미지 URL
 
   // 수정 항목 체크박스
   modifyOptions: ModifyOptions;
@@ -39,6 +40,7 @@ interface BriefState {
   setUploadedImage: (url: string, file: File) => void;
   clearUploadedImage: () => void;
   setLogoUrl: (url: string | null) => void; // 로고 등록 액션
+  setReferenceScreenshotUrl: (url: string | null) => void; // 레퍼런스 스크린샷 등록 액션
   toggleStockImage: (url: string) => void; // 스톡 이미지 선택/해제 토글
   setEditingSection: (section: string | null) => void;
   setSectionImage: (section: string, url: string) => void;
@@ -62,6 +64,8 @@ const defaultUserInputs: UserInputs = {
   sectionOrder: "",
   pickedColor: "",
   contact: "",
+  referenceUrl: "",
+  referenceScreenshotUrl: "",
 };
 
 export const useBriefStore = create<BriefState>((set) => ({
@@ -80,6 +84,7 @@ export const useBriefStore = create<BriefState>((set) => ({
   userInputs: defaultUserInputs,
 
   logoUrl: null,
+  referenceScreenshotUrl: null,
 
   setCategory: (category) =>
     set({
@@ -144,6 +149,11 @@ export const useBriefStore = create<BriefState>((set) => ({
   setLogoUrl: (url) =>
     set({
       logoUrl: url
+    }),
+
+  setReferenceScreenshotUrl: (url) =>
+    set({
+      referenceScreenshotUrl: url
     }),
 
   toggleStockImage: (url) =>
@@ -217,6 +227,7 @@ export const useBriefStore = create<BriefState>((set) => ({
       sectionImages: {},
       activeEditingSection: null,
       logoUrl: null,
+      referenceScreenshotUrl: null,
       modifyOptions: defaultModifyOptions,
       userInputs: defaultUserInputs,
     }),

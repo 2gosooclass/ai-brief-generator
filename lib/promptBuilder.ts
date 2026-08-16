@@ -4,6 +4,8 @@ const CATEGORY_LABELS: Record<string, string> = {
   cafe: "카페·레스토랑",
   academy: "학원·강좌",
   personal: "개인 브랜드",
+  religion: "종교·NGO",
+  traditional: "전통 공방"
 };
 
 const SECTION_LABELS: Record<string, string> = {
@@ -42,119 +44,64 @@ const SECTION_LABELS: Record<string, string> = {
   philosophy: "커피 철학",
   barista: "바리스타 소개",
   reservations: "예약하기",
+  chef: "셰프 소개",
+  "course-menu": "코스 메뉴",
+  reservation: "예약 폼",
+  "private-room": "프라이빗 룸",
+  "menu-board": "전체 메뉴판",
+  waiting: "웨이팅 안내",
+  reviews: "고객 리뷰"
 };
 
 // 🌐 템플릿별로 각 섹션에 어울리는 12대 레이아웃 구조 패턴 고유 매핑 (획일화 탈피 마스터 테이블)
 const TEMPLATE_SECTION_PATTERNS: Record<string, Record<string, number>> = {
   "cafe-minimal": {
-    "about": 8,       // 지그재그 레이아웃
-    "menu": 0,        // 그리드 레이아웃 (모듈형)
-    "gallery": 7,     // 갤러리 레이아웃
-    "location": 1,    // 분할 화면 레이아웃 (50:50)
-    "instagram": 4    // 사이드 스크롤 레이아웃
+    "about": 8, "menu": 0, "gallery": 7, "location": 1, "instagram": 4
   },
   "cafe-vintage": {
-    "story": 8,       // 지그재그 레이아웃
-    "menu": 5,        // 카드 레이아웃
-    "events": 11,     // 애니메이션 레이아웃
-    "gallery": 7,     // 갤러리 레이아웃
-    "contact": 1      // 분할 화면 레이아웃
+    "story": 8, "menu": 5, "events": 11, "gallery": 7, "contact": 1
   },
   "cafe-modern": {
-    "philosophy": 3,  // 전체 화면 레이아웃 (감성 타격)
-    "menu": 0,        // 그리드 레이아웃
-    "barista": 2,     // 비대칭 레이아웃 (70:30)
-    "reservations": 10 // 인터랙티브 레이아웃
+    "philosophy": 3, "menu": 0, "barista": 2, "reservations": 10
   },
   "cafe-finedining": {
-    "chef": 2,        // 비대칭 레이아웃 (70:30)
-    "course-menu": 6, // 잡지 레이아웃
-    "reservation": 1, // 분할 화면 레이아웃
-    "private-room": 3 // 전체 화면 레이아웃
+    "chef": 2, "course-menu": 6, "reservation": 1, "private-room": 3
   },
   "cafe-casual": {
-    "menu-board": 0,  // 그리드 레이아웃
-    "waiting": 10,    // 인터랙티브 레이아웃
-    "location": 1,    // 분할 화면 레이아웃
-    "reviews": 5      // 카드 레이아웃
+    "menu-board": 0, "waiting": 10, "location": 1, "reviews": 5
   },
   "academy-trust": {
-    "features": 0,    // 그리드 레이아웃
-    "curriculum": 8,  // 지그재그 레이아웃
-    "teachers": 6,    // 잡지 레이아웃
-    "results": 9,     // F-패턴 레이아웃
-    "schedule": 5,    // 카드 레이아웃
-    "contact": 1      // 분할 화면 레이아웃
+    "features": 0, "curriculum": 8, "teachers": 6, "results": 9, "schedule": 5, "contact": 1
   },
   "academy-creative": {
-    "classes": 0,     // 그리드 레이아웃
-    "gallery": 7,     // 갤러리 레이아웃
-    "instructors": 2, // 비대칭 레이아웃
-    "testimonials": 5, // 카드 레이아웃
-    "pricing": 9,     // F-패턴 레이아웃
-    "enroll": 10      // 인터랙티브 레이아웃
+    "classes": 0, "gallery": 7, "instructors": 2, "testimonials": 5, "pricing": 9, "enroll": 10
   },
   "academy-online": {
-    "features": 0,    // 그리드 레이아웃
-    "courses": 5,     // 카드 레이아웃
-    "demo": 10,       // 인터랙티브 레이아웃
-    "pricing": 9,     // F-패턴 레이아웃
-    "faq": 8,         // 지그재그 레이아웃
-    "cta": 11         // 애니메이션 레이아웃
+    "features": 0, "courses": 5, "demo": 10, "pricing": 9, "faq": 8, "cta": 11
   },
   "personal-portfolio": {
-    "about": 8,       // 지그재그
-    "works": 7,       // 갤러리
-    "process": 0,     // 그리드
-    "skills": 5,      // 카드
-    "contact": 1      // 분할 화면
+    "about": 8, "works": 7, "process": 0, "skills": 5, "contact": 1
   },
   "personal-consultant": {
-    "about": 8,       // 지그재그
-    "services": 0,    // 그리드
-    "results": 9,     // F-패턴
-    "testimonials": 5, // 카드
-    "booking": 10     // 인터랙티브
+    "about": 8, "services": 0, "results": 9, "testimonials": 5, "booking": 10
   },
   "personal-creator": {
-    "links": 5,       // 카드
-    "latest-content": 4, // 사이드 스크롤
-    "shop": 0,        // 그리드
-    "about": 8,       // 지그재그
-    "newsletter": 1   // 분할 화면
+    "links": 5, "latest-content": 4, "shop": 0, "about": 8, "newsletter": 1
   },
   "religion-church": {
-    "about": 8,       // 지그재그
-    "events": 11,     // 애니메이션
-    "gallery": 7,     // 갤러리
-    "location": 1,    // 분할 화면
-    "contact": 0      // 그리드
+    "about": 8, "events": 11, "gallery": 7, "location": 1, "contact": 0
   },
   "religion-ngo": {
-    "story": 8,       // 지그재그
-    "events": 11,     // 애니메이션
-    "gallery": 7,     // 갤러리
-    "contact": 1      // 분할 화면
+    "story": 8, "events": 11, "gallery": 7, "contact": 1
   },
   "religion-community": {
-    "about": 8,       // 지그재그
-    "events": 11,     // 애니메이션
-    "gallery": 7,     // 갤러리
-    "contact": 1      // 분할 화면
+    "about": 8, "events": 11, "gallery": 7, "contact": 1
   },
   "traditional-knots": {
-    "about": 8,       // 지그재그
-    "classes": 0,     // 그리드
-    "gallery": 7,     // 갤러리
-    "location": 1,    // 분할 화면
-    "contact": 5      // 카드
+    "about": 8, "classes": 0, "gallery": 7, "location": 1, "contact": 5
   },
   "traditional-pottery": {
-    "philosophy": 3,  // 전체 화면
-    "courses": 0,     // 그리드
-    "gallery": 7,     // 갤러리
-    "location": 1,    // 분할 화면
-    "contact": 5      // 카드
+    "philosophy": 3, "courses": 0, "gallery": 7, "location": 1, "contact": 5
   }
 };
 
@@ -182,6 +129,7 @@ export function buildPrompt({
   modifyOptions,
   userInputs,
   logoUrl,
+  referenceScreenshotUrl,
 }: {
   template: Template;
   categoryId: string;
@@ -191,6 +139,7 @@ export function buildPrompt({
   modifyOptions: ModifyOptions;
   userInputs: UserInputs;
   logoUrl: string | null;
+  referenceScreenshotUrl: string | null;
 }): string {
   const categoryLabel = CATEGORY_LABELS[categoryId] ?? categoryId;
   const templateId = template.id;
@@ -199,12 +148,10 @@ export function buildPrompt({
     .map((s, idx) => {
       const label = SECTION_LABELS[s] ?? s;
       
-      // 히어로나 첫 섹션은 Full Screen Layout
       if (s === "hero" || idx === 0) {
         return `[섹션 ${idx + 1} 구조 패턴 유형: 전체 화면 레이아웃 (Full Screen Layout)]\n  - ${label}: 화면 전체를 하나의 압도적인 비주얼로 채우고 미니멀 타이포그래피만 배치하여 브랜드 감성을 각인하십시오. 요소의 시선 흐름이 마지막에 CTA(행동 유도 버튼)로 명확히 꽂히게 유도해 주세요.`;
       }
       
-      // 템플릿별로 각 섹션 고유 레이아웃 인덱스 조회 (정의되지 않은 경우 i % 12 매핑)
       const patternIdx = TEMPLATE_SECTION_PATTERNS[templateId]?.[s] ?? ((idx - 1) % PATTERN_TYPES.length);
       const pattern = PATTERN_TYPES[patternIdx];
       
@@ -225,7 +172,6 @@ export function buildPrompt({
     `  - 본문 폰트: ${template.fonts.body}`,
   ].join("\n");
 
-  // 이미지 섹션
   let imageSection = "";
   if (imageMode === "upload" && uploadedImageUrl) {
     imageSection = `
@@ -238,7 +184,6 @@ export function buildPrompt({
 ## 이미지 처리
 저는 직접 이미지를 제공할 예정입니다. 히어로와 갤러리 섹션은 [이미지 URL을 여기에 넣어주세요] 형태로 플레이스홀더를 남겨두고, 나머지는 Unsplash에서 "${template.unsplashKeyword}" 키워드로 어울리는 이미지를 찾아 사용해 주세요.`;
   } else {
-    // 스톡 이미지 모드
     if (selectedStockImages && selectedStockImages.length > 0) {
       const urlsText = selectedStockImages.map((url) => `- ${url}`).join("\n");
       imageSection = `
@@ -253,13 +198,10 @@ ${urlsText}
     }
   }
 
-  // 수정 항목 섹션 (사용자가 입력을 작성했으면 자동으로 프롬프트 조립에 포함)
   const modifyParts: string[] = [];
-
   const bizName = userInputs.businessName || template.name;
   const bizDesc = userInputs.description || template.tagline;
 
-  // 브랜드명 및 설명 변경 지침 기본 적용
   modifyParts.push(
     `- **브랜드 정보 변경**: 업체명은 "${bizName}"으로 적용하고, 소개 문구(태그라인)는 "${bizDesc}"으로 반영해 주세요.`
   );
@@ -267,6 +209,18 @@ ${urlsText}
   if (logoUrl) {
     modifyParts.push(
       `- **브랜드 로고 사용**: 제공된 로고 파일 URL(\`${logoUrl}\`)을 헤더 영역과 푸터 영역에 텍스트 대신 깔끔하고 균형 잡힌 비율로 삽입해 주세요.`
+    );
+  }
+
+  if (userInputs.referenceUrl) {
+    modifyParts.push(
+      `- **레퍼런스 웹사이트 참조**: 다음 레퍼런스 URL의 레이아웃 구조, 네비게이션 형태 및 전반적인 UX 흐름을 분석하고 모사하여 제작해 주세요: ${userInputs.referenceUrl}`
+    );
+  }
+
+  if (referenceScreenshotUrl) {
+    modifyParts.push(
+      `- **레퍼런스 스크린샷 모사**: 제공된 레퍼런스 캡처 스크린샷 이미지(\`${referenceScreenshotUrl}\`)의 시각적 레이아웃, 카드 배열, 데코레이션 디테일 및 컴포넌트 마감 처리를 충실하게 모사하여 프론트엔드 스타일링을 설계해 주세요.`
     );
   }
 
@@ -293,7 +247,24 @@ ${urlsText}
       ? `\n## 상세 디자인 및 수정 요청 사항\n${modifyParts.join("\n")}`
       : "";
 
-  // 최종 프롬프트 조합
+  const midjourneyPrompt = `A high-end cinematic editorial shot of ${template.unsplashKeyword}, ${template.referenceStyle} style, detailed visual architecture, luxury lighting, ultra realistic, 8k resolution, aspect ratio 16:9 --ar 16:9 --v 6.0`;
+  const runwayPrompt = `Slow cinematic sweeping panning shot of ${template.unsplashKeyword}, soft golden hour sunlight, ${template.referenceStyle} atmosphere, highly detailed, ultra realistic 4k resolution, cinematic camera movement`;
+
+  const recommendedMediaSection = `
+## 부록: 추천 미디어(이미지/비디오) 생성 프롬프트
+이 웹사이트의 히어로 배경이나 랜딩페이지 비주얼에 들어갈 이미지/비디도를 생성할 때 아래 프롬프트를 복사하여 AI 생성 툴(Midjourney, DALL-E, Runway, Luma 등)에 입력해 보세요.
+
+- **Midjourney / DALL-E 3용 이미지 생성 프롬프트**:
+  \`\`\`text
+  ${midjourneyPrompt}
+  \`\`\`
+
+- **Runway Gen-3 / Luma Dream Machine용 비디오 생성 프롬프트**:
+  \`\`\`text
+  ${runwayPrompt}
+  \`\`\`
+`.trim();
+
   return `# ${categoryLabel} 웹사이트 제작 요청
 
 ## 기본 설정
@@ -313,6 +284,8 @@ ${fontsText}
 (한글 폰트가 지원되지 않으면 Google Fonts에서 Noto Serif KR과 Pretendard를 불러와 사용해 주세요.)
 ${imageSection}
 ${modifySection}
+
+${recommendedMediaSection}
 
 ## 기술 요구사항
 - 반응형 웹사이트로 만들어 주세요 (모바일 우선 설계).

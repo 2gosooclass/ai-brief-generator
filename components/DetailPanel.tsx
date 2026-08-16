@@ -69,6 +69,8 @@ export default function DetailPanel() {
     resetPanel,
     logoUrl,
     setLogoUrl,
+    referenceScreenshotUrl,
+    setReferenceScreenshotUrl,
   } = useBriefStore();
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,6 +81,20 @@ export default function DetailPanel() {
         const result = event.target?.result;
         if (typeof result === "string") {
           setLogoUrl(result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleReferenceScreenshotUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const result = event.target?.result;
+        if (typeof result === "string") {
+          setReferenceScreenshotUrl(result);
         }
       };
       reader.readAsDataURL(file);
@@ -225,11 +241,72 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 🖼️ 대표 이미지 설정 (상시 노출) ── */}
+              {/* ── 📎 STEP 2: 레퍼런스 및 감성 설정 (상시 노출) ── */}
               <div className="px-5 py-4 space-y-3">
                 <div className="flex items-center gap-2">
                   <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
                     2
+                  </div>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">레퍼런스 및 감성 설정</h3>
+                </div>
+                
+                <div className="space-y-3 bg-white p-4 rounded-xl border border-[#E8E0D8]">
+                  {/* 레퍼런스 URL */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">레퍼런스 웹사이트 URL</label>
+                    <input
+                      type="url"
+                      placeholder="예: https://awwwards.com/site-example"
+                      value={userInputs.referenceUrl}
+                      onChange={(e) => setUserInput("referenceUrl", e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                    />
+                  </div>
+
+                  {/* 레퍼런스 스크린샷 */}
+                  <div className="space-y-1">
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">레퍼런스 스크린샷</label>
+                    <div className="flex items-center gap-2">
+                      {referenceScreenshotUrl ? (
+                        <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={referenceScreenshotUrl} alt="Reference Preview" className="max-w-full max-h-full object-contain" />
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setReferenceScreenshotUrl(null);
+                            }}
+                            className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
+                          >
+                            삭제
+                          </button>
+                        </div>
+                      ) : (
+                        <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-[#FAFAF7] hover:bg-white transition-all">
+                          <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 스크린샷 업로드 (PNG, JPG)</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleReferenceScreenshotUpload}
+                            onClick={(e) => e.stopPropagation()}
+                            className="hidden"
+                          />
+                        </label>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mx-5 border-t border-[#E8E0D8]" />
+
+              {/* ── 🖼️ 대표 이미지 설정 (상시 노출) ── */}
+              <div className="px-5 py-4 space-y-3">
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
+                    3
                   </div>
                   <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">대표 이미지 설정</h3>
                 </div>

@@ -55,6 +55,8 @@ export interface UserInputs {
   sectionOrder: string;
   pickedColor: string;
   contact: string;
+  referenceUrl: string;
+  referenceScreenshotUrl: string;
 }
 
 export interface UnsplashPhoto {
