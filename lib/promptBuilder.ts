@@ -257,15 +257,25 @@ ${urlsText}
   const runwayPrompt = `Slow cinematic sweeping panning shot of ${template.unsplashKeyword}, soft golden hour sunlight, ${template.referenceStyle} atmosphere, highly detailed, ultra realistic 4k resolution, cinematic camera movement`;
 
   const recommendedMediaSection = `
-## 부록: 추천 미디어(이미지/비디오) 생성 프롬프트
-이 웹사이트의 히어로 배경이나 랜딩페이지 비주얼에 들어갈 이미지/비디도를 생성할 때 아래 프롬프트를 복사하여 AI 생성 툴(Midjourney, DALL-E, Runway, Luma 등)에 입력해 보세요.
+## 부록: 추천 미디어(이미지/비디오) 생성 프롬프트 & 규격 가이드
+이 웹사이트의 히어로 배경이나 랜딩페이지 비주얼에 들어갈 이미지/비디오를 생성할 때 아래 규격과 프롬프트를 복사하여 AI 생성 툴(Midjourney, DALL-E 3, Runway, Luma 등)에 입력해 보세요.
 
-- **Midjourney / DALL-E 3용 이미지 생성 프롬프트**:
+### 📐 웹사이트 컴포넌트별 권장 이미지 생성 규격
+| 적용 위치 | 추천 비율 (Midjourney) | 권장 픽셀 해상도 (PC/일반) | DALL-E 3 전용 해상도 |
+| :--- | :--- | :--- | :--- |
+| **PC 히어로 메인 배경** | 16:9 (\`--ar 16:9\`) | 1920 × 1080 px | 1792 × 1024 px |
+| **에디토리얼 / 매거진 화보** | 3:4 (\`--ar 3:4\`) | 1200 × 1600 px | 1024 × 1365 px |
+| **모바일 풀스크린 / 스토리** | 9:16 (\`--ar 9:16\`) | 1080 × 1920 px | 1024 × 1792 px |
+| **제품 썸네일 / 피드** | 1:1 (\`--ar 1:1\`) | 1024 × 1024 px | 1024 × 1024 px |
+| **블로그 / 갤러리 카드** | 4:3 (\`--ar 4:3\`) | 1600 × 1200 px | 1365 × 1024 px |
+
+### 🎨 추천 프롬프트 복사본
+- **Midjourney / DALL-E 3용 이미지 생성 프롬프트 (히어로 16:9 기준)**:
   \`\`\`text
   ${midjourneyPrompt}
   \`\`\`
 
-- **Runway Gen-3 / Luma Dream Machine용 비디오 생성 프롬프트**:
+- **Runway Gen-3 / Luma Dream Machine용 비디오 생성 프롬프트 (16:9 4K)**:
   \`\`\`text
   ${runwayPrompt}
   \`\`\`
