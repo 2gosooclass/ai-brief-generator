@@ -11,13 +11,14 @@ interface TemplateCardProps {
 }
 
 const BADGE_STYLES: Record<string, string> = {
-  amber: "bg-amber-100 text-amber-800 border-amber-200",
-  blue: "bg-blue-100 text-blue-800 border-blue-200",
-  purple: "bg-purple-100 text-purple-800 border-purple-200",
-  orange: "bg-orange-100 text-orange-800 border-orange-200",
-  pink: "bg-pink-100 text-pink-800 border-pink-200",
-  yellow: "bg-yellow-100 text-yellow-800 border-yellow-200",
-  green: "bg-green-100 text-green-800 border-green-200",
+  amber: "bg-amber-100 text-amber-900 border-amber-300",
+  blue: "bg-blue-100 text-blue-900 border-blue-300",
+  purple: "bg-purple-100 text-purple-900 border-purple-300",
+  orange: "bg-orange-100 text-orange-900 border-orange-300",
+  pink: "bg-pink-100 text-pink-900 border-pink-300",
+  yellow: "bg-yellow-100 text-yellow-900 border-yellow-300",
+  green: "bg-green-100 text-green-900 border-green-300",
+  cyan: "bg-cyan-100 text-cyan-900 border-cyan-300",
 };
 
 export default function TemplateCard({ template, index }: TemplateCardProps) {
@@ -28,23 +29,23 @@ export default function TemplateCard({ template, index }: TemplateCardProps) {
     <motion.div
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay: index * 0.08 }}
+      transition={{ duration: 0.4, delay: index * 0.06 }}
       onClick={() => selectTemplate(template)}
-      className={`template-card cursor-pointer rounded-lg overflow-hidden border transition-all duration-300 ${
+      className={`template-card cursor-pointer rounded-2xl overflow-hidden border-2 transition-all duration-300 font-pretendard text-left ${
         isSelected
-          ? "border-[#C8A97E] bg-[#FDF8F3]/10 shadow-md ring-2 ring-[#C8A97E]/5"
-          : "border-[#E8E0D8]/80 hover:border-[#C8A97E]/50 hover:shadow-sm"
+          ? "border-[#111827] bg-white shadow-xl ring-2 ring-black/10 scale-[1.01]"
+          : "border-[#E5E7EB] bg-white hover:border-[#111827]/60 hover:shadow-lg"
       }`}
     >
       {/* 미니 목업 영역 */}
-      <div className="relative h-52 bg-[#F5F0EA] p-3">
+      <div className="relative h-56 bg-[#F3F4F6] p-3.5">
         <MiniMockup template={template} />
 
         {/* 배지 */}
-        {template.badge && template.badgeColor && (
+        {template.badge && (
           <div
-            className={`absolute top-4 right-4 px-2 py-0.5 rounded-full text-xs font-bold border font-pretendard z-10 ${
-              BADGE_STYLES[template.badgeColor] ?? "bg-gray-100 text-gray-800 border-gray-200"
+            className={`absolute top-4 right-4 px-2.5 py-1 rounded-full text-xs font-bold border font-pretendard z-10 shadow-sm ${
+              (template.badgeColor && BADGE_STYLES[template.badgeColor]) ?? "bg-gray-100 text-gray-900 border-gray-300"
             }`}
           >
             {template.badge}
@@ -56,10 +57,10 @@ export default function TemplateCard({ template, index }: TemplateCardProps) {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute top-3 left-3 w-6 h-6 rounded-full bg-[#C8A97E] flex items-center justify-center z-10"
+            className="absolute top-4 left-4 w-7 h-7 rounded-full bg-[#111827] flex items-center justify-center z-10 shadow"
           >
             <svg
-              className="w-3.5 h-3.5 text-white"
+              className="w-4 h-4 text-white"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -76,50 +77,47 @@ export default function TemplateCard({ template, index }: TemplateCardProps) {
       </div>
 
       {/* 카드 정보 */}
-      <div className="bg-white p-4">
+      <div className="p-5 space-y-3">
         {/* 컬러 스와치 */}
-        <div className="flex gap-1.5 mb-3">
+        <div className="flex gap-2">
           {Object.values(template.colors)
             .slice(0, 5)
             .map((color, i) => (
               <div
                 key={i}
-                className="w-4 h-4 rounded-full border border-white shadow-sm ring-1 ring-black/5"
+                className="w-5 h-5 rounded-full border-2 border-white shadow-sm ring-1 ring-black/10"
                 style={{ backgroundColor: color }}
                 title={color}
               />
             ))}
         </div>
 
-        <h3 className="font-serif-kr text-base font-semibold text-[#1C1410] leading-tight mb-1">
-          {template.name}
-        </h3>
-        <p className="font-pretendard text-xs text-[#8C7A6A] leading-relaxed mb-3">
-          {template.tagline}
-        </p>
-
-        {/* 폰트 정보 */}
-        <div className="flex items-center gap-2 mb-3">
-          <span className="text-[10px] text-[#A09080] font-pretendard">폰트</span>
-          <span className="text-[10px] text-[#5C4A3A] font-pretendard font-medium">
-            {template.fonts.heading}
-          </span>
+        <div>
+          <h3 className="font-serif-kr text-base sm:text-lg font-bold text-[#111827] leading-tight mb-1">
+            {template.name}
+          </h3>
+          <p className="font-pretendard text-xs sm:text-[13px] font-medium text-[#4B5563] leading-relaxed">
+            {template.tagline}
+          </p>
         </div>
 
-        {/* 섹션 수 */}
-        <div className="flex items-center justify-between">
-          <span className="text-[11px] text-[#A09080] font-pretendard">
-            {template.sections.length}개 섹션
-          </span>
+        {/* 폰트 & 섹션 정보 */}
+        <div className="flex items-center justify-between pt-2 border-t border-[#F3F4F6] text-xs font-semibold text-[#4B5563]">
+          <span>{template.fonts.heading}</span>
+          <span className="text-[#111827] font-bold">{template.sections.length}개 섹션</span>
+        </div>
+
+        {/* 선택 버튼 */}
+        <div className="pt-1">
           <motion.button
             whileTap={{ scale: 0.97 }}
-            className={`text-[11px] px-3 py-1.5 rounded font-pretendard font-semibold tracking-wider transition-colors uppercase ${
+            className={`w-full py-2.5 rounded-xl font-pretendard text-xs sm:text-sm font-bold tracking-wider transition-all duration-200 uppercase cursor-pointer shadow-sm ${
               isSelected
-                ? "bg-[#1C1410] text-[#FAFAF7]"
-                : "bg-[#F5F0EA] text-[#5C4A3A] hover:bg-[#E8D5B7] hover:text-[#1C1410]"
+                ? "bg-[#111827] text-white"
+                : "bg-[#F3F4F6] text-[#1F2937] hover:bg-[#E5E7EB] hover:text-black"
             }`}
           >
-            {isSelected ? "Active" : "Select"}
+            {isSelected ? "✓ 선택 완료" : "템플릿 선택"}
           </motion.button>
         </div>
       </div>

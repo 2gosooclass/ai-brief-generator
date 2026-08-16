@@ -123,27 +123,28 @@ export default function AiImagePromptGenerator() {
   };
 
   return (
-    <div className="space-y-4 pt-1 text-left">
-      {/* ── 안내 배너 ── */}
-      <div className="bg-[#FAF8F5] border border-[#EBE3D8] rounded-xl p-3">
-        <p className="text-[11px] font-pretendard text-[#5C4A3A] leading-relaxed">
-          📐 <span className="font-semibold text-[#1C1410]">생성형 AI 전용 규격 & 프롬프트 생성기</span>입니다. 아래에서 비율을 선택하고 추가 키워드를 입력하면 생성 프롬프트가 즉시 만들어집니다.
+    <div className="space-y-4 pt-1 text-left font-pretendard">
+      {/* ── 안내 배너 (선명하고 큼직한 글씨) ── */}
+      <div className="bg-[#FFFDF9] border-2 border-[#E5D7C5] rounded-2xl p-3.5 shadow-sm">
+        <p className="text-xs sm:text-[13px] font-medium text-[#2D2218] leading-relaxed">
+          📐 <strong className="font-bold text-[#111827]">생성형 AI 전용 규격 & 프롬프트 생성기</strong>
+          <span className="block mt-1 text-[#4B5563] text-xs">원하시는 이미지 비율을 누르면 최적 해상도와 파라미터가 자동으로 조립됩니다.</span>
         </p>
       </div>
 
       {/* ── 1. 이미지 비율 및 규격 선택기 ── */}
-      <div className="space-y-2">
+      <div className="space-y-2.5">
         <div className="flex items-center justify-between">
-          <label className="text-[11px] font-pretendard font-semibold text-[#1C1410] flex items-center gap-1.5">
-            <span>📏</span> 이미지 규격 / 종횡비 선택
+          <label className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
+            <span>📏</span> 이미지 규격 및 종횡비 선택
           </label>
-          <span className="text-[9px] font-mono text-cyan-600 bg-cyan-50 border border-cyan-200 px-1.5 py-0.5 rounded">
+          <span className="text-xs font-bold font-mono text-cyan-800 bg-cyan-100 border border-cyan-300 px-2 py-0.5 rounded-md">
             선택: {selectedRatio.ratio}
           </span>
         </div>
 
-        {/* 비율 선택 버튼 그리드 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
+        {/* 비율 선택 버튼 그리드 (큼직하고 뚜렷한 텍스트) */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {RATIO_OPTIONS.map((opt) => {
             const isSelected = selectedRatio.id === opt.id;
             return (
@@ -151,28 +152,28 @@ export default function AiImagePromptGenerator() {
                 key={opt.id}
                 type="button"
                 onClick={() => setSelectedRatio(opt)}
-                className={`p-2 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                className={`p-3 rounded-2xl border-2 text-left transition-all cursor-pointer flex flex-col justify-between ${
                   isSelected
-                    ? "bg-[#1C1410] border-[#1C1410] text-white shadow-md scale-[1.01]"
-                    : "bg-white border-[#E0D8D0] text-[#4A3B2C] hover:bg-[#F8F5F0]"
+                    ? "bg-[#111827] border-[#111827] text-white shadow-lg scale-[1.01]"
+                    : "bg-white border-[#D1D5DB] text-[#1F2937] hover:border-[#111827] hover:bg-[#F9FAFB]"
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="text-[11px] font-pretendard font-bold flex items-center gap-1">
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="text-xs sm:text-sm font-bold flex items-center gap-1.5">
                     {opt.icon} {opt.ratio}
                   </span>
-                  <span className={`text-[9px] font-mono px-1.5 py-0.2 rounded ${
-                    isSelected ? "bg-white/20 text-cyan-300" : "bg-black/5 text-[#8C7A6A]"
+                  <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
+                    isSelected ? "bg-white/20 text-cyan-300" : "bg-gray-100 text-[#374151]"
                   }`}>
                     {opt.arParam}
                   </span>
                 </div>
-                <p className={`text-[10px] font-pretendard truncate ${isSelected ? "text-gray-200" : "text-[#7A6A5A]"}`}>
+                <p className={`text-xs font-semibold truncate ${isSelected ? "text-gray-100" : "text-[#374151]"}`}>
                   {opt.label}
                 </p>
-                <div className="mt-1 pt-1 border-t border-white/10 flex items-center justify-between text-[8.5px] font-mono opacity-80">
-                  <span>추천: {opt.resolution}</span>
-                  <span className="opacity-75">DALL-E: {opt.dalleSize}</span>
+                <div className="mt-2 pt-1.5 border-t border-black/10 flex items-center justify-between text-[11px] font-mono font-medium">
+                  <span className={isSelected ? "text-gray-200" : "text-[#4B5563]"}>추천: {opt.resolution}</span>
+                  <span className={isSelected ? "text-cyan-200" : "text-[#1F2937] font-semibold"}>DALL-E: {opt.dalleSize}</span>
                 </div>
               </button>
             );
@@ -180,22 +181,22 @@ export default function AiImagePromptGenerator() {
         </div>
 
         {/* 현재 선택된 규격 상세 가이드 뱃지 */}
-        <div className="p-2.5 rounded-xl bg-white border border-[#E8E0D8] flex items-center justify-between text-[10px] font-pretendard">
-          <div className="space-y-0.5">
-            <p className="font-semibold text-[#1C1410]">적용 대상: {selectedRatio.usage}</p>
-            <p className="text-[#8C7A6A] font-mono text-[9.5px]">
-              권장 생성 사이즈: <strong>{selectedRatio.resolution}</strong> (DALL-E 3: <strong>{selectedRatio.dalleSize}</strong>)
+        <div className="p-3 rounded-2xl bg-white border-2 border-[#E5E7EB] flex items-center justify-between text-xs shadow-sm">
+          <div className="space-y-1">
+            <p className="font-bold text-[#111827]">적용 대상: {selectedRatio.usage}</p>
+            <p className="text-[#374151] font-mono text-[11.5px]">
+              권장 생성 사이즈: <strong className="text-black font-bold">{selectedRatio.resolution}</strong> (DALL-E 3: <strong className="text-black font-bold">{selectedRatio.dalleSize}</strong>)
             </p>
           </div>
-          <span className="px-2 py-1 bg-green-50 text-green-700 font-mono font-bold rounded-md border border-green-200 shrink-0 text-[10px]">
+          <span className="px-2.5 py-1 bg-green-100 text-green-900 font-mono font-bold rounded-lg border border-green-300 shrink-0 text-xs">
             {selectedRatio.arParam}
           </span>
         </div>
       </div>
 
       {/* ── 2. 연출 키워드 튜닝 ── */}
-      <div className="space-y-1.5">
-        <label className="text-[10px] font-pretendard font-medium text-[#8C7A6A] block">
+      <div className="space-y-2">
+        <label className="text-xs sm:text-[13px] font-bold text-[#111827] block">
           추가 연출 키워드 (선택 입력)
         </label>
         <div className="flex gap-2">
@@ -205,14 +206,14 @@ export default function AiImagePromptGenerator() {
             value={userInputs.imagePromptKeyword}
             onChange={(e) => setUserInput("imagePromptKeyword", e.target.value)}
             onClick={(e) => e.stopPropagation()}
-            className="flex-1 px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+            className="flex-1 px-3.5 py-2.5 text-xs sm:text-sm font-medium rounded-xl border-2 border-[#D1D5DB] bg-white text-[#111827] focus:outline-none focus:border-[#111827] focus:ring-2 focus:ring-[#111827]/20 placeholder:text-[#9CA3AF]"
           />
           <button
             type="button"
             onClick={handleGenerateClick}
-            className="px-3 py-2 bg-[#C8A97E] hover:bg-[#B8986D] text-white font-pretendard font-bold text-xs rounded-lg transition-all cursor-pointer shrink-0"
+            className="px-4 py-2.5 bg-[#1C1410] hover:bg-[#374151] text-white font-bold text-xs sm:text-sm rounded-xl transition-all cursor-pointer shrink-0 shadow"
           >
-            {justGenerated ? "✓ 갱신됨" : "✨ 프롬프트 갱신"}
+            {justGenerated ? "✓ 갱신 완료" : "✨ 프롬프트 갱신"}
           </button>
         </div>
         
@@ -223,7 +224,7 @@ export default function AiImagePromptGenerator() {
               key={tag}
               type="button"
               onClick={() => handleAddTag(tag)}
-              className="text-[9px] font-pretendard px-2 py-0.5 rounded-full border border-[#E0D8D0] bg-white hover:bg-[#F5F0EA] text-[#5C4A3A] transition-colors cursor-pointer"
+              className="text-[11px] font-semibold px-2.5 py-1 rounded-full border border-[#D1D5DB] bg-white hover:bg-[#F3F4F6] text-[#374151] transition-colors cursor-pointer"
             >
               + {tag}
             </button>
@@ -232,41 +233,41 @@ export default function AiImagePromptGenerator() {
       </div>
 
       {/* ── 3. 미드저니 / DALL-E 3 프롬프트 카드 ── */}
-      <div className={`bg-white rounded-xl border border-[#E8E0D8] p-3 space-y-2 transition-all duration-300 ${
-        justGenerated ? "ring-2 ring-[#C8A97E]/50 bg-amber-50/20" : ""
+      <div className={`bg-white rounded-2xl border-2 border-[#E5E7EB] p-4 space-y-2.5 shadow-sm transition-all duration-300 ${
+        justGenerated ? "ring-2 ring-amber-400 bg-amber-50/20" : ""
       }`}>
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-pretendard font-semibold text-[#1C1410] flex items-center gap-1">
+          <span className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
             🎨 Midjourney / DALL-E 3 ({selectedRatio.ratio} 규격)
           </span>
           <button
             type="button"
             onClick={() => handleCopyText(midjourneyPrompt, "image")}
-            className="text-[10px] font-pretendard px-2.5 py-1 rounded-md bg-[#1C1410] text-white hover:bg-[#2C2118] transition-colors flex items-center gap-1 cursor-pointer"
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[#111827] text-white hover:bg-[#374151] transition-colors flex items-center gap-1 cursor-pointer shadow"
           >
             {copied === "image" ? "✓ 복사 완료" : "📋 프롬프트 복사"}
           </button>
         </div>
-        <p className="text-[10px] font-mono text-[#5C4A3A] bg-[#FAFAF7] p-2.5 rounded-lg border border-[#EFECE8] leading-relaxed select-all">
+        <p className="text-xs sm:text-[12.5px] font-mono font-medium text-[#1F2937] bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB] leading-relaxed select-all">
           {midjourneyPrompt}
         </p>
       </div>
 
       {/* ── 4. 비디오 생성 프롬프트 카드 ── */}
-      <div className="bg-white rounded-xl border border-[#E8E0D8] p-3 space-y-2">
+      <div className="bg-white rounded-2xl border-2 border-[#E5E7EB] p-4 space-y-2.5 shadow-sm">
         <div className="flex items-center justify-between">
-          <span className="text-[11px] font-pretendard font-semibold text-[#1C1410] flex items-center gap-1">
+          <span className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
             🎬 Runway / Luma 비디오 프롬프트 (16:9 4K)
           </span>
           <button
             type="button"
             onClick={() => handleCopyText(videoPrompt, "video")}
-            className="text-[10px] font-pretendard px-2.5 py-1 rounded-md bg-[#1C1410] text-white hover:bg-[#2C2118] transition-colors flex items-center gap-1 cursor-pointer"
+            className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[#111827] text-white hover:bg-[#374151] transition-colors flex items-center gap-1 cursor-pointer shadow"
           >
             {copied === "video" ? "✓ 복사 완료" : "📋 비디오 프롬프트 복사"}
           </button>
         </div>
-        <p className="text-[10px] font-mono text-[#5C4A3A] bg-[#FAFAF7] p-2.5 rounded-lg border border-[#EFECE8] leading-relaxed select-all">
+        <p className="text-xs sm:text-[12.5px] font-mono font-medium text-[#1F2937] bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB] leading-relaxed select-all">
           {videoPrompt}
         </p>
       </div>
