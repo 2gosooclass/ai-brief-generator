@@ -7,9 +7,7 @@ interface AspectRatioOption {
   id: string;
   label: string;
   ratio: string;
-  arParam: string;
   resolution: string;
-  dalleSize: string;
   usage: string;
   icon: string;
 }
@@ -19,9 +17,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     id: "16-9",
     label: "가로 와이드 (PC 히어로)",
     ratio: "16:9",
-    arParam: "--ar 16:9",
     resolution: "1920 × 1080 px",
-    dalleSize: "1792 × 1024 px",
     usage: "PC 히어로 메인 배경, 와이드 배너",
     icon: "🖥️",
   },
@@ -29,9 +25,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     id: "3-4",
     label: "에디토리얼 세로 (잡지형)",
     ratio: "3:4",
-    arParam: "--ar 3:4",
     resolution: "1200 × 1600 px",
-    dalleSize: "1024 × 1365 px",
     usage: "세로 에디토리얼 화보, 룩북",
     icon: "📰",
   },
@@ -39,9 +33,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     id: "9-16",
     label: "세로 풀스크린 (모바일)",
     ratio: "9:16",
-    arParam: "--ar 9:16",
     resolution: "1080 × 1920 px",
-    dalleSize: "1024 × 1792 px",
     usage: "모바일 풀스크린, 숏폼/스토리",
     icon: "📱",
   },
@@ -49,9 +41,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     id: "1-1",
     label: "정사각형 (제품/프로필)",
     ratio: "1:1",
-    arParam: "--ar 1:1",
     resolution: "1024 × 1024 px",
-    dalleSize: "1024 × 1024 px",
     usage: "제품 썸네일, 인스타그램 피드",
     icon: "📦",
   },
@@ -59,9 +49,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     id: "4-3",
     label: "콘텐츠 카드 (갤러리)",
     ratio: "4:3",
-    arParam: "--ar 4:3",
     resolution: "1600 × 1200 px",
-    dalleSize: "1365 × 1024 px",
     usage: "블로그 카드, 갤러리 그리드",
     icon: "🖼️",
   },
@@ -90,13 +78,13 @@ export default function AiImagePromptGenerator() {
   const baseStyle = selectedTemplate.referenceStyle || "clean and minimal";
   const userKeyword = userInputs.imagePromptKeyword.trim();
 
-  // 미드저니/DALL-E 프롬프트 조립
-  const midjourneyPrompt = `A high-end cinematic editorial photograph of ${baseKeyword}${
+  // Google Flow 이미지 프롬프트 조립
+  const googleFlowImagePrompt = `A high-end cinematic editorial photograph of ${baseKeyword}${
     userKeyword ? `, ${userKeyword}` : ""
-  }, ${baseStyle} aesthetic, sophisticated lighting and composition, shot on 35mm lens, 8k resolution, photorealistic, elegant atmosphere ${selectedRatio.arParam} --v 6.0`;
+  }, ${baseStyle} aesthetic, sophisticated lighting and composition, shot on 35mm lens, 8k resolution, photorealistic, elegant atmosphere, ${selectedRatio.ratio} aspect ratio`;
 
-  // 런웨이/루마 동영상 프롬프트 조립
-  const videoPrompt = `Slow cinematic sweeping panning shot of ${baseKeyword}${
+  // Google Flow 비디오 프롬프트 조립
+  const googleFlowVideoPrompt = `Slow cinematic sweeping panning shot of ${baseKeyword}${
     userKeyword ? `, ${userKeyword}` : ""
   }, soft natural sunlight, ${baseStyle} atmosphere, 4k ultra realistic, smooth fluid camera motion, 24fps`;
 
@@ -124,26 +112,26 @@ export default function AiImagePromptGenerator() {
 
   return (
     <div className="space-y-4 pt-1 text-left font-pretendard">
-      {/* ── 안내 배너 (선명하고 큼직한 글씨) ── */}
+      {/* ── 안내 배너 ── */}
       <div className="bg-[#FFFDF9] border-2 border-[#E5D7C5] rounded-2xl p-3.5 shadow-sm">
         <p className="text-xs sm:text-[13px] font-medium text-[#2D2218] leading-relaxed">
-          📐 <strong className="font-bold text-[#111827]">생성형 AI 전용 규격 & 프롬프트 생성기</strong>
-          <span className="block mt-1 text-[#4B5563] text-xs">원하시는 이미지 비율을 누르면 최적 해상도와 파라미터가 자동으로 조립됩니다.</span>
+          ⚡ <strong className="font-bold text-[#111827]">Google Flow 비주얼 미디어 생성기</strong>
+          <span className="block mt-1 text-[#4B5563] text-xs">원하시는 이미지 규격을 선택하면 Google Flow 전용 이미지 & 비디오 프롬프트가 자동 조립됩니다.</span>
         </p>
       </div>
 
-      {/* ── 1. 이미지 비율 및 규격 선택기 ── */}
+      {/* ── 1. 규격 및 비율 선택기 ── */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">
           <label className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
-            <span>📏</span> 이미지 규격 및 종횡비 선택
+            <span>📏</span> 규격 및 종횡비 선택
           </label>
-          <span className="text-xs font-bold font-mono text-cyan-800 bg-cyan-100 border border-cyan-300 px-2 py-0.5 rounded-md">
+          <span className="text-xs font-bold font-mono text-amber-900 bg-amber-100 border border-amber-300 px-2 py-0.5 rounded-md">
             선택: {selectedRatio.ratio}
           </span>
         </div>
 
-        {/* 비율 선택 버튼 그리드 (큼직하고 뚜렷한 텍스트) */}
+        {/* 비율 선택 버튼 그리드 */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           {RATIO_OPTIONS.map((opt) => {
             const isSelected = selectedRatio.id === opt.id;
@@ -163,34 +151,20 @@ export default function AiImagePromptGenerator() {
                     {opt.icon} {opt.ratio}
                   </span>
                   <span className={`text-xs font-mono font-bold px-2 py-0.5 rounded ${
-                    isSelected ? "bg-white/20 text-cyan-300" : "bg-gray-100 text-[#374151]"
+                    isSelected ? "bg-white/20 text-amber-300" : "bg-gray-100 text-[#374151]"
                   }`}>
-                    {opt.arParam}
+                    {opt.resolution}
                   </span>
                 </div>
                 <p className={`text-xs font-semibold truncate ${isSelected ? "text-gray-100" : "text-[#374151]"}`}>
                   {opt.label}
                 </p>
-                <div className="mt-2 pt-1.5 border-t border-black/10 flex items-center justify-between text-[11px] font-mono font-medium">
-                  <span className={isSelected ? "text-gray-200" : "text-[#4B5563]"}>추천: {opt.resolution}</span>
-                  <span className={isSelected ? "text-cyan-200" : "text-[#1F2937] font-semibold"}>DALL-E: {opt.dalleSize}</span>
+                <div className="mt-2 pt-1.5 border-t border-black/10 text-[11px] font-medium">
+                  <span className={isSelected ? "text-gray-200" : "text-[#4B5563]"}>적용: {opt.usage}</span>
                 </div>
               </button>
             );
           })}
-        </div>
-
-        {/* 현재 선택된 규격 상세 가이드 뱃지 */}
-        <div className="p-3 rounded-2xl bg-white border-2 border-[#E5E7EB] flex items-center justify-between text-xs shadow-sm">
-          <div className="space-y-1">
-            <p className="font-bold text-[#111827]">적용 대상: {selectedRatio.usage}</p>
-            <p className="text-[#374151] font-mono text-[11.5px]">
-              권장 생성 사이즈: <strong className="text-black font-bold">{selectedRatio.resolution}</strong> (DALL-E 3: <strong className="text-black font-bold">{selectedRatio.dalleSize}</strong>)
-            </p>
-          </div>
-          <span className="px-2.5 py-1 bg-green-100 text-green-900 font-mono font-bold rounded-lg border border-green-300 shrink-0 text-xs">
-            {selectedRatio.arParam}
-          </span>
         </div>
       </div>
 
@@ -232,43 +206,43 @@ export default function AiImagePromptGenerator() {
         </div>
       </div>
 
-      {/* ── 3. 미드저니 / DALL-E 3 프롬프트 카드 ── */}
+      {/* ── 3. Google Flow 이미지 프롬프트 카드 ── */}
       <div className={`bg-white rounded-2xl border-2 border-[#E5E7EB] p-4 space-y-2.5 shadow-sm transition-all duration-300 ${
         justGenerated ? "ring-2 ring-amber-400 bg-amber-50/20" : ""
       }`}>
         <div className="flex items-center justify-between">
           <span className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
-            🎨 Midjourney / DALL-E 3 ({selectedRatio.ratio} 규격)
+            🎨 Google Flow Image Prompt ({selectedRatio.ratio})
           </span>
           <button
             type="button"
-            onClick={() => handleCopyText(midjourneyPrompt, "image")}
+            onClick={() => handleCopyText(googleFlowImagePrompt, "image")}
             className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[#111827] text-white hover:bg-[#374151] transition-colors flex items-center gap-1 cursor-pointer shadow"
           >
             {copied === "image" ? "✓ 복사 완료" : "📋 프롬프트 복사"}
           </button>
         </div>
         <p className="text-xs sm:text-[12.5px] font-mono font-medium text-[#1F2937] bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB] leading-relaxed select-all">
-          {midjourneyPrompt}
+          {googleFlowImagePrompt}
         </p>
       </div>
 
-      {/* ── 4. 비디오 생성 프롬프트 카드 ── */}
+      {/* ── 4. Google Flow 비디오 프롬프트 카드 ── */}
       <div className="bg-white rounded-2xl border-2 border-[#E5E7EB] p-4 space-y-2.5 shadow-sm">
         <div className="flex items-center justify-between">
           <span className="text-xs sm:text-[13px] font-bold text-[#111827] flex items-center gap-1.5">
-            🎬 Runway / Luma 비디오 프롬프트 (16:9 4K)
+            🎬 Google Flow Video Prompt (16:9 4K)
           </span>
           <button
             type="button"
-            onClick={() => handleCopyText(videoPrompt, "video")}
+            onClick={() => handleCopyText(googleFlowVideoPrompt, "video")}
             className="text-xs font-bold px-3 py-1.5 rounded-lg bg-[#111827] text-white hover:bg-[#374151] transition-colors flex items-center gap-1 cursor-pointer shadow"
           >
             {copied === "video" ? "✓ 복사 완료" : "📋 비디오 프롬프트 복사"}
           </button>
         </div>
         <p className="text-xs sm:text-[12.5px] font-mono font-medium text-[#1F2937] bg-[#F9FAFB] p-3 rounded-xl border border-[#E5E7EB] leading-relaxed select-all">
-          {videoPrompt}
+          {googleFlowVideoPrompt}
         </p>
       </div>
     </div>
