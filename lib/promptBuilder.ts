@@ -290,10 +290,10 @@ ${urlsText}
       ? `\n## 네비게이션 메뉴 구성\n상단 네비게이션 바(GNB)에는 다음 메뉴 항목들을 배치하고, 클릭 시 해당 섹션으로 부드럽게 스크롤(Smooth Scroll)되도록 구현해 주세요:\n${navMenus.map((m) => `- ${m}`).join("\n")}\n`
       : "";
 
-  return `# ${categoryLabel} 웹사이트 제작 요청
+  return `# Google Flow 전용 웹사이트 빌드 브리프 (${categoryLabel})
 
 ## 기본 설정
-아래 디자인 스타일을 참고하여 "${template.name}" 스타일의 ${categoryLabel} 웹사이트를 제작해 주세요.
+아래 아키텍처 및 디자인 스타일을 기반으로 "${template.name}" 스타일의 ${categoryLabel} 웹사이트를 완벽하게 빌드해 주세요.
 디자인 컨셉: ${template.tagline}
 레퍼런스 스타일: ${template.referenceStyle}
 ${navSection}
@@ -323,5 +323,5 @@ ${
 - 완성 후 전체 페이지 미리보기를 보여주세요.
 
 ---
-✅ 이 프롬프트는 AI 웹사이트 브리프 생성기(2GOSOO AI LAB)로 자동 생성되었습니다.`.trim();
+✅ 이 브리프는 Google Flow AI Prompt Engine (2GOSOO AI LAB)으로 생성되었습니다.`.trim();
 }

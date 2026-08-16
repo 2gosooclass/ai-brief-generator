@@ -43,10 +43,8 @@ export default function Home() {
             </button>
 
             <div className="hidden lg:flex items-center gap-1.5 text-xs font-semibold text-[#4B5563]">
-              {["Antigravity", "Codex", "Hermes", "Lovable", "v0"].map((tool) => (
-                <span key={tool} className="px-2.5 py-1 bg-gray-100 rounded-lg border border-gray-200 text-[#1F2937]">{tool}</span>
-              ))}
-              <span className="text-amber-800 font-bold ml-1">등 AI 에이전트 완벽 호환</span>
+              <span className="px-3 py-1 bg-amber-100 border border-amber-300 text-amber-950 font-bold rounded-lg">⚡ Google Flow Engine</span>
+              <span className="text-amber-800 font-bold ml-1">전용 AI 아키텍처 자동 조립</span>
             </div>
           </div>
         </div>
@@ -60,17 +58,17 @@ export default function Home() {
           <div className="md:col-span-7 flex flex-col justify-center text-left">
             <div className="inline-flex items-center gap-2 border-2 border-amber-300 bg-amber-50 text-amber-900 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase mb-4 w-fit shadow-sm">
               <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
-              <span>Vibe Coding Prompt Engine</span>
+              <span>Google Flow Prompt Engine</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black leading-[1.2] tracking-tight mb-4 text-[#111827] font-serif-kr">
               완벽한 웹사이트 아키텍처를 <br />
               <span className="font-instrument italic text-4xl sm:text-5xl md:text-6xl text-amber-700 mr-2">5분 만에 기획</span>
-              <span className="block mt-1 text-2xl sm:text-3xl font-bold text-[#111827]">AI 브리프 자동 생성</span>
+              <span className="block mt-1 text-2xl sm:text-3xl font-bold text-[#111827]">Google Flow 브리프 생성</span>
             </h2>
 
             <p className="font-pretendard text-sm sm:text-base font-medium text-[#374151] leading-relaxed max-w-xl">
-              원하는 디자인 템플릿을 선택하고 브랜드명과 레퍼런스를 지정하면, Lovable, v0, Claude Code, Cursor 등 모든 AI 에이전트에 즉시 입력할 수 있는 최적화된 마크다운(.md) 브리프와 이미지 생성 프롬프트가 자동으로 완성됩니다.
+              원하는 디자인 템플릿을 선택하고 브랜드명과 레퍼런스를 지정하면, Google Flow(구글 플로우)에 즉시 입력할 수 있는 최적화된 마크다운(.md) 빌드 브리프와 생성형 AI 이미지 규격 프롬프트가 자동으로 완성됩니다.
             </p>
           </div>
 

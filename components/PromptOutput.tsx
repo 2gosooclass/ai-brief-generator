@@ -90,8 +90,8 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
       <div className="rounded-2xl border-2 border-[#E5D7C5] px-3.5 py-2.5 bg-[#FFFDF9] shadow-sm">
         <p className="text-xs sm:text-[12.5px] font-medium text-[#2D2218] leading-relaxed">
           💡 이 프롬프트를 복사하여{" "}
-          <strong className="font-bold text-[#111827]">AI 에이전트</strong>
-          (Antigravity, Lovable, v0, Claude Code, Cursor 등)에 전달하세요.
+          <strong className="font-bold text-[#111827]">Google Flow</strong>
+          (구글 플로우 AI 엔지니어링 에이전트)에 바로 전달하세요.
         </p>
       </div>
 

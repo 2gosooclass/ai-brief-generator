@@ -2,7 +2,7 @@
 
 import { useBriefStore } from "@/store/briefStore";
 import type { Template } from "@/lib/types";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 
 const SECTION_KR: Record<string, string> = {
   hero: "히어로", about: "브랜드 소개", menu: "메뉴 안내", gallery: "갤러리",
@@ -33,96 +33,63 @@ const SECTION_CONTENTS: Record<string, string> = {
   gallery: "정갈하고 담백한 화보식 무드와 자연광이 머무는 아름다운 일상의 순간들을 렌더링한 프리미엄 스튜디오 갤러리 아카이브입니다."
 };
 
-function isDark(hex: string): boolean {
-  if (!hex) return false;
-  const h = hex.replace("#", "");
-  if (h.length < 6) return false;
-  const r = parseInt(h.slice(0, 2), 16);
-  const g = parseInt(h.slice(2, 4), 16);
-  const b = parseInt(h.slice(4, 6), 16);
-  return (r * 299 + g * 587 + b * 114) / 1000 < 128;
-}
-
-const TEMPLATE_DEFAULTS: Record<string, string[]> = {
-  "cafe-minimal": [
-    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80",
-    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
-    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80"
+// ── 주제별 방대한 Unsplash 추천 풀 ──
+const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
+  cafe: [
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
+    "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=1200&q=80",
+    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80",
+    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1200&q=80",
+    "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&q=80",
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
+    "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80",
+    "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=1200&q=80",
+    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80",
+    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80",
+    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80",
+    "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=1200&q=80",
+    "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200&q=80",
+    "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=1200&q=80",
+    "https://images.unsplash.com/photo-1517256064527-09c73fc73e38?w=1200&q=80"
   ],
-  "cafe-vintage": [
-    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=800&q=80",
-    "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=800&q=80",
-    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=800&q=80"
+  academy: [
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80",
+    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80",
+    "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&q=80",
+    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200&q=80",
+    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80",
+    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80",
+    "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=1200&q=80",
+    "https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200&q=80",
+    "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=1200&q=80",
+    "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&q=80"
   ],
-  "cafe-modern": [
-    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80",
-    "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=800&q=80",
-    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=800&q=80"
+  personal: [
+    "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&q=80",
+    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1200&q=80",
+    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80",
+    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=1200&q=80",
+    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80",
+    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=1200&q=80",
+    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=1200&q=80",
+    "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80"
   ],
-  "cafe-finedining": [
-    "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
-    "https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=80",
-    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80"
-  ],
-  "cafe-casual": [
-    "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&q=80",
-    "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80",
-    "https://images.unsplash.com/photo-1498654896293-37aacf113fd9?w=800&q=80"
-  ],
-  "academy-trust": [
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=800&q=80",
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&q=80",
-    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=800&q=80"
-  ],
-  "academy-creative": [
-    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=800&q=80",
-    "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80",
-    "https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=800&q=80"
-  ],
-  "academy-online": [
-    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&q=80",
-    "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=800&q=80",
-    "https://images.unsplash.com/photo-1588196749597-9ff075ee6b5b?w=800&q=80"
-  ],
-  "personal-portfolio": [
-    "/images/hero-bg.png",
-    "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&q=80",
-    "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=800&q=80"
-  ],
-  "personal-consultant": [
-    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=800&q=80",
-    "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&q=80",
-    "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&q=80"
-  ],
-  "personal-creator": [
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&q=80",
-    "https://images.unsplash.com/photo-1542751371-adc38448a05e?w=800&q=80",
-    "https://images.unsplash.com/photo-1531297484001-80022131f5a1?w=800&q=80"
-  ],
-  "religion-church": [
-    "https://images.unsplash.com/photo-1438029071396-1e831a7fa6d8?w=800&q=80",
-    "https://images.unsplash.com/photo-1515002246390-7bf7e8f87b54?w=800&q=80",
-    "https://images.unsplash.com/photo-1511632765486-a01980e01a18?w=800&q=80"
-  ],
-  "religion-ngo": [
-    "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=800&q=80",
-    "https://images.unsplash.com/photo-1593113598332-cd288d649433?w=800&q=80",
-    "https://images.unsplash.com/photo-1469571486040-7a9785ad667f?w=800&q=80"
-  ],
-  "religion-community": [
-    "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&q=80",
-    "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=800&q=80",
-    "https://images.unsplash.com/photo-1543269865-cbf427effbad?w=800&q=80"
-  ],
-  "traditional-knots": [
-    "https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?w=800&q=80",
-    "https://images.unsplash.com/photo-1582234372722-50d7ccc30ebd?w=800&q=80",
-    "https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=800&q=80"
-  ],
-  "traditional-pottery": [
-    "https://images.unsplash.com/photo-1610483178766-829288225575?w=800&q=80",
-    "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?w=800&q=80",
-    "https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?w=800&q=80"
+  default: [
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80",
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
+    "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=1200&q=80",
+    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80",
+    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1200&q=80",
+    "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&q=80",
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80"
   ]
 };
 
@@ -133,23 +100,24 @@ function ImageEditModal() {
     setEditingSection,
     setSectionImage,
     selectedTemplate,
+    selectedCategory,
   } = useBriefStore();
 
-  const [customUrl, setCustomUrl] = useState("");
+  const [page, setPage] = useState(0);
 
   if (!activeEditingSection || !selectedTemplate) return null;
 
-  const sampleStockPool = [
-    "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80",
-    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
-    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80",
-    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
-    "https://images.unsplash.com/photo-1485182708500-e8f1f318ba72?w=1200&q=80",
-    "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80",
-    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=1200&q=80",
-    "https://images.unsplash.com/photo-1511920170033-f8396924c348?w=1200&q=80",
-    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&q=80",
-  ];
+  const categoryPool =
+    KEYWORD_IMAGE_POOLS[selectedCategory] || KEYWORD_IMAGE_POOLS.cafe || KEYWORD_IMAGE_POOLS.default;
+
+  // 6개씩 페이지 슬라이스
+  const itemsPerPage = 6;
+  const totalPages = Math.ceil(categoryPool.length / itemsPerPage);
+  const currentImages = categoryPool.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
+
+  const handleNextPage = () => {
+    setPage((prev) => (prev + 1) % totalPages);
+  };
 
   const handleSelectImage = (url: string) => {
     setSectionImage(activeEditingSection, url);
@@ -169,14 +137,6 @@ function ImageEditModal() {
     }
   };
 
-  const handleApplyCustomUrl = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (customUrl.trim()) {
-      setSectionImage(activeEditingSection, customUrl.trim());
-      setCustomUrl("");
-    }
-  };
-
   const sectionName = SECTION_KR[activeEditingSection] || activeEditingSection;
 
   return (
@@ -185,7 +145,7 @@ function ImageEditModal() {
       onClick={() => setEditingSection(null)}
     >
       <div
-        className="bg-white rounded-3xl border-2 border-[#111827] shadow-2xl max-w-lg w-full p-6 text-left space-y-4"
+        className="bg-white rounded-3xl border-2 border-[#111827] shadow-2xl max-w-lg w-full p-6 text-left space-y-4 animate-in fade-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* 모달 헤더 */}
@@ -206,20 +166,30 @@ function ImageEditModal() {
 
         {/* 추천 사이즈 가이드 */}
         <div className="bg-[#FFFDF9] border-2 border-[#E5D7C5] p-3 rounded-2xl text-xs space-y-1">
-          <p className="font-bold text-[#111827]">📐 추천 이미지 해상도 & 비율</p>
+          <p className="font-bold text-[#111827]">📐 추천 이미지 해상도 & 종횡비</p>
           <p className="text-[#374151] font-mono leading-relaxed">
             • 메인 히어로: <strong>16:9 (1920 × 1080)</strong> 또는 <strong>3:4 (1200 × 1600)</strong><br />
             • 갤러리/콘텐츠 카드: <strong>4:3 (1600 × 1200)</strong> 또는 <strong>1:1 (1024 × 1024)</strong>
           </p>
         </div>
 
-        {/* 1. 추천 고화질 사진 풀 */}
+        {/* 1. 추천 고화질 사진 풀 & 새로고침 버튼 */}
         <div className="space-y-2">
-          <label className="text-xs sm:text-[13px] font-bold text-[#111827] block">
-            🖼️ 추천 스톡 사진에서 선택 (클릭 즉시 반영)
-          </label>
+          <div className="flex items-center justify-between">
+            <label className="text-xs sm:text-[13px] font-bold text-[#111827] block">
+              🖼️ 추천 스톡 사진 (클릭 시 1초 만에 즉시 반영)
+            </label>
+            <button
+              type="button"
+              onClick={handleNextPage}
+              className="text-xs font-bold text-[#111827] bg-gray-100 hover:bg-gray-200 px-3 py-1 rounded-lg border border-gray-300 transition-colors flex items-center gap-1 cursor-pointer shadow-sm"
+            >
+              🔄 다른 사진 보기 ({page + 1}/{totalPages})
+            </button>
+          </div>
+
           <div className="grid grid-cols-3 gap-2">
-            {sampleStockPool.slice(0, 6).map((imgUrl, idx) => (
+            {currentImages.map((imgUrl, idx) => (
               <div
                 key={idx}
                 onClick={() => handleSelectImage(imgUrl)}
@@ -235,38 +205,16 @@ function ImageEditModal() {
           </div>
         </div>
 
-        {/* 2. 내 컴퓨터 파일 업로드 */}
-        <div className="space-y-1.5">
+        {/* 2. 내 컴퓨터 파일 직접 업로드 */}
+        <div className="space-y-1.5 pt-1">
           <label className="text-xs sm:text-[13px] font-bold text-[#111827] block">
             📤 내 컴퓨터 파일 직접 업로드
           </label>
-          <label className="flex items-center justify-center gap-2 p-3 border-2 border-dashed border-[#D1D5DB] hover:border-[#111827] rounded-2xl cursor-pointer bg-[#F9FAFB] hover:bg-white transition-all text-xs font-bold text-[#374151]">
+          <label className="flex items-center justify-center gap-2 p-3.5 border-2 border-dashed border-[#D1D5DB] hover:border-[#111827] rounded-2xl cursor-pointer bg-[#F9FAFB] hover:bg-white transition-all text-xs sm:text-sm font-bold text-[#374151]">
             <span>📁 이미지 파일 선택 (JPG, PNG, WEBP)</span>
             <input type="file" accept="image/*" onChange={handleFileUpload} className="hidden" />
           </label>
         </div>
-
-        {/* 3. 웹 이미지 URL 직접 입력 */}
-        <form onSubmit={handleApplyCustomUrl} className="space-y-1.5">
-          <label className="text-xs sm:text-[13px] font-bold text-[#111827] block">
-            🔗 외부 이미지 URL 직접 입력
-          </label>
-          <div className="flex gap-2">
-            <input
-              type="url"
-              placeholder="https://images.unsplash.com/..."
-              value={customUrl}
-              onChange={(e) => setCustomUrl(e.target.value)}
-              className="flex-1 px-3.5 py-2 text-xs font-semibold rounded-xl border-2 border-gray-300 focus:border-[#111827] outline-none text-[#111827]"
-            />
-            <button
-              type="submit"
-              className="px-4 py-2 bg-[#111827] hover:bg-[#374151] text-white font-bold text-xs rounded-xl transition-all cursor-pointer shrink-0"
-            >
-              적용
-            </button>
-          </div>
-        </form>
       </div>
     </div>
   );
@@ -341,34 +289,13 @@ function EditableImage({
   );
 }
 
-// ── 3. 12가지 레이아웃 구조 패턴 렌더러 ──
-const TEMPLATE_SECTION_PATTERNS: Record<string, Record<string, number>> = {
-  "cafe-minimal": { "about": 8, "menu": 0, "gallery": 7, "location": 1, "instagram": 4 },
-  "cafe-vintage": { "story": 8, "menu": 5, "events": 11, "gallery": 7, "contact": 1 },
-  "cafe-modern": { "philosophy": 3, "menu": 0, "barista": 2, "reservations": 10 },
-  "cafe-finedining": { "chef": 2, "course-menu": 6, "reservation": 1, "private-room": 3 },
-  "cafe-casual": { "menu-board": 0, "waiting": 10, "location": 1, "reviews": 5 },
-  "academy-trust": { "features": 0, "curriculum": 8, "teachers": 6, "results": 9, "schedule": 5, "contact": 1 },
-  "academy-creative": { "classes": 0, "gallery": 7, "instructors": 2, "testimonials": 5, "pricing": 9, "enroll": 10 },
-  "academy-online": { "features": 0, "courses": 5, "instructors": 6, "demo": 10, "pricing": 9, "faq": 10 },
-  "personal-portfolio": { "works": 7, "about": 2, "skills": 0, "services": 5, "contact": 1 },
-  "personal-consultant": { "about": 2, "services": 0, "results": 9, "process": 8, "booking": 1 },
-  "personal-creator": { "about": 2, "latest-content": 7, "links": 0, "shop": 5, "newsletter": 1 },
-  "religion-church": { "about": 2, "schedule": 0, "events": 6, "gallery": 7, "location": 1 },
-  "religion-ngo": { "about": 2, "results": 9, "events": 6, "testimonials": 5, "contact": 1 },
-  "religion-community": { "about": 2, "features": 0, "events": 6, "gallery": 7, "contact": 1 },
-  "traditional-knots": { "about": 8, "works": 7, "classes": 0, "process": 8, "location": 1 },
-  "traditional-pottery": { "philosophy": 3, "gallery": 7, "process": 8, "shop": 0, "contact": 1 }
-};
-
+// ── 3. 패턴 렌더러 (포인트 컬러 완벽 바인딩) ──
 function PatternSectionRenderer({
   sec,
   idx,
-  template,
   accentColor,
   bizName,
   images,
-  themeMode = "light",
   onActionClick,
 }: {
   sec: string;
@@ -377,88 +304,53 @@ function PatternSectionRenderer({
   accentColor: string;
   bizName: string;
   images: string[];
-  themeMode?: "light" | "dark";
   onActionClick?: (label: string) => void;
 }) {
-  const tId = template.id;
-  const patternIndex = TEMPLATE_SECTION_PATTERNS[tId]?.[sec] ?? (idx % 12);
   const imageUrl = images[idx % images.length] || images[0];
   const koreanTitle = SECTION_KR[sec] ?? sec;
   const contentText = SECTION_CONTENTS[sec] ?? `${bizName}의 독창적인 ${koreanTitle} 세부 구성안입니다.`;
 
-  const isDarkBg = themeMode === "dark";
-  const bgCard = isDarkBg ? "bg-white/5 border-white/10" : "bg-white border-black/5 shadow-sm";
-  const textColor = isDarkBg ? "text-white" : "text-[#1C1410]";
-  const subTextColor = isDarkBg ? "text-gray-300" : "text-[#5C4A3A]";
+  return (
+    <section id={sec} className="py-12 px-8 rounded-3xl border-2 border-[#E5E7EB] bg-white shadow-sm space-y-6 text-left">
+      <div className="flex items-center justify-between border-b-2 border-gray-100 pb-4">
+        <div className="flex items-center gap-3">
+          <div className="w-3.5 h-3.5 rounded-full" style={{ backgroundColor: accentColor }} />
+          <h3 className="text-xl font-bold text-[#111827]">{koreanTitle}</h3>
+        </div>
+        <span
+          className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm"
+          style={{ backgroundColor: accentColor }}
+        >
+          {koreanTitle} 아키텍처
+        </span>
+      </div>
 
-  const handleBtnClick = (actionName: string) => {
-    if (onActionClick) onActionClick(actionName);
-  };
+      <p className="text-sm text-[#4B5563] leading-relaxed font-medium">{contentText}</p>
 
-  switch (patternIndex) {
-    case 0:
-      return (
-        <section id={sec} className={`py-12 px-6 rounded-2xl border ${bgCard}`}>
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center justify-between border-b pb-4 dark:border-white/10">
-              <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle}</h3>
-              <span className="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md">그리드 레이아웃</span>
-            </div>
-            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
-              {[1, 2, 3].map((num) => (
-                <div key={num} className={`p-4 rounded-xl border ${isDarkBg ? 'bg-white/5 border-white/5' : 'bg-[#FAFAFA] border-gray-100'} space-y-2`}>
-                  <EditableImage sectionKey={`${sec}-grid-${num}`} defaultUrl={images[num % images.length]} className="h-28 rounded-lg shadow-sm" />
-                  <h4 className={`text-sm font-bold ${textColor}`}>{koreanTitle} 항목 {num}</h4>
-                  <p className={`text-xs ${subTextColor}`}>엄선된 프리미엄 옵션과 상세 스펙을 제공합니다.</p>
-                </div>
-              ))}
-            </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-center pt-2">
+        <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="h-64 rounded-2xl shadow-md w-full" />
+        <div className="space-y-4 flex flex-col justify-center">
+          <h4 className="text-base font-bold text-[#111827]">핵심 기능 및 상세 설명</h4>
+          <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed">
+            고객의 니즈에 최적화된 반응형 UI 레이아웃과 매끄러운 인터랙션을 제공합니다.
+          </p>
+          <div>
+            <button
+              type="button"
+              onClick={() => onActionClick && onActionClick(`${koreanTitle} 상세 보기`)}
+              className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-transform hover:scale-105 cursor-pointer shadow"
+              style={{ backgroundColor: accentColor }}
+            >
+              {koreanTitle} 알아보기
+            </button>
           </div>
-        </section>
-      );
-
-    case 1:
-      return (
-        <section id={sec} className={`rounded-2xl border overflow-hidden ${bgCard}`}>
-          <div className="flex flex-col md:flex-row min-h-[380px]">
-            <div className="flex-1 p-8 md:p-12 flex flex-col justify-center space-y-4">
-              <span className="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md w-fit">분할 화면 레이아웃</span>
-              <h3 className={`text-2xl font-bold ${textColor}`}>{koreanTitle}</h3>
-              <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
-              <div className="pt-2">
-                <button
-                  type="button"
-                  onClick={() => handleBtnClick(`${koreanTitle} 신청하기`)}
-                  className="px-6 py-2.5 rounded-xl text-xs font-bold text-white transition-transform hover:scale-105 cursor-pointer shadow"
-                  style={{ backgroundColor: accentColor }}
-                >
-                  {koreanTitle} 신청하기
-                </button>
-              </div>
-            </div>
-            <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="flex-1 min-h-[300px] md:h-auto" />
-          </div>
-        </section>
-      );
-
-    default:
-      return (
-        <section id={sec} className={`py-12 px-6 rounded-2xl border ${bgCard}`}>
-          <div className="max-w-4xl mx-auto space-y-6">
-            <div className="flex items-center justify-between border-b pb-4 dark:border-white/10">
-              <h3 className={`text-xl font-bold ${textColor}`}>{koreanTitle}</h3>
-              <span className="text-xs font-bold text-amber-800 bg-amber-100 px-2.5 py-1 rounded-md">아키텍처 섹션</span>
-            </div>
-            <p className={`text-sm ${subTextColor} leading-relaxed`}>{contentText}</p>
-            <EditableImage sectionKey={sec} defaultUrl={imageUrl} className="h-64 rounded-xl shadow-md w-full" />
-          </div>
-        </section>
-      );
-  }
+        </div>
+      </div>
+    </section>
+  );
 }
 
-// ── 4. 공통 레이아웃 Props ──
+// ── 4. 레이아웃 Props ──
 interface LayoutProps {
   template: Template;
   category: string;
@@ -475,7 +367,7 @@ interface LayoutProps {
   onNavClick: (menu: string, idx: number) => void;
 }
 
-// ── 5. 에디토리얼 버티컬 레이아웃 ──
+// ── 5. 에디토리얼 버티컬 레이아웃 (포인트 컬러 100% 동기화) ──
 function VerticalLayout({
   template,
   accentColor,
@@ -489,18 +381,20 @@ function VerticalLayout({
   onActionClick,
   onNavClick,
 }: LayoutProps) {
-  const { fonts } = template;
-
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#FAF9F6] text-[#111827]">
       {/* Editorial Nav */}
-      <nav className="flex items-center justify-between px-8 py-5 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-[#E5E7EB] shadow-sm">
+      <nav
+        className="flex items-center justify-between px-8 py-5 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 shadow-sm"
+        style={{ borderColor: `${accentColor}33` }}
+      >
         {logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt="Logo" className="h-7 max-w-[140px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
         ) : (
           <span
-            className="text-base font-bold tracking-widest uppercase font-serif-kr text-[#111827] cursor-pointer"
+            className="text-base font-bold tracking-widest uppercase font-serif-kr cursor-pointer"
+            style={{ color: accentColor }}
             onClick={() => onNavClick("hero", 0)}
           >
             {bizName}
@@ -512,7 +406,8 @@ function VerticalLayout({
               key={menu}
               type="button"
               onClick={() => onNavClick(menu, idx)}
-              className="text-xs font-bold tracking-wider hover:text-amber-800 transition-colors text-[#374151] cursor-pointer"
+              className="text-xs font-bold tracking-wider transition-colors cursor-pointer text-[#374151] hover:opacity-80"
+              style={{ ":hover": { color: accentColor } } as any}
             >
               {menu}
             </button>
@@ -520,10 +415,17 @@ function VerticalLayout({
         </div>
       </nav>
 
-      {/* Editorial Hero */}
+      {/* Editorial Hero (포인트 컬러 적극 적용) */}
       <header id="hero" className="px-8 py-16 max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7 space-y-6 text-left">
-          <span className="text-xs font-bold tracking-widest uppercase text-amber-800 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+          <span
+            className="text-xs font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full border shadow-sm inline-block"
+            style={{
+              backgroundColor: `${accentColor}15`,
+              color: accentColor,
+              borderColor: `${accentColor}40`
+            }}
+          >
             EDITORIAL COLLECTION
           </span>
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-[#111827] font-serif-kr">
@@ -536,7 +438,8 @@ function VerticalLayout({
             <button
               type="button"
               onClick={() => onActionClick("DISCOVER ARCHIVE")}
-              className="px-6 py-3 rounded-xl text-xs font-bold tracking-wider uppercase bg-[#111827] text-white hover:bg-[#374151] transition-all cursor-pointer shadow-md"
+              className="px-7 py-3.5 rounded-xl text-xs font-bold tracking-wider uppercase text-white transition-all cursor-pointer shadow-lg hover:scale-102"
+              style={{ backgroundColor: accentColor }}
             >
               DISCOVER ARCHIVE
             </button>
@@ -544,7 +447,10 @@ function VerticalLayout({
         </div>
 
         <div className="md:col-span-5 flex justify-center md:justify-end">
-          <div className="relative w-full max-w-[340px] aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl border-2 border-[#E5E7EB]">
+          <div
+            className="relative w-full max-w-[340px] aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4"
+            style={{ borderColor: accentColor }}
+          >
             <EditableImage
               sectionKey="hero"
               defaultUrl={images[0]}
@@ -555,7 +461,7 @@ function VerticalLayout({
       </header>
 
       {/* 섹션 순회 */}
-      <main className="flex-1 px-8 py-12 max-w-6xl mx-auto w-full space-y-12 border-t border-[#E5E7EB]">
+      <main className="flex-1 px-8 py-12 max-w-6xl mx-auto w-full space-y-12 border-t-2 border-[#E5E7EB]">
         {sections.filter(s => s !== "hero").map((sec, i) => (
           <PatternSectionRenderer
             key={sec}
@@ -565,14 +471,13 @@ function VerticalLayout({
             accentColor={accentColor}
             bizName={bizName}
             images={images}
-            themeMode="light"
             onActionClick={onActionClick}
           />
         ))}
       </main>
 
       {/* Footer */}
-      <footer className="w-full py-10 px-8 border-t border-[#E5E7EB] text-center text-xs font-semibold text-[#4B5563] bg-white mt-auto">
+      <footer className="w-full py-10 px-8 border-t-2 border-[#E5E7EB] text-center text-xs font-semibold text-[#4B5563] bg-white mt-auto">
         <p className="font-bold mb-2 uppercase tracking-widest text-[#111827]">{bizName}</p>
         {contact && <p className="mb-2">INQUIRY: {contact}</p>}
         <p className="opacity-70">© 2026 {bizName}. All Rights Reserved.</p>
@@ -581,7 +486,7 @@ function VerticalLayout({
   );
 }
 
-// ── 6. 다이내믹 & 그리드 레이아웃 (통합 렌더) ──
+// ── 6. 메인 컴포넌트 ──
 export default function LivePreviewRenderer() {
   const {
     selectedTemplate,
@@ -609,14 +514,9 @@ export default function LivePreviewRenderer() {
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const images = useMemo(() => {
-    const templateId = selectedTemplate.id;
-    const fallbacks = TEMPLATE_DEFAULTS[templateId] || [
-      "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=800&q=80",
-      "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=800&q=80",
-      "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=800&q=80"
-    ];
+    const templatePool = KEYWORD_IMAGE_POOLS[selectedCategory] || KEYWORD_IMAGE_POOLS.default;
+    const resolved = [...templatePool.slice(0, 3)];
 
-    const resolved = [...fallbacks];
     if (imageMode === "upload" && uploadedImageUrl) {
       resolved[0] = uploadedImageUrl;
     } else if (imageMode === "stock" && selectedStockImages.length > 0) {
@@ -625,7 +525,7 @@ export default function LivePreviewRenderer() {
       });
     }
     return resolved;
-  }, [selectedTemplate.id, imageMode, uploadedImageUrl, selectedStockImages]);
+  }, [selectedCategory, imageMode, uploadedImageUrl, selectedStockImages]);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
