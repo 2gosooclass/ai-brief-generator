@@ -31,6 +31,9 @@ interface BriefState {
   // 사용자 입력값
   userInputs: UserInputs;
 
+  // 네비게이션 메뉴 목록
+  navMenus: string[];
+
   // 액션
   setCategory: (category: CategoryId) => void;
   selectTemplate: (template: Template) => void;
@@ -48,6 +51,10 @@ interface BriefState {
   setUserInput: (key: keyof UserInputs, value: string) => void;
   toggleMultiPage: () => void;
   resetPanel: () => void;
+  setNavMenus: (menus: string[]) => void;
+  addNavMenu: (menu: string) => void;
+  removeNavMenu: (index: number) => void;
+  updateNavMenu: (index: number, newName: string) => void;
 }
 
 const defaultModifyOptions: ModifyOptions = {
@@ -86,6 +93,7 @@ export const useBriefStore = create<BriefState>((set) => ({
 
   logoUrl: null,
   referenceScreenshotUrl: null,
+  navMenus: ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
 
   setCategory: (category) =>
     set({
@@ -96,12 +104,19 @@ export const useBriefStore = create<BriefState>((set) => ({
     }),
 
   selectTemplate: (template) =>
-    set((state) => ({
-      selectedTemplate: template,
-      isPanelOpen: true,
-      selectedStockImages: [],
-      selectedCategory: (template.categoryId as any) || state.selectedCategory,
-    })),
+    set((state) => {
+      const defaultMenus = template.sections
+        .filter((s) => s !== "hero")
+        .slice(0, 4)
+        .map((s) => s.toUpperCase());
+      return {
+        selectedTemplate: template,
+        isPanelOpen: true,
+        selectedStockImages: [],
+        navMenus: defaultMenus.length > 0 ? defaultMenus : ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
+        selectedCategory: (template.categoryId as any) || state.selectedCategory,
+      };
+    }),
 
   openPanel: () =>
     set({
@@ -229,7 +244,22 @@ export const useBriefStore = create<BriefState>((set) => ({
       activeEditingSection: null,
       logoUrl: null,
       referenceScreenshotUrl: null,
+      navMenus: ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
       modifyOptions: defaultModifyOptions,
       userInputs: defaultUserInputs,
     }),
+
+  setNavMenus: (menus) => set({ navMenus: menus }),
+  addNavMenu: (menu) =>
+    set((state) => ({
+      navMenus: [...state.navMenus, menu.trim().toUpperCase()],
+    })),
+  removeNavMenu: (index) =>
+    set((state) => ({
+      navMenus: state.navMenus.filter((_, i) => i !== index),
+    })),
+  updateNavMenu: (index, newName) =>
+    set((state) => ({
+      navMenus: state.navMenus.map((m, i) => (i === index ? newName.trim().toUpperCase() : m)),
+    })),
 }));

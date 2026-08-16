@@ -130,6 +130,7 @@ export function buildPrompt({
   userInputs,
   logoUrl,
   referenceScreenshotUrl,
+  navMenus,
 }: {
   template: Template;
   categoryId: string;
@@ -140,6 +141,7 @@ export function buildPrompt({
   userInputs: UserInputs;
   logoUrl: string | null;
   referenceScreenshotUrl: string | null;
+  navMenus?: string[];
 }): string {
   const categoryLabel = CATEGORY_LABELS[categoryId] ?? categoryId;
   const templateId = template.id;
@@ -283,13 +285,18 @@ ${urlsText}
   \`\`\`
 `.trim();
 
+  const navSection =
+    navMenus && navMenus.length > 0
+      ? `\n## 네비게이션 메뉴 구성\n상단 네비게이션 바(GNB)에는 다음 메뉴 항목들을 배치하고, 클릭 시 해당 섹션으로 부드럽게 스크롤(Smooth Scroll)되도록 구현해 주세요:\n${navMenus.map((m) => `- ${m}`).join("\n")}\n`
+      : "";
+
   return `# ${categoryLabel} 웹사이트 제작 요청
 
 ## 기본 설정
 아래 디자인 스타일을 참고하여 "${template.name}" 스타일의 ${categoryLabel} 웹사이트를 제작해 주세요.
 디자인 컨셉: ${template.tagline}
 레퍼런스 스타일: ${template.referenceStyle}
-
+${navSection}
 ## 레이아웃 구조
 아래 순서로 섹션을 구성해 주세요:
 ${sectionList}

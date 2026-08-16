@@ -58,6 +58,7 @@ export interface UserInputs {
   referenceUrl: string;
   referenceScreenshotUrl: string;
   imagePromptKeyword: string;
+  navMenus?: string[];
 }
 
 export interface UnsplashPhoto {

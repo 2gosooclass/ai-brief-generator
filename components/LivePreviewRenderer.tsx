@@ -778,6 +778,8 @@ export default function LivePreviewRenderer() {
     return resolved;
   }, [selectedTemplate.id, imageMode, uploadedImageUrl, selectedStockImages]);
 
+  const { navMenus } = useBriefStore();
+
   const props = {
     template: selectedTemplate,
     category: selectedCategory,
@@ -788,7 +790,8 @@ export default function LivePreviewRenderer() {
     sections,
     images,
     logoUrl,
-    contact
+    contact,
+    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
   };
 
   switch (layoutType) {
@@ -813,12 +816,13 @@ interface LayoutProps {
   images: string[];
   logoUrl: string | null;
   contact: string;
+  navMenus: string[];
 }
 
 // ─────────────────────────────────────────────
 // 1. VERTICAL LAYOUT (미니멀 카페, 신뢰 학원 등)
 // ─────────────────────────────────────────────
-function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
+function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images, logoUrl, contact, navMenus }: LayoutProps) {
   const { colors, fonts } = template;
   const navBg = "#FAFAF9";
   const editorialBg = "#FAF9F6";
@@ -836,15 +840,9 @@ function VerticalLayout({ template, isMultiPage, accentColor, bizName, bizDesc, 
           </span>
         )}
         <div className="flex gap-8">
-          {isMultiPage ? (
-            ["COLLECTION", "STORY", "ARCHIVE", "CONTACT"].map(i => (
-              <span key={i} className="text-[10px] tracking-wider font-semibold cursor-pointer hover:text-[#C8A97E] transition-colors text-[#5C4A3A]">{i}</span>
-            ))
-          ) : (
-            ["OVERVIEW", "SPECIFICATION", "INQUIRY"].map(i => (
-              <span key={i} className="text-[10px] tracking-wider font-semibold cursor-pointer hover:text-[#C8A97E] transition-colors text-[#5C4A3A]">{i}</span>
-            ))
-          )}
+          {navMenus.map(i => (
+            <span key={i} className="text-[10px] tracking-wider font-semibold cursor-pointer hover:text-[#C8A97E] transition-colors text-[#5C4A3A]">{i}</span>
+          ))}
         </div>
       </nav>
 
@@ -1304,7 +1302,7 @@ function CasualLayout({ template, accentColor, bizName, bizDesc, sections, image
 // ─────────────────────────────────────────────
 // 6. DYNAMIC MOTION & INTERACTIVE LAYOUT (동적 인터랙티브 전용)
 // ─────────────────────────────────────────────
-function DynamicLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images, logoUrl, contact }: LayoutProps) {
+function DynamicLayout({ template, isMultiPage, accentColor, bizName, bizDesc, sections, images, logoUrl, contact, navMenus }: LayoutProps) {
   const { fonts } = template;
   const darkBg = "#0A0D14";
   const neonAccent = accentColor || "#00F2FE";
@@ -1345,9 +1343,9 @@ function DynamicLayout({ template, isMultiPage, accentColor, bizName, bizDesc, s
 
         <div className="flex items-center gap-6">
           <div className="hidden md:flex gap-6 text-[11px] tracking-widest text-gray-400 font-medium">
-            <span className="hover:text-cyan-400 transition-colors cursor-pointer">EXPERIENCE</span>
-            <span className="hover:text-cyan-400 transition-colors cursor-pointer">INTERACTIONS</span>
-            <span className="hover:text-cyan-400 transition-colors cursor-pointer">TECH STACK</span>
+            {navMenus.map((menu) => (
+              <span key={menu} className="hover:text-cyan-400 transition-colors cursor-pointer">{menu}</span>
+            ))}
           </div>
           <button
             className="px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 hover:scale-105 shadow-[0_0_15px_rgba(0,242,254,0.3)] cursor-pointer"

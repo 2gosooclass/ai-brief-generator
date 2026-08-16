@@ -21,6 +21,7 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
     userInputs,
     logoUrl,
     referenceScreenshotUrl,
+    navMenus,
   } = useBriefStore();
 
   const [copied, setCopied] = useState(false);
@@ -38,6 +39,7 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
       userInputs,
       logoUrl,
       referenceScreenshotUrl,
+      navMenus,
     });
     setPrompt(built);
   }, [
@@ -50,6 +52,7 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
     userInputs,
     logoUrl,
     referenceScreenshotUrl,
+    navMenus,
   ]);
 
   const handleCopy = async () => {
