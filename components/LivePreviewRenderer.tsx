@@ -100,20 +100,17 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
     "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
     "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80",
-    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80",
-    "https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=1200&q=80"
+    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80"
   ],
   personal: [
     "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=1200&q=80",
     "https://images.unsplash.com/photo-1531403009284-440f080d1e12?w=1200&q=80",
-    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1200&q=80",
-    "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1200&q=80"
+    "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=1200&q=80"
   ],
   default: [
     "https://images.unsplash.com/photo-1498804103079-a6351b050096?w=1200&q=80",
     "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80",
-    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80",
-    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80"
+    "https://images.unsplash.com/photo-1559925393-8be0ec4767c8?w=1200&q=80"
   ]
 };
 
@@ -324,7 +321,262 @@ interface LayoutProps {
 }
 
 // ═════════════════════════════════════════════════════════
-// 1. DYNAMIC MOTION & 3D WEBGL LAYOUT (다이내믹 전용)
+// 1. CORPORATE & FRANCHISE STANDARD LAYOUT (투썸플레이스 / 대형 브랜드 표준)
+// ═════════════════════════════════════════════════════════
+function CorporateFranchiseLayout({
+  accentColor,
+  bizName,
+  bizDesc,
+  sections,
+  images,
+  logoUrl,
+  contact,
+  navMenus,
+  onActionClick,
+  onNavClick,
+}: LayoutProps) {
+  const brandRed = accentColor || "#D62828";
+
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F8F9FA] text-[#111827]">
+      {/* 1. Top Utility Bar */}
+      <div className="bg-[#1E1E24] text-gray-300 text-xs py-2 px-8 flex justify-between items-center border-b border-gray-800">
+        <div className="flex gap-4">
+          <span className="font-semibold text-white">프리미엄 프랜차이즈</span>
+          <span className="text-gray-500">|</span>
+          <span>고객센터: {contact || "1577-4410"}</span>
+        </div>
+        <div className="flex gap-4">
+          <button type="button" onClick={() => onActionClick("가맹 상담")} className="hover:text-white transition-colors cursor-pointer">
+            가맹점 개설 문의 &rarr;
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Corporate Main Nav */}
+      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b-2 border-gray-200 sticky top-0 z-30 shadow-md">
+        <div className="flex items-center gap-6">
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} alt="Logo" className="h-8 max-w-[160px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
+          ) : (
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => onNavClick("hero", 0)}>
+              <span className="w-4 h-4 rounded-sm" style={{ backgroundColor: brandRed }} />
+              <span className="text-xl font-black tracking-tight text-gray-900">{bizName}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden md:flex gap-8 items-center">
+          {navMenus.map((menu, idx) => (
+            <button
+              key={menu}
+              type="button"
+              onClick={() => onNavClick(menu, idx)}
+              className="text-sm font-bold text-gray-700 hover:text-red-600 transition-colors cursor-pointer"
+            >
+              {menu}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => onActionClick("ONLINE ORDER")}
+          className="px-5 py-2.5 rounded-full text-xs font-bold text-white shadow-md transition-transform hover:scale-105 cursor-pointer"
+          style={{ backgroundColor: brandRed }}
+        >
+          매장 주문 / 예약
+        </button>
+      </nav>
+
+      {/* 3. Full-width Hero Banner (16:9 와이드 슬라이더 스타일) */}
+      <header id="hero" className="relative w-full h-[480px] md:h-[540px] overflow-hidden bg-black flex items-center">
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-85" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
+
+        <div className="relative z-20 max-w-6xl mx-auto px-8 w-full text-left space-y-5">
+          <span
+            className="text-xs font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-md text-white shadow-sm inline-block"
+            style={{ backgroundColor: brandRed }}
+          >
+            SEASON SIGNATURE
+          </span>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white leading-tight drop-shadow-md">
+            {bizDesc}
+          </h1>
+          <p className="text-base sm:text-lg text-gray-200 font-medium max-w-xl leading-relaxed">
+            {bizName}가 제안하는 이번 시즌 가장 찬란한 디저트와 깊은 풍미의 스페셜티 블렌드를 만나보세요.
+          </p>
+          <div className="pt-2 flex gap-3.5">
+            <button
+              type="button"
+              onClick={() => onActionClick("신메뉴 보러가기")}
+              className="px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-xl transition-all hover:scale-105 cursor-pointer"
+              style={{ backgroundColor: brandRed }}
+            >
+              신메뉴 자세히 보기 &rarr;
+            </button>
+            <button
+              type="button"
+              onClick={() => onActionClick("가까운 매장 찾기")}
+              className="px-7 py-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-white/20 text-white backdrop-blur-md hover:bg-white/30 transition-all cursor-pointer border border-white/30"
+            >
+              매장 찾기
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 4. 4단 퀵 메뉴 바 (Quick Navigation Icons) */}
+      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-30 w-full">
+        <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 overflow-hidden">
+          {[
+            { icon: "☕", title: "신제품 소개", desc: "시즌 시그니처 라인업" },
+            { icon: "🎂", title: "홀케이크 예약", desc: "원하는 날짜에 픽업" },
+            { icon: "📍", title: "매장 찾기", desc: "내 주변 가까운 매장" },
+            { icon: "🤝", title: "가맹 개설 문의", desc: "1:1 창업 컨설팅" },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              onClick={() => onActionClick(item.title)}
+              className="p-5 flex items-center gap-3.5 hover:bg-gray-50 transition-colors cursor-pointer text-left"
+            >
+              <span className="text-3xl p-2.5 rounded-xl bg-gray-100 shrink-0">{item.icon}</span>
+              <div>
+                <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
+                <p className="text-xs text-gray-500 font-medium">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. 시그니처 쇼케이스 (좌측 메인 화보 배너 + 우측 베스트 메뉴 2단) */}
+      <main className="flex-1 max-w-6xl mx-auto px-6 py-16 w-full space-y-16">
+        <section id="menu" className="space-y-8 text-left">
+          <div className="flex items-center justify-between border-b-2 border-gray-200 pb-4">
+            <div>
+              <span className="text-xs font-bold text-red-600 tracking-wider uppercase">OUR BEST MENU</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-gray-900">시그니처 메뉴 라인업</h2>
+            </div>
+            <button
+              type="button"
+              onClick={() => onActionClick("전체 메뉴 보기")}
+              className="text-xs font-bold text-gray-700 hover:text-red-600 transition-colors flex items-center gap-1"
+            >
+              전체 메뉴 보기 &rarr;
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* 좌측 대형 화보 배너 (7열) */}
+            <div className="lg:col-span-7 rounded-3xl overflow-hidden border-2 border-gray-200 shadow-md relative min-h-[380px]">
+              <EditableImage sectionKey="menu-hero" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-left">
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">PREMIUM SELECTION</span>
+                <h3 className="text-2xl font-black text-white mb-2">스트로베리 초콜릿 링 생크림</h3>
+                <p className="text-xs text-gray-200 leading-relaxed max-w-md">
+                  신선한 생딸기와 진한 가나슈 생크림이 조화를 이루는 {bizName}의 부동의 No.1 대표 시그니처 케이크입니다.
+                </p>
+              </div>
+            </div>
+
+            {/* 우측 2단 카드 (5열) */}
+            <div className="lg:col-span-5 grid grid-cols-1 gap-6">
+              {[
+                { title: "스패니쉬 연유 라떼", desc: "진하고 부드러운 스위트 에스프레소", imgIdx: 2 },
+                { title: "로얄 밀크티 쉐이크", desc: "얼그레이 찻잎을 진하게 우려낸 풍미", imgIdx: 3 },
+              ].map((subItem, idx) => (
+                <div key={idx} className="bg-white rounded-3xl border-2 border-gray-200 p-5 flex gap-4 items-center shadow-sm hover:shadow-md transition-shadow">
+                  <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100">
+                    <EditableImage sectionKey={`sub-menu-${idx}`} defaultUrl={images[subItem.imgIdx % images.length]} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 text-left space-y-1">
+                    <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">RECOMMEND</span>
+                    <h4 className="text-sm font-bold text-gray-900">{subItem.title}</h4>
+                    <p className="text-xs text-gray-500 font-medium">{subItem.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* 6. 매장 찾기 & 가맹 개설 2단 스플릿 박스 */}
+        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
+          {/* 매장 찾기 */}
+          <div className="bg-white p-8 rounded-3xl border-2 border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-gray-500 uppercase">STORE LOCATOR</span>
+              <h3 className="text-xl font-black text-gray-900 mt-1">가까운 매장 찾기</h3>
+              <p className="text-xs text-gray-600 mt-2 leading-relaxed">
+                현재 계신 위치에서 가장 가까운 {bizName} 매장의 위치와 영업 시간을 확인해 보세요.
+              </p>
+            </div>
+            <div className="flex gap-2 pt-2">
+              <input
+                type="text"
+                placeholder="매장명 또는 지역 검색 (예: 강남역)"
+                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 text-xs font-semibold text-gray-900 outline-none focus:border-red-600"
+              />
+              <button
+                type="button"
+                onClick={() => onActionClick("매장 검색")}
+                className="px-5 py-3 rounded-xl text-xs font-bold text-white shadow transition-transform hover:scale-105 cursor-pointer shrink-0"
+                style={{ backgroundColor: brandRed }}
+              >
+                검색
+              </button>
+            </div>
+          </div>
+
+          {/* 가맹 안내 */}
+          <div className="bg-[#1E1E24] text-white p-8 rounded-3xl border-2 border-gray-800 shadow-md space-y-4 flex flex-col justify-between">
+            <div>
+              <span className="text-xs font-bold text-red-400 uppercase">FRANCHISE & BUSINESS</span>
+              <h3 className="text-xl font-black text-white mt-1">성공적인 창업 파트너</h3>
+              <p className="text-xs text-gray-300 mt-2 leading-relaxed">
+                체계적인 상권 분석과 전문 본사 지원 시스템으로 든든한 비즈니스 성장을 함께합니다.
+              </p>
+            </div>
+            <div>
+              <button
+                type="button"
+                onClick={() => onActionClick("가맹 절차 알아보기")}
+                className="w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-all hover:opacity-90 cursor-pointer"
+                style={{ backgroundColor: brandRed }}
+              >
+                가맹 개설 절차 및 상담 신청 &rarr;
+              </button>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* 7. Corporate Standard Footer */}
+      <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-left text-xs text-gray-500 mt-auto">
+        <div className="max-w-6xl mx-auto space-y-6">
+          <div className="flex flex-wrap gap-6 font-bold text-gray-800 border-b border-gray-100 pb-4">
+            <span className="cursor-pointer hover:text-red-600">회사소개</span>
+            <span className="cursor-pointer hover:text-red-600">이용약관</span>
+            <span className="cursor-pointer hover:text-red-600 text-red-600 font-black">개인정보처리방침</span>
+            <span className="cursor-pointer hover:text-red-600">가맹문의</span>
+            <span className="cursor-pointer hover:text-red-600">고객센터</span>
+          </div>
+          <div className="space-y-1.5 text-[11px] leading-relaxed text-gray-500">
+            <p><strong>(주){bizName}</strong> | 서울특별시 강남구 테헤란로 123 | 대표이사: 홍길동 | 사업자등록번호: 123-45-67890</p>
+            <p>고객상담센터: {contact || "1577-4410"} (평일 09:00 ~ 18:00) | 통신판매업신고: 제2026-서울강남-0001호</p>
+            <p className="pt-2 text-gray-400">© 2026 {bizName} Corp. ALL RIGHTS RESERVED. POWERED BY GOOGLE FLOW.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ═════════════════════════════════════════════════════════
+// 2. DYNAMIC MOTION & 3D WEBGL LAYOUT (다이내믹 전용)
 // ═════════════════════════════════════════════════════════
 function DynamicLayout({
   accentColor,
@@ -484,7 +736,7 @@ function DynamicLayout({
 }
 
 // ═════════════════════════════════════════════════════════
-// 2. GRID LAYOUT (핀터레스트 카드 / 학원 / 포트폴리오)
+// 3. GRID LAYOUT (핀터레스트 카드)
 // ═════════════════════════════════════════════════════════
 function GridLayout({
   accentColor,
@@ -500,16 +752,10 @@ function GridLayout({
 }: LayoutProps) {
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F9FAFB] text-[#111827]">
-      {/* Centered Grid Nav */}
       <nav className="grid grid-cols-3 items-center px-8 py-5 border-b-2 border-gray-200 bg-white sticky top-0 z-30 shadow-sm">
         <div className="flex gap-4">
           {navMenus.slice(0, 2).map((menu, idx) => (
-            <button
-              key={menu}
-              type="button"
-              onClick={() => onNavClick(menu, idx)}
-              className="text-xs font-bold tracking-wider hover:text-black transition-colors text-gray-600 cursor-pointer"
-            >
+            <button key={menu} type="button" onClick={() => onNavClick(menu, idx)} className="text-xs font-bold text-gray-600 hover:text-black">
               {menu}
             </button>
           ))}
@@ -519,53 +765,33 @@ function GridLayout({
             // eslint-disable-next-line @next/next/no-img-element
             <img src={logoUrl} alt="Logo" className="h-7 max-w-[140px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
           ) : (
-            <span
-              className="text-lg font-black tracking-widest uppercase cursor-pointer"
-              style={{ color: accentColor }}
-              onClick={() => onNavClick("hero", 0)}
-            >
+            <span className="text-lg font-black tracking-widest uppercase cursor-pointer" style={{ color: accentColor }} onClick={() => onNavClick("hero", 0)}>
               {bizName}
             </span>
           )}
         </div>
         <div className="flex justify-end gap-4">
           {navMenus.slice(2).map((menu, idx) => (
-            <button
-              key={menu}
-              type="button"
-              onClick={() => onNavClick(menu, idx + 2)}
-              className="text-xs font-bold tracking-wider hover:text-black transition-colors text-gray-600 cursor-pointer"
-            >
+            <button key={menu} type="button" onClick={() => onNavClick(menu, idx + 2)} className="text-xs font-bold text-gray-600 hover:text-black">
               {menu}
             </button>
           ))}
         </div>
       </nav>
 
-      {/* Grid Hero */}
       <header id="hero" className="grid grid-cols-1 lg:grid-cols-12 border-b-2 border-gray-200 bg-white">
         <div className="lg:col-span-7 p-10 lg:p-16 flex flex-col justify-center space-y-6 text-left border-r-2 border-gray-200">
           <span className="text-xs font-bold tracking-widest uppercase px-3 py-1 rounded-md text-white w-fit shadow" style={{ backgroundColor: accentColor }}>
             PINTEREST GRID ARCHITECTURE
           </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-gray-900">
-            {bizDesc}
-          </h1>
-          <p className="text-sm sm:text-base text-gray-600 leading-relaxed font-medium">
-            시각적 탐색 효율을 극대화한 멀티 카드 그리드 레이아웃입니다.
-          </p>
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight text-gray-900">{bizDesc}</h1>
+          <p className="text-sm sm:text-base text-gray-600 leading-relaxed font-medium">시각적 탐색 효율을 극대화한 멀티 카드 그리드 레이아웃입니다.</p>
           <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => onActionClick("EXPLORE GRID")}
-              className="px-7 py-3.5 rounded-xl text-xs font-bold text-white transition-transform hover:scale-105 shadow-md cursor-pointer"
-              style={{ backgroundColor: accentColor }}
-            >
+            <button type="button" onClick={() => onActionClick("EXPLORE GRID")} className="px-7 py-3.5 rounded-xl text-xs font-bold text-white shadow-md" style={{ backgroundColor: accentColor }}>
               EXPLORE ARCHIVE
             </button>
           </div>
         </div>
-
         <div className="lg:col-span-5 p-6 bg-gray-50 flex items-center justify-center">
           <div className="w-full h-80 rounded-2xl overflow-hidden shadow-xl border-2 border-gray-200">
             <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full object-cover" />
@@ -573,18 +799,12 @@ function GridLayout({
         </div>
       </header>
 
-      {/* Grid Sections */}
       <main className="flex-1 p-8 max-w-6xl mx-auto w-full space-y-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {sections.filter(s => s !== "hero").map((sec, i) => {
-            const preset = SECTION_PRESETS[sec] || {
-              badge: "GRID ITEM",
-              subHeading: `${SECTION_KR[sec] || sec} 상세`,
-              subDesc: "콘텐츠 카드를 통해 신속하고 직관적으로 정보를 확인하세요.",
-              btnText: "카드 상세 보기",
-            };
+            const preset = SECTION_PRESETS[sec] || { badge: "GRID", subHeading: `${SECTION_KR[sec] || sec} 상세`, subDesc: "정보를 신속하게 확인하세요.", btnText: "자세히 보기" };
             return (
-              <div key={sec} id={sec} className="bg-white rounded-2xl border-2 border-gray-200 p-5 space-y-4 shadow-sm hover:shadow-md transition-shadow text-left">
+              <div key={sec} id={sec} className="bg-white rounded-2xl border-2 border-gray-200 p-5 space-y-4 shadow-sm text-left">
                 <EditableImage sectionKey={sec} defaultUrl={images[i % images.length]} className="h-44 rounded-xl shadow-sm w-full" />
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-bold text-gray-400">{preset.badge}</span>
@@ -592,12 +812,7 @@ function GridLayout({
                 </div>
                 <h4 className="text-base font-bold text-gray-900">{preset.subHeading}</h4>
                 <p className="text-xs text-gray-600 leading-relaxed font-medium">{preset.subDesc}</p>
-                <button
-                  type="button"
-                  onClick={() => onActionClick(preset.btnText)}
-                  className="w-full py-2.5 rounded-xl text-xs font-bold text-white transition-opacity hover:opacity-90 cursor-pointer shadow-sm"
-                  style={{ backgroundColor: accentColor }}
-                >
+                <button type="button" onClick={() => onActionClick(preset.btnText)} className="w-full py-2.5 rounded-xl text-xs font-bold text-white shadow-sm" style={{ backgroundColor: accentColor }}>
                   {preset.btnText}
                 </button>
               </div>
@@ -606,10 +821,8 @@ function GridLayout({
         </div>
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-10 px-8 border-t-2 border-gray-200 text-center text-xs font-semibold text-gray-500 bg-white mt-auto">
         <p className="font-bold mb-2 uppercase tracking-widest text-gray-900">{bizName}</p>
-        {contact && <p className="mb-2">CONTACT: {contact}</p>}
         <p className="opacity-70">© 2026 {bizName}. All Rights Reserved.</p>
       </footer>
     </div>
@@ -617,7 +830,7 @@ function GridLayout({
 }
 
 // ═════════════════════════════════════════════════════════
-// 3. OVERLAY LAYOUT (시네마틱 풀스크린 / 오버레이)
+// 4. OVERLAY LAYOUT (시네마틱 풀스크린)
 // ═════════════════════════════════════════════════════════
 function OverlayLayout({
   accentColor,
@@ -633,53 +846,32 @@ function OverlayLayout({
 }: LayoutProps) {
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#111827] text-white">
-      {/* Fullscreen Hero with Nav overlay */}
       <div className="relative min-h-[500px] flex flex-col justify-between">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover" />
         <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-[#111827]" />
-
-        {/* Overlay Nav */}
         <nav className="relative z-20 flex items-center justify-between px-8 py-6">
           {logoUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={logoUrl} alt="Logo" className="h-7 max-w-[140px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
           ) : (
-            <span className="text-xl font-bold tracking-widest uppercase cursor-pointer" onClick={() => onNavClick("hero", 0)}>
-              {bizName}
-            </span>
+            <span className="text-xl font-bold tracking-widest uppercase cursor-pointer" onClick={() => onNavClick("hero", 0)}>{bizName}</span>
           )}
           <div className="flex gap-6">
             {navMenus.map((menu, idx) => (
-              <button
-                key={menu}
-                type="button"
-                onClick={() => onNavClick(menu, idx)}
-                className="text-xs font-bold tracking-wider hover:text-amber-300 transition-colors text-gray-200 cursor-pointer"
-              >
+              <button key={menu} type="button" onClick={() => onNavClick(menu, idx)} className="text-xs font-bold hover:text-amber-300 text-gray-200">
                 {menu}
               </button>
             ))}
           </div>
         </nav>
-
-        {/* Center Hero Typography */}
         <div className="relative z-20 px-8 py-16 text-center max-w-3xl mx-auto space-y-6">
           <span className="text-xs font-bold tracking-widest uppercase px-4 py-1.5 rounded-full bg-white/20 backdrop-blur-md border border-white/30">
             CINEMATIC OVERLAY EXPERIENCE
           </span>
-          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black leading-tight text-white drop-shadow-lg">
-            {bizDesc}
-          </h1>
-          <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-medium">
-            압도적인 시각적 몰입감을 선사하는 풀스크린 오버레이 아키텍처입니다.
-          </p>
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-black text-white">{bizDesc}</h1>
+          <p className="text-sm sm:text-base text-gray-200 leading-relaxed font-medium">압도적인 시각적 몰입감을 선사하는 풀스크린 오버레이 아키텍처입니다.</p>
           <div>
-            <button
-              type="button"
-              onClick={() => onActionClick("ENTER")}
-              className="px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider text-black transition-transform hover:scale-105 shadow-2xl cursor-pointer"
-              style={{ backgroundColor: accentColor || "#FFF" }}
-            >
+            <button type="button" onClick={() => onActionClick("DISCOVER MORE")} className="px-8 py-3.5 rounded-full text-xs font-bold uppercase tracking-wider text-black shadow-2xl" style={{ backgroundColor: accentColor || "#FFF" }}>
               DISCOVER MORE
             </button>
           </div>
@@ -687,15 +879,9 @@ function OverlayLayout({
         <div className="relative z-20 pb-4" />
       </div>
 
-      {/* Sections */}
       <main className="flex-1 px-8 py-16 max-w-5xl mx-auto w-full space-y-12">
         {sections.filter(s => s !== "hero").map((sec, i) => {
-          const preset = SECTION_PRESETS[sec] || {
-            badge: "OVERLAY VIEW",
-            subHeading: `${SECTION_KR[sec] || sec} 안내`,
-            subDesc: "웅장한 배경과 함께 콘텐츠를 감상해 보세요.",
-            btnText: "상세 보기",
-          };
+          const preset = SECTION_PRESETS[sec] || { badge: "OVERLAY", subHeading: `${SECTION_KR[sec] || sec} 안내`, subDesc: "콘텐츠를 감상해 보세요.", btnText: "상세 보기" };
           return (
             <div key={sec} id={sec} className="relative rounded-3xl overflow-hidden p-8 border border-white/15 bg-white/5 backdrop-blur-md space-y-6 text-left">
               <div className="flex items-center justify-between border-b border-white/10 pb-4">
@@ -707,12 +893,7 @@ function OverlayLayout({
                 <div className="space-y-4">
                   <h4 className="text-lg font-bold text-white">{preset.subHeading}</h4>
                   <p className="text-sm text-gray-300 leading-relaxed">{preset.subDesc}</p>
-                  <button
-                    type="button"
-                    onClick={() => onActionClick(preset.btnText)}
-                    className="px-6 py-3 rounded-xl text-xs font-bold text-black transition-transform hover:scale-105 cursor-pointer shadow-md"
-                    style={{ backgroundColor: accentColor || "#FFF" }}
-                  >
+                  <button type="button" onClick={() => onActionClick(preset.btnText)} className="px-6 py-3 rounded-xl text-xs font-bold text-black" style={{ backgroundColor: accentColor || "#FFF" }}>
                     {preset.btnText}
                   </button>
                 </div>
@@ -722,10 +903,8 @@ function OverlayLayout({
         })}
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-10 px-8 border-t border-white/10 text-center text-xs text-gray-400 bg-black/50 mt-auto">
         <p className="font-bold mb-2 uppercase tracking-widest text-white">{bizName}</p>
-        {contact && <p className="mb-2">CONTACT: {contact}</p>}
         <p className="opacity-70">© 2026 {bizName}. All Rights Reserved.</p>
       </footer>
     </div>
@@ -733,7 +912,7 @@ function OverlayLayout({
 }
 
 // ═════════════════════════════════════════════════════════
-// 4. VERTICAL EDITORIAL LAYOUT (미니멀 에디토리얼)
+// 5. VERTICAL EDITORIAL LAYOUT (미니멀 에디토리얼)
 // ═════════════════════════════════════════════════════════
 function VerticalLayout({
   accentColor,
@@ -749,87 +928,47 @@ function VerticalLayout({
 }: LayoutProps) {
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#FAF9F6] text-[#111827]">
-      {/* Editorial Nav */}
-      <nav
-        className="flex items-center justify-between px-8 py-5 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 shadow-sm"
-        style={{ borderColor: `${accentColor}33` }}
-      >
+      <nav className="flex items-center justify-between px-8 py-5 sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b-2 shadow-sm" style={{ borderColor: `${accentColor}33` }}>
         {logoUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={logoUrl} alt="Logo" className="h-7 max-w-[140px] object-contain cursor-pointer" onClick={() => onNavClick("hero", 0)} />
         ) : (
-          <span
-            className="text-base font-bold tracking-widest uppercase font-serif-kr cursor-pointer"
-            style={{ color: accentColor }}
-            onClick={() => onNavClick("hero", 0)}
-          >
+          <span className="text-base font-bold tracking-widest uppercase font-serif-kr cursor-pointer" style={{ color: accentColor }} onClick={() => onNavClick("hero", 0)}>
             {bizName}
           </span>
         )}
         <div className="flex gap-6">
           {navMenus.map((menu, idx) => (
-            <button
-              key={menu}
-              type="button"
-              onClick={() => onNavClick(menu, idx)}
-              className="text-xs font-bold tracking-wider transition-colors cursor-pointer text-[#374151] hover:opacity-80"
-            >
+            <button key={menu} type="button" onClick={() => onNavClick(menu, idx)} className="text-xs font-bold tracking-wider text-[#374151] hover:opacity-80">
               {menu}
             </button>
           ))}
         </div>
       </nav>
 
-      {/* Editorial Hero */}
       <header id="hero" className="px-8 py-16 max-w-6xl mx-auto w-full grid grid-cols-1 md:grid-cols-12 gap-10 items-center">
         <div className="md:col-span-7 space-y-6 text-left">
-          <span
-            className="text-xs font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full border shadow-sm inline-block"
-            style={{
-              backgroundColor: `${accentColor}15`,
-              color: accentColor,
-              borderColor: `${accentColor}40`
-            }}
-          >
+          <span className="text-xs font-bold tracking-widest uppercase px-3.5 py-1.5 rounded-full border shadow-sm inline-block" style={{ backgroundColor: `${accentColor}15`, color: accentColor, borderColor: `${accentColor}40` }}>
             EDITORIAL COLLECTION
           </span>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-[#111827] font-serif-kr">
-            {bizDesc}
-          </h1>
-          <p className="text-sm sm:text-base leading-relaxed text-[#4B5563] max-w-lg font-medium">
-            {bizName}가 선보이는 정제된 미학의 아카이브입니다. 본질적인 형태와 사유의 공간 속에서 최적의 균형을 발견해 보십시오.
-          </p>
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-black leading-tight text-[#111827] font-serif-kr">{bizDesc}</h1>
+          <p className="text-sm sm:text-base leading-relaxed text-[#4B5563] max-w-lg font-medium">{bizName}가 선보이는 정제된 미학의 아카이브입니다. 본질적인 형태와 사유의 공간 속에서 최적의 균형을 발견해 보십시오.</p>
           <div className="pt-2">
-            <button
-              type="button"
-              onClick={() => onActionClick("DISCOVER ARCHIVE")}
-              className="px-7 py-3.5 rounded-xl text-xs font-bold tracking-wider uppercase text-white transition-all cursor-pointer shadow-lg hover:scale-102"
-              style={{ backgroundColor: accentColor }}
-            >
+            <button type="button" onClick={() => onActionClick("DISCOVER ARCHIVE")} className="px-7 py-3.5 rounded-xl text-xs font-bold tracking-wider uppercase text-white shadow-lg" style={{ backgroundColor: accentColor }}>
               DISCOVER ARCHIVE
             </button>
           </div>
         </div>
-
         <div className="md:col-span-5 flex justify-center md:justify-end">
-          <div
-            className="relative w-full max-w-[340px] aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4"
-            style={{ borderColor: accentColor }}
-          >
+          <div className="relative w-full max-w-[340px] aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl border-4" style={{ borderColor: accentColor }}>
             <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full object-cover" />
           </div>
         </div>
       </header>
 
-      {/* 섹션 순회 */}
       <main className="flex-1 px-8 py-12 max-w-6xl mx-auto w-full space-y-12 border-t-2 border-[#E5E7EB]">
         {sections.filter(s => s !== "hero").map((sec, i) => {
-          const preset = SECTION_PRESETS[sec] || {
-            badge: "SECTION",
-            subHeading: `${SECTION_KR[sec] || sec} 상세 안내`,
-            subDesc: "고객에게 최적화된 맞춤 구성과 감각적인 경험을 선사합니다.",
-            btnText: `${SECTION_KR[sec] || sec} 자세히 보기`,
-          };
+          const preset = SECTION_PRESETS[sec] || { badge: "SECTION", subHeading: `${SECTION_KR[sec] || sec} 상세 안내`, subDesc: "고객에게 최적화된 맞춤 구성과 감각적인 경험을 선사합니다.", btnText: `${SECTION_KR[sec] || sec} 자세히 보기` };
           return (
             <section key={sec} id={sec} className="py-12 px-8 rounded-3xl border-2 border-[#E5E7EB] bg-white shadow-sm space-y-6 text-left">
               <div className="flex items-center justify-between border-b-2 border-gray-100 pb-4">
@@ -837,32 +976,18 @@ function VerticalLayout({
                   <div className="w-3.5 h-3.5 rounded-full shadow-sm" style={{ backgroundColor: accentColor }} />
                   <h3 className="text-xl font-bold text-[#111827]">{SECTION_KR[sec] || sec}</h3>
                 </div>
-                <span
-                  className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm"
-                  style={{ backgroundColor: accentColor }}
-                >
+                <span className="text-xs font-bold px-3 py-1 rounded-full text-white shadow-sm" style={{ backgroundColor: accentColor }}>
                   {preset.badge}
                 </span>
               </div>
-
-              <p className="text-sm text-[#4B5563] leading-relaxed font-medium">
-                {preset.subDesc}
-              </p>
-
+              <p className="text-sm text-[#4B5563] leading-relaxed font-medium">{preset.subDesc}</p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-2">
                 <EditableImage sectionKey={sec} defaultUrl={images[i % images.length]} className="h-64 rounded-2xl shadow-md w-full" />
                 <div className="space-y-4 flex flex-col justify-center">
                   <h4 className="text-base font-bold text-[#111827]">{preset.subHeading}</h4>
-                  <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed font-medium">
-                    {preset.subDesc}
-                  </p>
+                  <p className="text-xs sm:text-sm text-[#4B5563] leading-relaxed font-medium">{preset.subDesc}</p>
                   <div className="pt-1">
-                    <button
-                      type="button"
-                      onClick={() => onActionClick(preset.btnText)}
-                      className="px-6 py-3 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 cursor-pointer shadow-md"
-                      style={{ backgroundColor: accentColor }}
-                    >
+                    <button type="button" onClick={() => onActionClick(preset.btnText)} className="px-6 py-3 rounded-xl text-xs font-bold text-white shadow-md" style={{ backgroundColor: accentColor }}>
                       {preset.btnText}
                     </button>
                   </div>
@@ -873,7 +998,6 @@ function VerticalLayout({
         })}
       </main>
 
-      {/* Footer */}
       <footer className="w-full py-10 px-8 border-t-2 border-[#E5E7EB] text-center text-xs font-semibold text-[#4B5563] bg-white mt-auto">
         <p className="font-bold mb-2 uppercase tracking-widest text-[#111827]">{bizName}</p>
         {contact && <p className="mb-2">INQUIRY: {contact}</p>}
@@ -884,7 +1008,7 @@ function VerticalLayout({
 }
 
 // ═════════════════════════════════════════════════════════
-// 5. MAIN ROUTER
+// 6. MAIN ROUTER
 // ═════════════════════════════════════════════════════════
 export default function LivePreviewRenderer() {
   const {
@@ -914,7 +1038,7 @@ export default function LivePreviewRenderer() {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const images = useMemo(() => {
     const templatePool = KEYWORD_IMAGE_POOLS[selectedCategory] || KEYWORD_IMAGE_POOLS.default;
-    const resolved = [...templatePool.slice(0, 3)];
+    const resolved = [...templatePool.slice(0, 5)];
 
     if (imageMode === "upload" && uploadedImageUrl) {
       resolved[0] = uploadedImageUrl;
@@ -958,7 +1082,7 @@ export default function LivePreviewRenderer() {
     images,
     logoUrl,
     contact,
-    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
+    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["신제품 소개", "홀케이크 예약", "매장 찾기", "가맹 개설 문의"],
     onActionClick: handleActionClick,
     onNavClick: handleNavClick,
   };
@@ -967,6 +1091,8 @@ export default function LivePreviewRenderer() {
 
   const renderLayout = () => {
     switch (layoutType) {
+      case "corporate":
+        return <CorporateFranchiseLayout {...props} />;
       case "dynamic":
         return <DynamicLayout {...props} />;
       case "grid":

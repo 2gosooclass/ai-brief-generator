@@ -1,6 +1,31 @@
 {
   "cafe": [
     {
+      "id": "cafe-corporate",
+      "name": "프리미엄 프랜차이즈 (투썸 스타일)",
+      "tagline": "대형 브랜드 & 프랜차이즈 표준 풀와이드 아키텍처",
+      "description": "투썸플레이스, 스타벅스 스타일의 풀와이드 슬라이더, 4단 퀵메뉴, 신제품 프로모션 쇼케이스, 매장 찾기/가맹 안내 표준 레이아웃입니다.",
+      "colors": {
+        "primary": "#D62828",
+        "secondary": "#1E1E24",
+        "accent": "#D62828",
+        "bg": "#FFFFFF",
+        "surface": "#F8F9FA",
+        "text": "#111827"
+      },
+      "fonts": {
+        "heading": "Pretendard",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "menu", "story", "location", "contact", "instagram"],
+      "unsplashKeyword": "premium cafe dessert coffee",
+      "referenceStyle": "twosome corporate franchise standard",
+      "promptKeywords": ["투썸", "프랜차이즈", "대형카페", "디저트", "신메뉴", "매장찾기"],
+      "badge": "BEST STANDARD",
+      "badgeColor": "amber",
+      "layoutType": "corporate"
+    },
+    {
       "id": "cafe-minimal",
       "name": "미니멀 카페",
       "tagline": "여백과 감성으로 만드는",

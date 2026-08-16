@@ -27,7 +27,7 @@ export interface Template {
   promptKeywords: string[];
   badge: string | null;
   badgeColor: string | null;
-  layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual" | "dynamic";
+  layoutType: "vertical" | "grid" | "overlay" | "finedining" | "casual" | "dynamic" | "corporate";
   categoryId?: string;
 }
 
