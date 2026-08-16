@@ -163,17 +163,14 @@ export default function DetailPanel() {
             {/* ──────────── 스크롤 영역 ──────────── */}
             <div className="flex-1 overflow-y-auto">
 
-              {/* ── 🔝 STEP 1: 프롬프트 항상 상단 고정 ── */}
+              {/* ── 프롬프트 상단 고정 ── */}
               <div className="px-5 pt-4 pb-3">
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
-                    ✓
-                  </div>
-                  <p className="text-xs font-pretendard font-semibold text-[#1C1410]">
-                    자동 생성 프롬프트
-                  </p>
-                  <span className="text-[10px] font-pretendard text-[#C8A97E] bg-[#FDF8F3] px-1.5 py-0.5 rounded-full border border-[#E8D8C0]">
-                    실시간 업데이트
+                <div className="flex items-center justify-between mb-2.5">
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410] flex items-center gap-1.5">
+                    <span>⚡</span> 자동 생성 브리프
+                  </h3>
+                  <span className="text-[9px] font-pretendard text-[#C8A97E] bg-[#FDF8F3] px-2 py-0.5 rounded-full border border-[#E8D8C0]">
+                    실시간 동기화
                   </span>
                 </div>
                 <PromptOutput compact />
@@ -181,12 +178,10 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 🏷️ 브랜드 기본 설정 (상시 노출) ── */}
+              {/* ── 브랜드 기본 설정 ── */}
               <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
-                    1
-                  </div>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm">🏷️</span>
                   <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">브랜드 및 로고 설정</h3>
                 </div>
                 
@@ -242,13 +237,11 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 📎 STEP 2: 레퍼런스 및 감성 설정 (상시 노출) ── */}
+              {/* ── 레퍼런스 및 스타일 설정 ── */}
               <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
-                    2
-                  </div>
-                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">레퍼런스 및 감성 설정</h3>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm">📎</span>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">레퍼런스 및 스타일</h3>
                 </div>
                 
                 <div className="space-y-3 bg-white p-4 rounded-xl border border-[#E8E0D8]">
@@ -303,13 +296,11 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 🖼️ 대표 이미지 설정 (상시 노출) ── */}
+              {/* ── 대표 이미지 설정 ── */}
               <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="w-5 h-5 rounded-full bg-[#1C1410] flex items-center justify-center text-[#C8A97E] text-[9px] font-bold shrink-0">
-                    3
-                  </div>
-                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">대표 이미지 설정</h3>
+                <div className="flex items-center gap-1.5">
+                  <span className="text-sm">🖼️</span>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">대표 비주얼 설정</h3>
                 </div>
 
                 <div className="space-y-3">

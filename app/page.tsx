@@ -16,37 +16,37 @@ interface StageData {
 }
 
 const STAGES: StageData[] = [
-  { id: 0, type: "classic", label: "0단계: AI 순정" },
-  { id: 1, type: "classic", label: "1단계: 오리지널 미색" },
+  { id: 0, type: "classic", label: "AI 순정" },
+  { id: 1, type: "classic", label: "오리지널 미색" },
   {
     id: 2,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081127_0992a171-d3c6-4978-8213-0ec5df8b6d63.mp4",
-    label: "2단계: 골든 아워"
+    label: "골든 아워"
   },
   {
     id: 3,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_092026_dd05b805-ea0f-40b2-8c52-332b88502592.mp4",
-    label: "3단계: 스틸 워터"
+    label: "스틸 워터"
   },
   {
     id: 4,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_081042_df7202bf-bd80-4b2b-bbc6-1f09ba2870e9.mp4",
-    label: "4단계: 딥 우즈"
+    label: "딥 우즈"
   },
   {
     id: 5,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260702_080959_4cac5234-3573-464e-a5b7-76b94b8a7d61.mp4",
-    label: "5단계: 콰이어트 던"
+    label: "콰이어트 던"
   },
   {
     id: 6,
     type: "video",
     url: "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260714_113715_c7e0daa0-8bdd-4486-a2da-040901f8f0ea.mp4",
-    label: "6단계: 심야 질주"
+    label: "심야 질주"
   }
 ];
 
@@ -203,7 +203,7 @@ export default function Home() {
                         : "text-white/60 hover:text-white"
                     }`}
                   >
-                    {vid.label.split(": ")[0]}
+                    {vid.label}
                   </button>
                 ))}
               </div>
@@ -402,9 +402,9 @@ export default function Home() {
                     { title: "템플릿 선택", desc: "우측 그리드에서 카드를 선택해 상세 옵션 패널을 엽니다." },
                     { title: "옵션 조율", desc: "브랜드명, 커스텀 컬러, 섹션 배치 순서를 설계합니다." },
                     { title: "프롬프트 복사", desc: "사출된 원천 코드를 AI 요원(Lovable, v0 등)에 주입합니다." },
-                  ].map((item, i) => (
-                    <div key={item.title} className="flex gap-2">
-                      <span className="text-[10px] font-bold text-[#C8A97E] font-pretendard shrink-0 mt-0.5">0{i+1}.</span>
+                  ].map((item) => (
+                    <div key={item.title} className="flex gap-2 items-start">
+                      <span className="text-xs text-[#C8A97E] shrink-0 mt-0.5">✦</span>
                       <div>
                         <p className={`text-xs font-pretendard font-semibold transition-colors duration-700 ${
                           isClassicTheme ? "text-[#1C1410]" : "text-white"
@@ -426,10 +426,10 @@ export default function Home() {
             <div>
               <span className={`text-[10px] font-semibold tracking-widest uppercase block mb-1 ${
                 isClassicTheme ? "text-[#C8A97E]" : "text-[#F5C88E]"
-              }`}>Step 02</span>
+              }`}>Templates</span>
               <h3 className={`font-serif-kr text-lg font-bold mb-4 transition-colors duration-700 ${
                 isClassicTheme ? "text-[#1C1410]" : "text-white"
-              }`}>구조적 템플릿</h3>
+              }`}>구조적 템플릿 컬렉션</h3>
             </div>
             <TemplateGrid />
           </div>
