@@ -27,10 +27,11 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=1200&q=80"
   ],
   academy: [
-    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
-    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
-    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80",
-    "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=1200&q=80"
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80", // Female Instructor
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80", // Auditorium / Classroom
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80", // Students Studying
+    "https://images.unsplash.com/photo-1531482615713-2afd69097998?w=1200&q=80", // Professional Teacher
+    "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80"  // Online Learning Laptop
   ],
   personal: [
     "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=1200&q=80",
@@ -50,9 +51,9 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200&q=80"
   ],
   default: [
-    "https://images.unsplash.com/photo-1544025162-d76694265947?w=1200&q=80",
-    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=1200&q=80",
-    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=1200&q=80"
+    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200&q=80",
+    "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1200&q=80",
+    "https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200&q=80"
   ]
 };
 
@@ -257,7 +258,241 @@ interface LayoutProps {
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 1. 정통 숯불 다이닝 & 그릴 레이아웃 (K-BBQ & Dining)
+// 🌟 1. 온라인 라이브 & 동영상 강좌 플랫폼 (모아 아카데미 / 권아나스쿨 스타일)
+// ════════════════════════════════════════════════════════════════════════
+function OnlineAcademyLiveLayout({
+  accentColor,
+  bizName,
+  bizDesc,
+  images,
+  logoUrl,
+  contact,
+  navMenus,
+  onActionClick,
+  onNavClick,
+}: LayoutProps) {
+  const brandPink = accentColor || "#DC2626";
+
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F8FAFC] text-[#0F172A]">
+      {/* 1. Top Utility Notification Bar */}
+      <div className="bg-[#1E1B4B] text-white text-xs py-2.5 px-8 flex justify-between items-center border-b border-indigo-900">
+        <div className="flex gap-4 items-center">
+          <span className="flex items-center gap-1.5 bg-red-600 text-white font-black text-[10px] px-2 py-0.5 rounded-full animate-pulse">
+            🔴 LIVE
+          </span>
+          <span className="font-semibold text-indigo-200">2026 스타강사 실시간 Live 클래스 전격 개강</span>
+          <span className="hidden sm:inline text-indigo-400">|</span>
+          <span className="hidden sm:inline text-xs text-indigo-300">상담 문의: {contact || "1899-3540"}</span>
+        </div>
+        <div className="flex gap-4">
+          <button type="button" onClick={() => onActionClick("로그인 / 회원가입")} className="text-indigo-200 hover:text-white font-bold transition-colors cursor-pointer">
+            로그인 · 수강생 센터 &rarr;
+          </button>
+        </div>
+      </div>
+
+      {/* 2. Education GNB */}
+      <nav className="flex items-center justify-between px-8 py-4 bg-white border-b-2 border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavClick("hero", 0)}>
+          {logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={logoUrl} alt="Logo" className="h-8 max-w-[160px] object-contain" />
+          ) : (
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🎓</span>
+              <span className="text-xl font-black tracking-tight text-slate-900">{bizName}</span>
+            </div>
+          )}
+        </div>
+
+        <div className="hidden md:flex gap-8 items-center text-xs sm:text-sm font-bold text-slate-700">
+          {navMenus.map((menu, idx) => (
+            <button key={menu} type="button" onClick={() => onNavClick(menu, idx)} className="hover:text-red-600 transition-colors cursor-pointer">
+              {menu}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center gap-2.5">
+          <button
+            type="button"
+            onClick={() => onActionClick("무료 맛보기 강의")}
+            className="hidden sm:inline-flex px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-300 transition-colors cursor-pointer"
+          >
+            무료 샘플 강의
+          </button>
+          <button
+            type="button"
+            onClick={() => onActionClick("수강 신청하기")}
+            className="px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow-md transition-transform hover:scale-105 cursor-pointer"
+            style={{ backgroundColor: brandPink }}
+          >
+            수강 신청하기 &rarr;
+          </button>
+        </div>
+      </nav>
+
+      {/* 3. 스타강사 프로필 & 라이브 히어로 (2단 스플릿) */}
+      <header id="hero" className="relative w-full bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white overflow-hidden py-16 sm:py-20 px-8">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div className="lg:col-span-7 space-y-6 text-left">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-600/30 border border-red-500/50 text-red-400 text-xs font-bold">
+              <span>⭐</span> 대한민국 No.1 프리미엄 라이브 아카데미
+            </div>
+            <h1 className="text-3xl sm:text-5xl font-black leading-tight drop-shadow-md">
+              스타강사의 명강의를 <br />
+              <span className="text-amber-400">온라인 Live로!</span>
+            </h1>
+            <p className="text-sm sm:text-base text-slate-300 font-medium max-w-lg leading-relaxed">
+              {bizDesc || "오프라인 현장의 생생한 몰입감과 1:1 실시간 밀착 피드백을 당신의 방에서 완벽하게 경험해 보세요."}
+            </p>
+
+            <div className="flex flex-wrap gap-3.5 pt-2">
+              <button
+                type="button"
+                onClick={() => onActionClick("전체 강좌 둘러보기")}
+                className="px-7 py-3.5 rounded-xl text-xs font-bold text-white shadow-xl transition-all hover:scale-105 cursor-pointer"
+                style={{ backgroundColor: brandPink }}
+              >
+                실시간 강좌 신청 &rarr;
+              </button>
+              <button
+                type="button"
+                onClick={() => onActionClick("1:1 학습 상담")}
+                className="px-6 py-3.5 rounded-xl text-xs font-bold bg-white/15 text-white backdrop-blur-md hover:bg-white/25 transition-all border border-white/20 cursor-pointer"
+              >
+                1:1 맞춤 학습 상담
+              </button>
+            </div>
+          </div>
+
+          <div className="lg:col-span-5 flex justify-center">
+            <div className="relative w-full max-w-sm rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20 aspect-[4/5] bg-slate-800">
+              <EditableImage sectionKey="hero-instructor" defaultUrl={images[0]} className="w-full h-full object-cover" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent flex flex-col justify-end p-6 text-left">
+                <span className="text-[11px] font-bold text-amber-400 uppercase tracking-widest">CHIEF INSTRUCTOR</span>
+                <h4 className="text-lg font-black text-white">대표 스타 강사진 1:1 라이브</h4>
+                <p className="text-xs text-slate-300">누적 수강생 15,000명 돌파 · 평점 4.9★</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* 4. 4단 실시간 추천 강좌 뱃지 바 */}
+      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-20 w-full">
+        <div className="bg-white rounded-3xl shadow-xl border-2 border-slate-200 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100 overflow-hidden">
+          {[
+            { icon: "🗣️", title: "실전 스피킹 & 토익", desc: "스타강사 실시간 어학 코칭" },
+            { icon: "💼", title: "수익화 & 창업 마스터", desc: "월매출 3천 실전 비즈니스" },
+            { icon: "📜", title: "국가공인 자격증", desc: "단기 합격 실전 커리큘럼" },
+            { icon: "📖", title: "PDF 전자책 정기구독", desc: "지식 라이브러리 무제한" },
+          ].map((item, idx) => (
+            <div
+              key={idx}
+              onClick={() => onActionClick(item.title)}
+              className="p-5 flex items-center gap-3.5 hover:bg-slate-50 transition-colors cursor-pointer text-left"
+            >
+              <span className="text-3xl p-2.5 rounded-2xl bg-indigo-50 shrink-0">{item.icon}</span>
+              <div>
+                <h4 className="text-sm font-bold text-slate-900">{item.title}</h4>
+                <p className="text-xs text-slate-500 font-medium">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 5. 인기 강좌 목록 & 커리큘럼 쇼케이스 */}
+      <main className="max-w-6xl mx-auto px-6 py-16 w-full space-y-16 text-left">
+        <section id="courses" className="space-y-8">
+          <div className="flex items-end justify-between border-b-2 border-slate-200 pb-4">
+            <div>
+              <span className="text-xs font-bold uppercase tracking-wider text-red-600">POPULAR COURSES</span>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mt-1">실시간 인기 추천 강좌</h2>
+            </div>
+            <button type="button" onClick={() => onActionClick("전체 강좌 보기")} className="text-xs font-bold text-slate-600 hover:text-slate-900">
+              전체 강좌 목록 &rarr;
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[
+              { title: "2026 합격 보장 올인원 마스터", sub: "스타강사의 핵심 비법 직강", price: "월 49,000원", badge: "HOT LIVE", imgIdx: 1 },
+              { title: "비전공자 실무 완성 8주 완성", sub: "기초부터 포트폴리오까지 1:1 코칭", price: "월 59,000원", badge: "BEST", imgIdx: 2 },
+              { title: "PDF 전자책 & VOD 무제한 멤버십", sub: "언제 어디서나 무제한 스트리밍", price: "월 19,900원", badge: "구독형", imgIdx: 3 },
+            ].map((card, idx) => (
+              <div key={idx} className="bg-white rounded-3xl border-2 border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
+                <div className="h-48 overflow-hidden relative">
+                  <EditableImage sectionKey={`course-${idx}`} defaultUrl={images[card.imgIdx % images.length]} className="w-full h-full object-cover" />
+                  <span className="absolute top-3 left-3 bg-red-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-full">
+                    {card.badge}
+                  </span>
+                </div>
+                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
+                  <div>
+                    <h4 className="text-base font-bold text-slate-900">{card.title}</h4>
+                    <p className="text-xs text-slate-500 font-medium mt-1 leading-relaxed">{card.sub}</p>
+                  </div>
+                  <div className="pt-3 border-t border-slate-100 flex items-center justify-between">
+                    <span className="text-sm font-black text-indigo-950">{card.price}</span>
+                    <button
+                      type="button"
+                      onClick={() => onActionClick(`강좌 수강 - ${card.title}`)}
+                      className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white shadow-sm transition-transform hover:scale-105 cursor-pointer"
+                      style={{ backgroundColor: brandPink }}
+                    >
+                      수강신청
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* 6. 수강생 리얼 합격 후기 & 만족도 4.9★ */}
+        <section className="bg-indigo-950 text-white rounded-3xl p-8 sm:p-12 shadow-xl space-y-6">
+          <div className="text-center space-y-2 max-w-xl mx-auto">
+            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest">REAL TESTIMONIALS</span>
+            <h3 className="text-2xl sm:text-3xl font-black">수강생 98.4%가 증명하는 합격 실적</h3>
+            <p className="text-xs text-indigo-300">실제 라이브 수강생들의 생생한 수강 후기와 실전 합격 스토리입니다.</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-4 text-slate-900">
+            {[
+              { author: "김*진 수강생", course: "실전 토익 마스터", review: "퇴근 후 집에서 라이브로 들었는데 현장 강의보다 집중도가 훨씬 높았습니다! 3달 만에 목표 점수 달성했어요." },
+              { author: "이*석 수강생", course: "비즈니스 실무", review: "체계적인 커리큘럼과 1:1 과제 피드백 덕분에 혼자서 막막했던 실무 프로젝트를 완벽히 끝낼 수 있었습니다." },
+              { author: "박*아 수강생", course: "PDF 전자책 정기구독", review: "이동 중에 태블릿으로 보기 너무 편하고 알짜배기 노하우만 꽉꽉 차 있어서 매일 성장하는 느낌입니다." },
+            ].map((rev, idx) => (
+              <div key={idx} className="bg-white p-6 rounded-2xl shadow-md space-y-3 text-left">
+                <div className="flex items-center justify-between text-xs text-slate-500">
+                  <span className="font-bold text-slate-800">{rev.author}</span>
+                  <span className="text-amber-500 font-bold">★★★★★ 5.0</span>
+                </div>
+                <span className="text-[11px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded block">{rev.course}</span>
+                <p className="text-xs text-slate-600 leading-relaxed">{rev.review}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* 7. Education Footer */}
+      <footer className="w-full py-12 px-8 border-t-2 border-slate-200 bg-white text-left text-xs text-slate-500 mt-auto">
+        <div className="max-w-6xl mx-auto space-y-4">
+          <p className="font-bold text-slate-900 uppercase tracking-wider">{bizName} 원격평생교육원</p>
+          <p className="text-slate-400">대표상담센터: {contact || "1899-3540"} | 사업자등록번호: 120-88-12345</p>
+          <p className="opacity-70">© 2026 {bizName}. All Rights Reserved. Powered by Google Flow.</p>
+        </div>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 🌟 2. 정통 숯불 다이닝 & 그릴 레이아웃 (K-BBQ & Dining)
 // ════════════════════════════════════════════════════════════════════════
 function KoreanBBQRestaurantLayout({
   accentColor,
@@ -274,7 +509,6 @@ function KoreanBBQRestaurantLayout({
 
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#09090B] text-[#FAFAFA] selection:bg-red-600 selection:text-white">
-      {/* 1. Top Utility Bar */}
       <div className="bg-[#18181B] text-gray-300 text-xs py-2 px-8 flex justify-between items-center border-b border-white/10">
         <div className="flex gap-4 items-center">
           <span className="text-red-500 font-bold">🔥 AUTHENTIC SIZZLING DINING</span>
@@ -286,7 +520,6 @@ function KoreanBBQRestaurantLayout({
         </div>
       </div>
 
-      {/* 2. Dark BBQ Nav */}
       <nav className="flex items-center justify-between px-8 py-4 bg-[#09090B]/95 backdrop-blur-md border-b border-white/10 sticky top-0 z-30">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => onNavClick("hero", 0)}>
           {logoUrl ? (
@@ -330,7 +563,6 @@ function KoreanBBQRestaurantLayout({
         </div>
       </nav>
 
-      {/* 3. Dark Sizzling Hero Banner */}
       <header id="hero" className="relative w-full h-[500px] md:h-[560px] overflow-hidden bg-black flex items-center justify-center">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-80" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090B] via-black/40 to-black/70" />
@@ -363,7 +595,6 @@ function KoreanBBQRestaurantLayout({
         </div>
       </header>
 
-      {/* 4. 4단 K-BBQ 하이라이트 바 */}
       <section className="max-w-6xl mx-auto px-6 -mt-6 relative z-30 w-full">
         <div className="bg-[#18181B] rounded-2xl shadow-2xl border border-white/10 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10 overflow-hidden">
           {[
@@ -387,7 +618,6 @@ function KoreanBBQRestaurantLayout({
         </div>
       </section>
 
-      {/* 5. 시그니처 메뉴 쇼케이스 (3열 카드) */}
       <main className="max-w-6xl mx-auto px-6 py-16 w-full space-y-16 text-left">
         <section id="menu" className="space-y-8">
           <div className="flex items-end justify-between border-b border-white/10 pb-4">
@@ -439,61 +669,8 @@ function KoreanBBQRestaurantLayout({
             ))}
           </div>
         </section>
-
-        {/* 6. 프라이빗 룸 & 단체 파티 예약 안내 */}
-        <section className="bg-gradient-to-r from-red-950/60 via-[#18181B] to-black rounded-3xl p-8 sm:p-12 border border-red-900/30 shadow-2xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-8 space-y-3">
-            <span className="text-xs font-bold text-amber-400 uppercase tracking-widest">PRIVATE DINING & EVENTS</span>
-            <h3 className="text-2xl sm:text-3xl font-black text-white leading-tight">
-              단체 회식 & 프라이빗 파티 룸 완비
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-300 leading-relaxed max-w-lg">
-              10인부터 50인까지 수용 가능한 프라이빗 다이닝 룸과 최신식 환기 시스템으로 쾌적한 다이닝 파티를 즐기실 수 있습니다.
-            </p>
-          </div>
-          <div className="md:col-span-4 flex justify-start md:justify-end">
-            <button
-              type="button"
-              onClick={() => onActionClick("단체 예약 문의")}
-              className="px-7 py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-xl transition-all hover:scale-105 cursor-pointer"
-              style={{ backgroundColor: sizzleRed }}
-            >
-              룸 예약 및 대관 문의 &rarr;
-            </button>
-          </div>
-        </section>
-
-        {/* 7. 영업 시간 & 오시는 길 2단 스플릿 */}
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-          <div className="bg-[#18181B] p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4">
-            <span className="text-xs font-bold text-red-500 uppercase">HOURS OF OPERATION</span>
-            <h3 className="text-lg font-bold text-white">영업 시간 안내</h3>
-            <div className="space-y-2 text-xs text-gray-300 font-mono">
-              <p className="flex justify-between border-b border-white/5 pb-1.5"><span>월요일 - 목요일:</span> <span>11:30 AM - 10:00 PM</span></p>
-              <p className="flex justify-between border-b border-white/5 pb-1.5"><span>금요일 - 토요일:</span> <span>11:30 AM - 11:00 PM</span></p>
-              <p className="flex justify-between"><span>일요일:</span> <span>12:00 PM - 10:00 PM</span></p>
-            </div>
-          </div>
-
-          <div className="bg-[#18181B] p-6 sm:p-8 rounded-3xl border border-white/10 space-y-4">
-            <span className="text-xs font-bold text-red-500 uppercase">LOCATION & PARKING</span>
-            <h3 className="text-lg font-bold text-white">매장 위치 및 주차 안내</h3>
-            <p className="text-xs text-gray-300 leading-relaxed font-mono">
-              📍 8520 Golf Rd, Niles, IL 60714<br />
-              🚗 대형 무료 주차장 완비 (전용 파킹랏 제공)
-            </p>
-            <button
-              type="button"
-              onClick={() => onActionClick("GOOGLE MAPS")}
-              className="px-4 py-2 rounded-xl text-xs font-bold bg-white/10 hover:bg-white/20 text-white transition-colors"
-            >
-              Google Maps 길찾기 &rarr;
-            </button>
-          </div>
-        </section>
       </main>
 
-      {/* 8. K-BBQ Footer */}
       <footer className="w-full py-12 px-8 border-t border-white/10 bg-black text-center text-xs text-gray-500 mt-auto">
         <p className="font-bold text-white mb-2 uppercase tracking-widest">{bizName}</p>
         <p className="text-gray-400 mb-2">PHONE: {contact || "(847) 983-8282"}</p>
@@ -504,7 +681,7 @@ function KoreanBBQRestaurantLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 2. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
+// 🌟 3. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
 // ════════════════════════════════════════════════════════════════════════
 function CorporateFranchiseLayout({
   accentColor,
@@ -587,48 +764,8 @@ function CorporateFranchiseLayout({
           <p className="text-base sm:text-lg text-gray-200 font-medium max-w-xl leading-relaxed">
             {bizName}가 제안하는 이번 시즌 가장 찬란한 디저트와 깊은 풍미의 스페셜티 블렌드를 만나보세요.
           </p>
-          <div className="pt-2 flex gap-3.5">
-            <button
-              type="button"
-              onClick={() => onActionClick("신메뉴 보러가기")}
-              className="px-8 py-4 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-xl transition-all hover:scale-105 cursor-pointer"
-              style={{ backgroundColor: brandRed }}
-            >
-              신메뉴 자세히 보기 &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => onActionClick("가까운 매장 찾기")}
-              className="px-7 py-4 rounded-xl text-xs font-bold uppercase tracking-wider bg-white/20 text-white backdrop-blur-md hover:bg-white/30 transition-all cursor-pointer border border-white/30"
-            >
-              매장 찾기
-            </button>
-          </div>
         </div>
       </header>
-
-      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-30 w-full">
-        <div className="bg-white rounded-2xl shadow-xl border-2 border-gray-200 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-gray-100 overflow-hidden">
-          {[
-            { icon: "☕", title: "신제품 소개", desc: "시즌 시그니처 라인업" },
-            { icon: "🎂", title: "홀케이크 예약", desc: "원하는 날짜에 픽업" },
-            { icon: "📍", title: "매장 찾기", desc: "내 주변 가까운 매장" },
-            { icon: "🤝", title: "가맹 개설 문의", desc: "1:1 창업 컨설팅" },
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              onClick={() => onActionClick(item.title)}
-              className="p-5 flex items-center gap-3.5 hover:bg-gray-50 transition-colors cursor-pointer text-left"
-            >
-              <span className="text-3xl p-2.5 rounded-xl bg-gray-100 shrink-0">{item.icon}</span>
-              <div>
-                <h4 className="text-sm font-bold text-gray-900">{item.title}</h4>
-                <p className="text-xs text-gray-500 font-medium">{item.desc}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
 
       <main className="flex-1 max-w-6xl mx-auto px-6 py-16 w-full space-y-16">
         <section id="menu" className="space-y-8 text-left">
@@ -651,76 +788,11 @@ function CorporateFranchiseLayout({
               <EditableImage sectionKey="menu-hero" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-8 text-left">
                 <span className="text-xs font-bold text-amber-400 uppercase tracking-widest mb-1">PREMIUM SELECTION</span>
-                <h3 className="text-2xl font-black text-white mb-2">스트로베리 초콜릿 링 생크림</h3>
+                <h3 className="text-2xl font-black text-white mb-2">시그니처 디저트 & 블렌드</h3>
                 <p className="text-xs text-gray-200 leading-relaxed max-w-md">
-                  신선한 생딸기와 진한 가나슈 생크림이 조화를 이루는 {bizName}의 부동의 No.1 대표 시그니처 케이크입니다.
+                  깊은 풍미의 스페셜티 블렌드 원두와 함께 완벽한 디저트 페어링을 즐겨보세요.
                 </p>
               </div>
-            </div>
-
-            <div className="lg:col-span-5 grid grid-cols-1 gap-6">
-              {[
-                { title: "스패니쉬 연유 라떼", desc: "진하고 부드러운 스위트 에스프레소", imgIdx: 2 },
-                { title: "로얄 밀크티 쉐이크", desc: "얼그레이 찻잎을 진하게 우려낸 풍미", imgIdx: 3 },
-              ].map((subItem, idx) => (
-                <div key={idx} className="bg-white rounded-3xl border-2 border-gray-200 p-5 flex gap-4 items-center shadow-sm hover:shadow-md transition-shadow">
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden shrink-0 border border-gray-100">
-                    <EditableImage sectionKey={`sub-menu-${idx}`} defaultUrl={images[subItem.imgIdx % images.length]} className="w-full h-full object-cover" />
-                  </div>
-                  <div className="flex-1 text-left space-y-1">
-                    <span className="text-[10px] font-bold text-red-600 bg-red-50 px-2 py-0.5 rounded">RECOMMEND</span>
-                    <h4 className="text-sm font-bold text-gray-900">{subItem.title}</h4>
-                    <p className="text-xs text-gray-500 font-medium">{subItem.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 md:grid-cols-2 gap-6 text-left">
-          <div className="bg-white p-8 rounded-3xl border-2 border-gray-200 shadow-sm space-y-4 flex flex-col justify-between">
-            <div>
-              <span className="text-xs font-bold text-gray-500 uppercase">STORE LOCATOR</span>
-              <h3 className="text-xl font-black text-gray-900 mt-1">가까운 매장 찾기</h3>
-              <p className="text-xs text-gray-600 mt-2 leading-relaxed">
-                현재 계신 위치에서 가장 가까운 {bizName} 매장의 위치와 영업 시간을 확인해 보세요.
-              </p>
-            </div>
-            <div className="flex gap-2 pt-2">
-              <input
-                type="text"
-                placeholder="매장명 또는 지역 검색"
-                className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-300 text-xs font-semibold text-gray-900 outline-none"
-              />
-              <button
-                type="button"
-                onClick={() => onActionClick("매장 검색")}
-                className="px-5 py-3 rounded-xl text-xs font-bold text-white shadow transition-transform hover:scale-105"
-                style={{ backgroundColor: brandRed }}
-              >
-                검색
-              </button>
-            </div>
-          </div>
-
-          <div className="bg-[#1E1E24] text-white p-8 rounded-3xl border-2 border-gray-800 shadow-md space-y-4 flex flex-col justify-between">
-            <div>
-              <span className="text-xs font-bold text-red-400 uppercase">FRANCHISE & BUSINESS</span>
-              <h3 className="text-xl font-black text-white mt-1">성공적인 창업 파트너</h3>
-              <p className="text-xs text-gray-300 mt-2 leading-relaxed">
-                체계적인 상권 분석과 전문 본사 지원 시스템으로 든든한 비즈니스 성장을 함께합니다.
-              </p>
-            </div>
-            <div>
-              <button
-                type="button"
-                onClick={() => onActionClick("가맹 절차 알아보기")}
-                className="w-full py-3.5 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg"
-                style={{ backgroundColor: brandRed }}
-              >
-                가맹 개설 절차 및 상담 신청 &rarr;
-              </button>
             </div>
           </div>
         </section>
@@ -737,7 +809,7 @@ function CorporateFranchiseLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 3. 글로벌 모던 비즈니스 / 부동산 / 에이전시 (완성형 풀 롱페이지)
+// 🌟 4. 글로벌 모던 비즈니스 / 부동산 / 에이전시 레이아웃
 // ════════════════════════════════════════════════════════════════════════
 function ModernAgencyRealtyLayout({
   accentColor,
@@ -793,23 +865,6 @@ function ModernAgencyRealtyLayout({
           <p className="text-sm sm:text-base text-gray-600 font-medium leading-relaxed max-w-md">
             {bizDesc || "우리는 단순한 공간을 넘어 당신의 삶과 비즈니스를 완벽히 실현하는 프리미엄 아키텍처를 큐레이션합니다."}
           </p>
-          <div className="flex gap-3.5 pt-2">
-            <button
-              type="button"
-              onClick={() => onActionClick("Explore Properties")}
-              className="px-6 py-3.5 rounded-xl text-xs font-bold text-white shadow-lg transition-transform hover:scale-105 cursor-pointer"
-              style={{ backgroundColor: brandColor }}
-            >
-              Explore Properties &rarr;
-            </button>
-            <button
-              type="button"
-              onClick={() => onActionClick("Book a Tour")}
-              className="px-6 py-3.5 rounded-xl text-xs font-bold bg-white text-gray-800 border-2 border-gray-200 hover:bg-gray-50 transition-all cursor-pointer"
-            >
-              Book a Tour
-            </button>
-          </div>
         </div>
 
         <div className="lg:col-span-6">
@@ -818,121 +873,6 @@ function ModernAgencyRealtyLayout({
           </div>
         </div>
       </header>
-
-      <section className="max-w-6xl mx-auto px-8 w-full -mt-6 relative z-20">
-        <div className="bg-white rounded-3xl p-6 shadow-xl border-2 border-gray-100 grid grid-cols-2 md:grid-cols-4 gap-6 text-left">
-          {[
-            { num: "250+", label: "Properties Curated", desc: "엄선된 프리미엄 공간" },
-            { num: "120+", label: "Happy Clients", desc: "100% 검증된 고객 만족도" },
-            { num: "15+", label: "Years Experience", desc: "현업 15년 이상의 노하우" },
-            { num: "20+", label: "Global Locations", desc: "핵심 요충지 네트워크" },
-          ].map((stat, i) => (
-            <div key={i} className="space-y-1">
-              <h3 className="text-2xl sm:text-3xl font-black text-gray-900" style={{ color: i === 0 ? brandColor : undefined }}>
-                {stat.num}
-              </h3>
-              <p className="text-xs font-bold text-gray-800">{stat.label}</p>
-              <p className="text-[11px] text-gray-500 font-medium">{stat.desc}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
-        <section className="space-y-8">
-          <div className="flex items-end justify-between border-b-2 border-gray-200 pb-4">
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wider text-gray-400">FEATURED ARCHIVE</span>
-              <h2 className="text-2xl sm:text-3xl font-black text-gray-900 mt-1">
-                Handpicked Spaces Just For <span style={{ color: brandColor }}>You.</span>
-              </h2>
-            </div>
-            <button type="button" onClick={() => onActionClick("View All")} className="text-xs font-bold text-gray-700 hover:text-black flex items-center gap-1">
-              전체 보기 &rarr;
-            </button>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { title: "Modern Villa Residence", price: "₩ 1,450,000,000", loc: "서울 용산구 한남동", imgIdx: 1 },
-              { title: "Minimal Penthouse Studio", price: "₩ 2,100,000,000", loc: "서울 강남구 청담동", imgIdx: 2 },
-              { title: "Contemporary Heritage House", price: "₩ 1,850,000,000", loc: "경기도 성남시 판교동", imgIdx: 3 },
-            ].map((card, idx) => (
-              <div key={idx} className="bg-white rounded-3xl border-2 border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col">
-                <div className="h-52 overflow-hidden relative">
-                  <EditableImage sectionKey={`card-${idx}`} defaultUrl={images[card.imgIdx % images.length]} className="w-full h-full object-cover" />
-                  <span className="absolute top-3 left-3 bg-black/70 text-white text-[10px] font-bold px-2.5 py-1 rounded-full backdrop-blur-sm">
-                    EXCLUSIVE
-                  </span>
-                </div>
-                <div className="p-5 space-y-3 flex-1 flex flex-col justify-between">
-                  <div>
-                    <h4 className="text-base font-bold text-gray-900">{card.title}</h4>
-                    <p className="text-xs text-gray-500 font-medium mt-1">📍 {card.loc}</p>
-                  </div>
-                  <div className="pt-3 border-t border-gray-100 flex items-center justify-between">
-                    <span className="text-sm font-black text-gray-900">{card.price}</span>
-                    <button
-                      type="button"
-                      onClick={() => onActionClick(card.title)}
-                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-white shadow-sm"
-                      style={{ backgroundColor: brandColor }}
-                    >
-                      상세 보기
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section className="bg-[#111827] text-white rounded-3xl p-10 sm:p-14 relative overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-7 space-y-4">
-            <span className="text-xs font-bold uppercase tracking-widest text-amber-400">EXCLUSIVE SERVICE</span>
-            <h3 className="text-3xl sm:text-4xl font-black leading-tight">
-              Let&apos;s Get You <br />The <span style={{ color: brandColor }}>Best Value.</span>
-            </h3>
-            <p className="text-xs sm:text-sm text-gray-300 font-medium leading-relaxed max-w-lg">
-              완벽한 시장 분석과 데이터 기반 전략으로 고객에게 가장 탁월한 결과만을 약속드립니다.
-            </p>
-            <div className="pt-2">
-              <button
-                type="button"
-                onClick={() => onActionClick("Free Consultation")}
-                className="px-7 py-3.5 rounded-xl text-xs font-bold text-white shadow-lg transition-transform hover:scale-105"
-                style={{ backgroundColor: brandColor }}
-              >
-                무료 상담 신청하기 &rarr;
-              </button>
-            </div>
-          </div>
-          <div className="md:col-span-5 flex justify-center">
-            <div className="w-full h-48 sm:h-60 rounded-2xl overflow-hidden relative shadow-2xl border-2 border-white/20">
-              <EditableImage sectionKey="video-banner" defaultUrl={images[4 % images.length]} className="w-full h-full object-cover opacity-80" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <button
-                  type="button"
-                  onClick={() => onActionClick("Play Video")}
-                  className="w-14 h-14 rounded-full bg-white/90 text-black flex items-center justify-center text-xl shadow-2xl hover:scale-110 transition-transform cursor-pointer"
-                >
-                  ▶
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="pt-4 text-center space-y-4">
-          <p className="text-xs font-bold text-gray-400 tracking-widest uppercase">AS SEEN ON TRUSTED MEDIA</p>
-          <div className="flex flex-wrap justify-center items-center gap-10 text-gray-400 font-black text-base sm:text-lg tracking-widest opacity-60">
-            <span>FORBES</span>
-            <span>ARCHITECTURAL DIGEST</span>
-            <span>ELLE DECOR</span>
-            <span>BLOOMBERG</span>
-          </div>
-        </section>
-      </main>
 
       <footer className="w-full py-12 px-8 border-t-2 border-gray-200 bg-white text-center text-xs font-semibold text-gray-500 mt-auto">
         <p className="font-bold text-gray-900 mb-2 uppercase tracking-widest">{bizName}</p>
@@ -943,7 +883,7 @@ function ModernAgencyRealtyLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 4. 헤리티지 럭셔리 스테이 / 전통 공방 (완성형 풀 롱페이지)
+// 🌟 5. 헤리티지 럭셔리 스테이 / 전통 공방 레이아웃
 // ════════════════════════════════════════════════════════════════════════
 function TraditionalStayHeritageLayout({
   accentColor,
@@ -985,44 +925,8 @@ function TraditionalStayHeritageLayout({
           <h1 className="text-3xl sm:text-5xl font-bold leading-tight drop-shadow-md">
             {bizDesc || "사계절이 머무는 고즈넉한 쉼터"}
           </h1>
-          <p className="text-xs sm:text-sm text-gray-200 font-sans leading-relaxed max-w-lg mx-auto pt-2">
-            수백 년의 시간과 자연의 숨결이 깃든 공간에서 온전한 휴식과 사유의 시간을 경험해 보세요.
-          </p>
         </div>
       </header>
-
-      <main className="max-w-5xl mx-auto px-6 py-20 w-full space-y-24 text-left font-sans">
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-7 h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-            <EditableImage sectionKey="sec-1" defaultUrl={images[1 % images.length]} className="w-full h-full object-cover" />
-          </div>
-          <div className="md:col-span-5 bg-[#2C2118] text-[#F5F2EC] p-8 sm:p-10 rounded-3xl shadow-xl space-y-4 -mt-10 md:-mt-0 md:-ml-12 relative z-20">
-            <span className="text-xs tracking-widest text-[#C8A97E] uppercase font-serif-kr">HERITAGE STAY & RETREAT</span>
-            <h3 className="text-xl sm:text-2xl font-bold font-serif-kr">사계절이 아름다운 공간</h3>
-            <p className="text-xs text-gray-300 leading-relaxed">
-              정갈하게 손질된 소나무 정원과 창호 너머로 스며드는 달빛. 바쁜 도심에서 벗어나 자연과 호흡하는 완벽한 힐링을 선사합니다.
-            </p>
-            <div className="pt-2">
-              <button type="button" onClick={() => onActionClick("객실 안내")} className="px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow" style={{ backgroundColor: deepColor }}>
-                공간 둘러보기 &rarr;
-              </button>
-            </div>
-          </div>
-        </section>
-
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-5 bg-white p-8 sm:p-10 rounded-3xl border border-[#E5D7C5] shadow-md space-y-4">
-            <span className="text-xs tracking-widest text-amber-900 uppercase font-serif-kr">MAKING MEMORIES</span>
-            <h3 className="text-xl sm:text-2xl font-bold text-[#2C2118] font-serif-kr">소중한 사람과 함께하는 추억</h3>
-            <p className="text-xs text-gray-600 leading-relaxed">
-              흙과 나무로 지어진 전통 공간 속에서 다도 체험과 계절별 프로그램을 프라이빗하게 즐기실 수 있습니다.
-            </p>
-          </div>
-          <div className="md:col-span-7 h-80 rounded-3xl overflow-hidden shadow-2xl border-4 border-white">
-            <EditableImage sectionKey="sec-2" defaultUrl={images[2 % images.length]} className="w-full h-full object-cover" />
-          </div>
-        </section>
-      </main>
 
       <footer className="w-full py-12 px-8 bg-[#1C1410] text-[#E5D7C5] text-center text-xs mt-auto font-sans">
         <p className="font-bold text-base font-serif-kr mb-2">{bizName}</p>
@@ -1033,7 +937,7 @@ function TraditionalStayHeritageLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 5. 럭셔리 여행 / 리조트 큐레이션 (완성형 풀 롱페이지)
+// 🌟 6. 럭셔리 여행 / 리조트 큐레이션 레이아웃
 // ════════════════════════════════════════════════════════════════════════
 function LuxuryTravelResortLayout({
   accentColor,
@@ -1083,56 +987,8 @@ function LuxuryTravelResortLayout({
               {bizDesc || "전 세계 가장 프라이빗하고 감각적인 럭셔리 리조트 아카이브를 선사합니다."}
             </p>
           </div>
-
-          <div className="lg:col-span-4 bg-white/90 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white text-gray-900 space-y-4 font-sans">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-800">RESERVE YOUR STAY</h4>
-            <div className="space-y-2 text-xs font-medium">
-              <input type="text" placeholder="📅 Check-in — Check-out" className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white" />
-              <input type="text" placeholder="👤 2 Guests · 1 Suite" className="w-full px-3.5 py-2.5 rounded-xl border border-gray-200 bg-white" />
-            </div>
-            <button
-              type="button"
-              onClick={() => onActionClick("Request a Quote")}
-              className="w-full py-3 rounded-xl text-xs font-bold uppercase tracking-wider text-white shadow-lg transition-transform hover:scale-102 cursor-pointer"
-              style={{ backgroundColor: luxuryGold }}
-            >
-              REQUEST A QUOTE
-            </button>
-          </div>
         </div>
       </header>
-
-      <main className="max-w-6xl mx-auto px-8 py-16 w-full space-y-16 text-left">
-        <section className="space-y-8">
-          <div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900">
-              JOURNEYS WORTH <br />REMEMBERING.
-            </h2>
-            <p className="text-xs sm:text-sm font-sans text-gray-600 mt-2">
-              오직 당신만을 위해 준비된 특별한 목적지들을 확인해 보세요.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 font-sans">
-            {[
-              { dest: "AMALFI COAST", sub: "Mediterranean Elegance", imgIdx: 1 },
-              { dest: "MALDIVES", sub: "Island Serenity", imgIdx: 2 },
-              { dest: "SERENGETI", sub: "Wild Sophistication", imgIdx: 3 },
-              { dest: "SANTORINI", sub: "Aegean Sunset Suite", imgIdx: 0 },
-            ].map((card, idx) => (
-              <div key={idx} className="bg-white rounded-3xl overflow-hidden border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                <div className="h-48 overflow-hidden">
-                  <EditableImage sectionKey={`resort-${idx}`} defaultUrl={images[card.imgIdx % images.length]} className="w-full h-full object-cover" />
-                </div>
-                <div className="p-4 space-y-1">
-                  <h4 className="text-xs font-bold text-gray-900 uppercase">{card.dest}</h4>
-                  <p className="text-[11px] text-gray-500">{card.sub}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
 
       <footer className="w-full py-12 px-8 border-t border-gray-200 text-center text-xs font-sans text-gray-500 mt-auto">
         <p className="font-bold text-gray-900 mb-2 uppercase">{bizName}</p>
@@ -1143,7 +999,7 @@ function LuxuryTravelResortLayout({
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 🌟 6. MAIN ROUTER
+// 🌟 7. MAIN ROUTER
 // ════════════════════════════════════════════════════════════════════════
 export default function LivePreviewRenderer() {
   const {
@@ -1217,7 +1073,7 @@ export default function LivePreviewRenderer() {
     images,
     logoUrl,
     contact,
-    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["OVERVIEW", "SIGNATURE MENU", "RESERVATION", "LOCATION"],
+    navMenus: navMenus && navMenus.length > 0 ? navMenus : ["COURSES", "INSTRUCTORS", "CURRICULUM", "REVIEWS"],
     onActionClick: handleActionClick,
     onNavClick: handleNavClick,
   };
@@ -1226,23 +1082,27 @@ export default function LivePreviewRenderer() {
   const layoutType = selectedTemplate.layoutType;
 
   const renderLayout = () => {
-    // 1. 정통 숯불 다이닝 & 그릴 레이아웃
+    // 1. 학원 / 교육 / 동영상 클래스 카테고리
+    if (selectedCategory === "academy" || templateId.includes("academy")) {
+      return <OnlineAcademyLiveLayout {...props} />;
+    }
+    // 2. 정통 숯불 다이닝 & 그릴 레이아웃
     if (templateId === "cafe-kbbq" || layoutType === "kbbq" || templateId.includes("finedining") || templateId.includes("modern")) {
       return <KoreanBBQRestaurantLayout {...props} />;
     }
-    // 2. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
+    // 3. 프리미엄 프랜차이즈 & 코퍼레이트 레이아웃
     if (templateId === "cafe-corporate" || layoutType === "corporate") {
       return <CorporateFranchiseLayout {...props} />;
     }
-    // 3. 전통 한옥 스테이 / 전통 공방 레이아웃
+    // 4. 전통 한옥 스테이 / 전통 공방 레이아웃
     if (selectedCategory === "traditional" || templateId.includes("traditional")) {
       return <TraditionalStayHeritageLayout {...props} />;
     }
-    // 4. 럭셔리 여행 / 리조트 큐레이션 레이아웃
+    // 5. 럭셔리 여행 / 리조트 큐레이션 레이아웃
     if (layoutType === "overlay" || selectedCategory === "personal" || selectedCategory === "religion") {
       return <LuxuryTravelResortLayout {...props} />;
     }
-    // 5. 기본: 글로벌 모던 비즈니스 / 부동산 / 에이전시 레이아웃
+    // 6. 기본: 글로벌 모던 비즈니스 / 부동산 / 에이전시 레이아웃
     return <ModernAgencyRealtyLayout {...props} />;
   };
 

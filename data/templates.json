@@ -178,79 +178,104 @@
   ],
   "academy": [
     {
-      "id": "academy-trust",
-      "name": "신뢰 학원",
-      "tagline": "성적보다 성장을 가르칩니다",
-      "description": "블루 계열의 신뢰감 있는 레이아웃으로 학부모와 학생 모두에게 안정감을 줍니다.",
+      "id": "academy-live",
+      "name": "스타강사 라이브 & 동영상 클래스",
+      "tagline": "오프라인 인기 강좌를 온라인 실시간 Live로",
+      "description": "스타강사 프로필 화보, 실시간 추천 강좌 썸네일, 단계별 커리큘럼 아코디언, 수강생 리얼 합격 후기를 갖춘 온라인 동영상 강좌 표준 레이아웃입니다.",
       "colors": {
-        "primary": "#1A3A5C",
-        "secondary": "#2C6BAD",
-        "accent": "#4A90D9",
-        "bg": "#F8FAFE",
-        "surface": "#EBF3FB",
-        "text": "#1A2B3C"
+        "primary": "#DC2626",
+        "secondary": "#1E1B4B",
+        "accent": "#EF4444",
+        "bg": "#FFFFFF",
+        "surface": "#F8FAFC",
+        "text": "#0F172A"
       },
       "fonts": {
-        "heading": "Gothic A1",
+        "heading": "Pretendard",
         "body": "Pretendard"
       },
-      "sections": ["hero", "features", "curriculum", "teachers", "results", "schedule", "contact"],
-      "unsplashKeyword": "study classroom education",
-      "referenceStyle": "professional education academy",
-      "promptKeywords": ["학원", "교육", "학습", "성적향상", "강사"],
-      "badge": "추천",
-      "badgeColor": "blue",
+      "sections": ["hero", "courses", "teachers", "curriculum", "results", "pricing", "contact"],
+      "unsplashKeyword": "online lecture instructor education korean student",
+      "referenceStyle": "live streaming online academy lecture",
+      "promptKeywords": ["동영상강좌", "라이브클래스", "스타강사", "수강신청", "인강"],
+      "badge": "BEST SELLER",
+      "badgeColor": "red",
       "layoutType": "vertical"
     },
     {
-      "id": "academy-creative",
-      "name": "크리에이티브 클래스",
-      "tagline": "예술·취미·자기계발 원스톱",
-      "description": "생동감 있는 그린과 옐로우 팔레트로 창의적인 취미 클래스의 활기를 표현합니다.",
+      "id": "academy-cert",
+      "name": "전문 교육원 & 공인 자격증 아카데미",
+      "tagline": "공인 수료증과 실무 중심의 전문 자격 교육",
+      "description": "대형 세미나 전경 히어로, 공인 인증 스탯 바, 직무별 3단 교육 과정 카드, 기업 단체 교육 및 수료증 발급 안내 표준 레이아웃입니다.",
       "colors": {
-        "primary": "#1A3C2A",
-        "secondary": "#2E7D52",
-        "accent": "#6BBF7E",
-        "bg": "#F6FBF7",
-        "surface": "#E8F5EC",
-        "text": "#1A2C20"
+        "primary": "#1E3A8A",
+        "secondary": "#0F172A",
+        "accent": "#2563EB",
+        "bg": "#F8FAFC",
+        "surface": "#EFF6FF",
+        "text": "#0F172A"
       },
       "fonts": {
-        "heading": "Gowun Batang",
-        "body": "Gowun Batang"
-      },
-      "sections": ["hero", "classes", "gallery", "instructors", "testimonials", "pricing", "enroll"],
-      "unsplashKeyword": "art class creative workshop",
-      "referenceStyle": "creative class studio",
-      "promptKeywords": ["취미", "클래스", "예술", "창의", "워크샵"],
-      "badge": null,
-      "badgeColor": null,
-      "layoutType": "grid"
-    },
-    {
-      "id": "academy-online",
-      "name": "온라인 강좌",
-      "tagline": "내 속도로, 내 공간에서",
-      "description": "퍼플-인디고 팔레트로 온라인 교육 플랫폼의 테크 감성과 미래지향적 이미지를 담습니다.",
-      "colors": {
-        "primary": "#2D1B69",
-        "secondary": "#5B21B6",
-        "accent": "#7C3AED",
-        "bg": "#F8F7FF",
-        "surface": "#EDE9FE",
-        "text": "#1E1A3C"
-      },
-      "fonts": {
-        "heading": "IBM Plex Sans KR",
+        "heading": "Pretendard",
         "body": "Pretendard"
       },
-      "sections": ["hero", "features", "courses", "demo", "pricing", "faq", "cta"],
-      "unsplashKeyword": "online learning laptop study",
-      "referenceStyle": "online education platform",
-      "promptKeywords": ["온라인", "강좌", "학습", "동영상", "커리큘럼"],
-      "badge": "신규",
-      "badgeColor": "purple",
-      "layoutType": "overlay"
+      "sections": ["hero", "features", "courses", "curriculum", "teachers", "contact"],
+      "unsplashKeyword": "professional seminar education auditorium lecture",
+      "referenceStyle": "professional certification institute",
+      "promptKeywords": ["전문교육원", "자격증", "실무교육", "수료증", "기업교육"],
+      "badge": "OFFICIAL",
+      "badgeColor": "blue",
+      "layoutType": "corporate"
+    },
+    {
+      "id": "academy-ebook",
+      "name": "PDF 전자책 & 정기구독 멤버십",
+      "tagline": "당신의 일상 언제 어디서나 편안하게 즐기는 지식 구독",
+      "description": "감성적인 라이프스타일 히어로, 월간/연간 구독 플랜 비교 테이블, 베스트 전자책 서재 그리드를 갖춘 디지털 콘텐츠 정기구독 표준 레이아웃입니다.",
+      "colors": {
+        "primary": "#0D9488",
+        "secondary": "#134E4A",
+        "accent": "#14B8A6",
+        "bg": "#F0FDFA",
+        "surface": "#CCFBF1",
+        "text": "#134E4A"
+      },
+      "fonts": {
+        "heading": "Pretendard",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "features", "pricing", "courses", "faq", "contact"],
+      "unsplashKeyword": "reading tablet headphone lifestyle studying student",
+      "referenceStyle": "ebook subscription membership library",
+      "promptKeywords": ["전자책", "PDF", "정기구독", "멤버십", "e-Book"],
+      "badge": "SUBSCRIPTION",
+      "badgeColor": "green",
+      "layoutType": "casual"
+    },
+    {
+      "id": "academy-vsl",
+      "name": "고전환 VOD 세일즈 원페이지",
+      "tagline": "단 하나의 강의로 끝내는 실전 수익화 & 마스터클래스",
+      "description": "강렬한 다크 세일즈 히어로, 마감 카운트다운 타이머 바, 1:1 밀착 코칭 및 얼리버드 수강료 할인 패키지를 갖춘 고전환 세일즈 레이아웃입니다.",
+      "colors": {
+        "primary": "#18181B",
+        "secondary": "#27272A",
+        "accent": "#E11D48",
+        "bg": "#09090B",
+        "surface": "#18181B",
+        "text": "#FAFAFA"
+      },
+      "fonts": {
+        "heading": "Pretendard",
+        "body": "Pretendard"
+      },
+      "sections": ["hero", "features", "curriculum", "pricing", "testimonials", "contact"],
+      "unsplashKeyword": "dark high converting speaker coaching masterclass",
+      "referenceStyle": "high converting vsl video course sales landing",
+      "promptKeywords": ["VOD강의", "수익화", "세일즈랜딩", "얼리버드", "1:1코칭"],
+      "badge": "HIGH CONVERTING",
+      "badgeColor": "amber",
+      "layoutType": "kbbq"
     }
   ],
   "personal": [
