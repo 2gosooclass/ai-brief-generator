@@ -184,10 +184,11 @@ export function buildPrompt({
 ## 이미지 처리
 저는 직접 이미지를 제공할 예정입니다. 히어로와 갤러리 섹션은 [이미지 URL을 여기에 넣어주세요] 형태로 플레이스홀더를 남겨두고, 나머지는 Unsplash에서 "${template.unsplashKeyword}" 키워드로 어울리는 이미지를 찾아 사용해 주세요.`;
   } else if (imageMode === "prompt") {
+    const userVisualKeyword = userInputs.imagePromptKeyword?.trim() ? `, ${userInputs.imagePromptKeyword.trim()}` : "";
     imageSection = `
 ## 이미지 처리 (AI 프롬프트 생성 모드)
 제가 AI 생성 툴(Midjourney/DALL-E)로 직접 이미지를 생성하여 배치할 예정입니다. 히어로 및 주요 섹션에는 아래 AI 생성 프롬프트로 생성된 결과물이나 고해상도 비주얼이 최적의 비율로 담길 수 있도록 이미지 캔버스와 3D/글래스모피즘 프레임을 설계해 주세요:
-- 미드저니/DALL-E 추천 프롬프트: ${template.unsplashKeyword ? `A high-end cinematic editorial photograph of ${template.unsplashKeyword}, ${template.referenceStyle} aesthetic, 8k --ar 16:9` : "A cinematic visual"}
+- 미드저니/DALL-E 추천 프롬프트: \`A high-end cinematic editorial photograph of ${template.unsplashKeyword}${userVisualKeyword}, ${template.referenceStyle} aesthetic, 8k resolution --ar 16:9 --v 6.0\`
 (그 외 다른 보조 섹션에는 "${template.unsplashKeyword}" 키워드로 분위기가 조화로운 Unsplash 이미지를 자동 배치해 주세요.)`;
   } else {
     if (selectedStockImages && selectedStockImages.length > 0) {
@@ -253,8 +254,9 @@ ${urlsText}
       ? `\n## 상세 디자인 및 수정 요청 사항\n${modifyParts.join("\n")}`
       : "";
 
-  const midjourneyPrompt = `A high-end cinematic editorial shot of ${template.unsplashKeyword}, ${template.referenceStyle} style, detailed visual architecture, luxury lighting, ultra realistic, 8k resolution, aspect ratio 16:9 --ar 16:9 --v 6.0`;
-  const runwayPrompt = `Slow cinematic sweeping panning shot of ${template.unsplashKeyword}, soft golden hour sunlight, ${template.referenceStyle} atmosphere, highly detailed, ultra realistic 4k resolution, cinematic camera movement`;
+  const userVisualKeyword = userInputs.imagePromptKeyword?.trim() ? `, ${userInputs.imagePromptKeyword.trim()}` : "";
+  const midjourneyPrompt = `A high-end cinematic editorial photograph of ${template.unsplashKeyword}${userVisualKeyword}, ${template.referenceStyle} style, detailed visual architecture, luxury lighting, ultra realistic, 8k resolution, aspect ratio 16:9 --ar 16:9 --v 6.0`;
+  const runwayPrompt = `Slow cinematic sweeping panning shot of ${template.unsplashKeyword}${userVisualKeyword}, soft golden hour sunlight, ${template.referenceStyle} atmosphere, highly detailed, ultra realistic 4k resolution, cinematic camera movement`;
 
   const recommendedMediaSection = `
 ## 부록: 추천 미디어(이미지/비디오) 생성 프롬프트 & 규격 가이드

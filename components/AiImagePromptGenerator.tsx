@@ -22,7 +22,7 @@ const RATIO_OPTIONS: AspectRatioOption[] = [
     arParam: "--ar 16:9",
     resolution: "1920 × 1080 px",
     dalleSize: "1792 × 1024 px",
-    usage: "PC 히어로 메인 배경, 16:9 배너",
+    usage: "PC 히어로 메인 배경, 와이드 배너",
     icon: "🖥️",
   },
   {
@@ -82,6 +82,7 @@ export default function AiImagePromptGenerator() {
   const { selectedTemplate, userInputs, setUserInput } = useBriefStore();
   const [selectedRatio, setSelectedRatio] = useState<AspectRatioOption>(RATIO_OPTIONS[0]);
   const [copied, setCopied] = useState<string | null>(null);
+  const [justGenerated, setJustGenerated] = useState(false);
 
   if (!selectedTemplate) return null;
 
@@ -109,6 +110,11 @@ export default function AiImagePromptGenerator() {
     }
   };
 
+  const handleGenerateClick = () => {
+    setJustGenerated(true);
+    setTimeout(() => setJustGenerated(false), 1500);
+  };
+
   const handleAddTag = (tag: string) => {
     const current = userInputs.imagePromptKeyword;
     if (current.includes(tag)) return;
@@ -121,7 +127,7 @@ export default function AiImagePromptGenerator() {
       {/* ── 안내 배너 ── */}
       <div className="bg-[#FAF8F5] border border-[#EBE3D8] rounded-xl p-3">
         <p className="text-[11px] font-pretendard text-[#5C4A3A] leading-relaxed">
-          📐 <span className="font-semibold text-[#1C1410]">생성형 AI 전용 규격 & 프롬프트</span>입니다. 원하시는 이미지 비율을 선택하면 최적 해상도와 파라미터가 자동으로 조립됩니다.
+          📐 <span className="font-semibold text-[#1C1410]">생성형 AI 전용 규격 & 프롬프트 생성기</span>입니다. 아래에서 비율을 선택하고 추가 키워드를 입력하면 생성 프롬프트가 즉시 만들어집니다.
         </p>
       </div>
 
@@ -192,14 +198,23 @@ export default function AiImagePromptGenerator() {
         <label className="text-[10px] font-pretendard font-medium text-[#8C7A6A] block">
           추가 연출 키워드 (선택 입력)
         </label>
-        <input
-          type="text"
-          placeholder="예: 따뜻한 커피 김, 빗방울 맺힌 창가, 옥상 테라스"
-          value={userInputs.imagePromptKeyword}
-          onChange={(e) => setUserInput("imagePromptKeyword", e.target.value)}
-          onClick={(e) => e.stopPropagation()}
-          className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
-        />
+        <div className="flex gap-2">
+          <input
+            type="text"
+            placeholder="예: 따뜻한 커피 김, 빗방울 맺힌 창가, 옥상 테라스"
+            value={userInputs.imagePromptKeyword}
+            onChange={(e) => setUserInput("imagePromptKeyword", e.target.value)}
+            onClick={(e) => e.stopPropagation()}
+            className="flex-1 px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+          />
+          <button
+            type="button"
+            onClick={handleGenerateClick}
+            className="px-3 py-2 bg-[#C8A97E] hover:bg-[#B8986D] text-white font-pretendard font-bold text-xs rounded-lg transition-all cursor-pointer shrink-0"
+          >
+            {justGenerated ? "✓ 갱신됨" : "✨ 프롬프트 갱신"}
+          </button>
+        </div>
         
         {/* 퀵 프리셋 태그 */}
         <div className="flex flex-wrap gap-1.5 pt-1">
@@ -208,7 +223,7 @@ export default function AiImagePromptGenerator() {
               key={tag}
               type="button"
               onClick={() => handleAddTag(tag)}
-              className="text-[9px] font-pretendard px-2 py-0.5 rounded-full border border-[#E0D8D0] bg-white hover:bg-[#F5F0EA] text-[#5C4A3A] transition-colors"
+              className="text-[9px] font-pretendard px-2 py-0.5 rounded-full border border-[#E0D8D0] bg-white hover:bg-[#F5F0EA] text-[#5C4A3A] transition-colors cursor-pointer"
             >
               + {tag}
             </button>
@@ -217,7 +232,9 @@ export default function AiImagePromptGenerator() {
       </div>
 
       {/* ── 3. 미드저니 / DALL-E 3 프롬프트 카드 ── */}
-      <div className="bg-white rounded-xl border border-[#E8E0D8] p-3 space-y-2">
+      <div className={`bg-white rounded-xl border border-[#E8E0D8] p-3 space-y-2 transition-all duration-300 ${
+        justGenerated ? "ring-2 ring-[#C8A97E]/50 bg-amber-50/20" : ""
+      }`}>
         <div className="flex items-center justify-between">
           <span className="text-[11px] font-pretendard font-semibold text-[#1C1410] flex items-center gap-1">
             🎨 Midjourney / DALL-E 3 ({selectedRatio.ratio} 규격)
