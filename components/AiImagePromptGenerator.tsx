@@ -112,14 +112,6 @@ export default function AiImagePromptGenerator() {
 
   return (
     <div className="space-y-4 pt-1 text-left font-pretendard">
-      {/* ── 안내 배너 ── */}
-      <div className="bg-[#FFFDF9] border-2 border-[#E5D7C5] rounded-2xl p-3.5 shadow-sm">
-        <p className="text-xs sm:text-[13px] font-medium text-[#2D2218] leading-relaxed">
-          ⚡ <strong className="font-bold text-[#111827]">Google Flow 비주얼 미디어 생성기</strong>
-          <span className="block mt-1 text-[#4B5563] text-xs">원하시는 이미지 규격을 선택하면 Google Flow 전용 이미지 & 비디오 프롬프트가 자동 조립됩니다.</span>
-        </p>
-      </div>
-
       {/* ── 1. 규격 및 비율 선택기 ── */}
       <div className="space-y-2.5">
         <div className="flex items-center justify-between">

@@ -86,15 +86,6 @@ export default function PromptOutput({ compact = false }: PromptOutputProps) {
 
   return (
     <div className="space-y-3 font-pretendard">
-      {/* 안내 배너 */}
-      <div className="rounded-2xl border-2 border-[#E5D7C5] px-3.5 py-2.5 bg-[#FFFDF9] shadow-sm">
-        <p className="text-xs sm:text-[12.5px] font-medium text-[#2D2218] leading-relaxed">
-          💡 이 프롬프트를 복사하여{" "}
-          <strong className="font-bold text-[#111827]">Google Flow</strong>
-          (구글 플로우 AI 엔지니어링 에이전트)에 바로 전달하세요.
-        </p>
-      </div>
-
       {/* 프롬프트 텍스트 영역 (큼직하고 뚜렷한 글씨) */}
       <div className="relative">
         <textarea
