@@ -3,22 +3,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useBriefStore } from "@/store/briefStore";
-import UnsplashPreview from "./UnsplashPreview";
-import ImageUploader from "./ImageUploader";
-import AiImagePromptGenerator from "./AiImagePromptGenerator";
 import PromptOutput from "./PromptOutput";
-import type { ModifyOptions } from "@/lib/types";
-
-const MODIFY_OPTIONS: {
-  key: keyof ModifyOptions;
-  label: string;
-  desc: string;
-  icon: string;
-}[] = [
-  { key: "textChange",    label: "텍스트 변경",    desc: "업체명, 소개 문구 교체",       icon: "✏️" },
-  { key: "colorChange",   label: "컬러 변경",      desc: "포인트 컬러 커스터마이징",      icon: "🎨" },
-  { key: "sectionReorder",label: "섹션 순서 변경",  desc: "원하는 순서로 재배치",         icon: "↕️" },
-];
 
 // ── 아코디언 헤더 ──────────────────────────────────────────
 function AccordionHeader({
@@ -61,55 +46,16 @@ export default function DetailPanel() {
     selectedTemplate,
     isPanelOpen,
     closePanel,
-    imageMode,
-    setImageMode,
-    modifyOptions,
-    toggleModifyOption,
     userInputs,
     setUserInput,
     resetPanel,
-    logoUrl,
-    setLogoUrl,
-    referenceScreenshotUrl,
-    setReferenceScreenshotUrl,
   } = useBriefStore();
 
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target?.result;
-        if (typeof result === "string") {
-          setLogoUrl(result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleReferenceScreenshotUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        const result = event.target?.result;
-        if (typeof result === "string") {
-          setReferenceScreenshotUrl(result);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // 아코디언 독립 상태
-  const [imageOpen,  setImageOpen]  = useState(true);
   const [modifyOpen, setModifyOpen] = useState(true);
 
   const handleClose = () => {
     closePanel();
     resetPanel();
-    setImageOpen(true);
     setModifyOpen(true);
   };
 
@@ -178,11 +124,11 @@ export default function DetailPanel() {
 
               <div className="mx-5 border-t border-[#E8E0D8]" />
 
-              {/* ── 브랜드 기본 설정 ── */}
+              {/* ── 브랜드 기본 설정 (순수 텍스트) ── */}
               <div className="px-5 py-4 space-y-3">
                 <div className="flex items-center gap-1.5">
                   <span className="text-sm">🏷️</span>
-                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">브랜드 및 로고 설정</h3>
+                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">브랜드 기본 정보</h3>
                 </div>
                 
                 <div className="space-y-3 bg-white p-4 rounded-xl border border-[#E8E0D8]">
@@ -199,138 +145,30 @@ export default function DetailPanel() {
                     />
                   </div>
 
-                  {/* 로고 설정 */}
+                  {/* 한줄 소개 */}
                   <div className="space-y-1">
-                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">로고 이미지</label>
-                    <div className="flex items-center gap-2">
-                      {logoUrl ? (
-                        <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={logoUrl} alt="Logo Preview" className="max-w-full max-h-full object-contain" />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setLogoUrl(null);
-                            }}
-                            className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
-                          >
-                            삭제
-                          </button>
-                        </div>
-                      ) : (
-                        <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-[#FAFAF7] hover:bg-white transition-all">
-                          <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 로고 파일 업로드 (PNG, SVG)</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleLogoUpload}
-                            onClick={(e) => e.stopPropagation()}
-                            className="hidden"
-                          />
-                        </label>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mx-5 border-t border-[#E8E0D8]" />
-
-              {/* ── 레퍼런스 및 스타일 설정 ── */}
-              <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm">📎</span>
-                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">레퍼런스 및 스타일</h3>
-                </div>
-                
-                <div className="space-y-3 bg-white p-4 rounded-xl border border-[#E8E0D8]">
-                  {/* 레퍼런스 URL */}
-                  <div className="space-y-1">
-                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">레퍼런스 웹사이트 URL</label>
-                    <input
-                      type="url"
-                      placeholder="예: https://awwwards.com/site-example"
-                      value={userInputs.referenceUrl}
-                      onChange={(e) => setUserInput("referenceUrl", e.target.value)}
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">한줄 소개 (메인 슬로건)</label>
+                    <textarea
+                      placeholder="예: 제주의 바람을 담은 핸드드립 카페"
+                      value={userInputs.description}
+                      onChange={(e) => setUserInput("description", e.target.value)}
                       onClick={(e) => e.stopPropagation()}
-                      className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                      rows={2}
+                      className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0] resize-none"
                     />
                   </div>
 
-                  {/* 레퍼런스 스크린샷 */}
+                  {/* 연락처 */}
                   <div className="space-y-1">
-                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">레퍼런스 스크린샷</label>
-                    <div className="flex items-center gap-2">
-                      {referenceScreenshotUrl ? (
-                        <div className="relative w-12 h-12 rounded border border-[#E0D8D0] bg-white flex items-center justify-center overflow-hidden shrink-0">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={referenceScreenshotUrl} alt="Reference Preview" className="max-w-full max-h-full object-contain" />
-                          <button
-                            type="button"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setReferenceScreenshotUrl(null);
-                            }}
-                            className="absolute inset-0 bg-black/40 hover:bg-black/60 flex items-center justify-center text-white text-[10px] transition-colors"
-                          >
-                            삭제
-                          </button>
-                        </div>
-                      ) : (
-                        <label className="flex-1 flex flex-col items-center justify-center h-12 border border-dashed border-[#E0D8D0] hover:border-[#C8A97E] rounded-lg cursor-pointer bg-[#FAFAF7] hover:bg-white transition-all">
-                          <span className="text-[10px] font-pretendard text-[#8C7A6A] flex items-center gap-1">📤 스크린샷 업로드 (PNG, JPG)</span>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            onChange={handleReferenceScreenshotUpload}
-                            onClick={(e) => e.stopPropagation()}
-                            className="hidden"
-                          />
-                        </label>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mx-5 border-t border-[#E8E0D8]" />
-
-              {/* ── 대표 이미지 설정 ── */}
-              <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-sm">🖼️</span>
-                  <h3 className="text-xs font-pretendard font-semibold text-[#1C1410]">대표 비주얼 설정</h3>
-                </div>
-
-                <div className="space-y-3">
-                  {/* 방식 토글 */}
-                  <div className="flex rounded-xl border border-[#E0D8D0] overflow-hidden">
-                    {(["stock", "upload", "prompt"] as const).map((mode) => (
-                      <button
-                        key={mode}
-                        onClick={() => setImageMode(mode)}
-                        className={`flex-1 py-2 text-[11px] font-pretendard font-medium transition-all duration-200 flex items-center justify-center gap-1 cursor-pointer ${
-                          imageMode === mode
-                            ? "bg-[#1C1410] text-white"
-                            : "bg-white text-[#5C4A3A] hover:bg-[#F5F0EA]"
-                        }`}
-                      >
-                        <span>{mode === "stock" ? "🖼️" : mode === "upload" ? "📤" : "✨"}</span>
-                        {mode === "stock" ? "스톡 자동" : mode === "upload" ? "직접 업로드" : "AI 프롬프트"}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* 방식별 콘텐츠 */}
-                  <div className="bg-white p-3 rounded-xl border border-[#E8E0D8]">
-                    {imageMode === "stock" ? (
-                      <UnsplashPreview keyword={selectedTemplate.unsplashKeyword} />
-                    ) : imageMode === "upload" ? (
-                      <ImageUploader />
-                    ) : (
-                      <AiImagePromptGenerator />
-                    )}
+                    <label className="text-[10px] text-[#8C7A6A] font-pretendard font-medium block">고객 문의처 (전화/이메일)</label>
+                    <input
+                      type="text"
+                      placeholder="예: 010-1234-5678 / info@cafe.com"
+                      value={userInputs.contact}
+                      onChange={(e) => setUserInput("contact", e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="w-full px-3 py-2 text-xs font-pretendard rounded-lg border border-[#E0D8D0] bg-white focus:outline-none focus:ring-2 focus:ring-[#C8A97E]/40 placeholder:text-[#C0B8B0]"
+                    />
                   </div>
                 </div>
               </div>

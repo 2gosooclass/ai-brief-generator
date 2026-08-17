@@ -68,7 +68,7 @@ export default function Home() {
             </h2>
 
             <p className="font-pretendard text-sm sm:text-base font-medium text-[#374151] leading-relaxed max-w-xl">
-              원하는 디자인 템플릿을 선택하고 브랜드명과 레퍼런스를 지정하면, Google Flow(구글 플로우)에 즉시 입력할 수 있는 최적화된 마크다운(.md) 빌드 브리프와 생성형 AI 이미지 규격 프롬프트가 자동으로 완성됩니다.
+              원하는 디자인 템플릿을 선택하고 브랜드 정보만 텍스트로 입력하면, Google Flow(구글 플로우)에 즉시 입력할 수 있는 최적화된 마크다운(.md) 빌드 브리프와 AI 시네마틱 미디어 프롬프트가 자동으로 완성됩니다.
             </p>
           </div>
 
@@ -146,7 +146,7 @@ export default function Home() {
                 <span className="text-xs font-bold tracking-widest uppercase text-amber-800 block">Guide</span>
                 <h3 className="font-serif-kr text-base sm:text-lg font-bold text-[#111827]">사용 방법</h3>
                 <p className="text-xs sm:text-[13px] leading-relaxed font-medium text-[#374151]">
-                  우측 목록에서 마음에 드는 디자인 카드를 클릭하세요. 상세 설정 창에서 브랜드명과 레퍼런스, 이미지 비율을 정하고 프롬프트를 복사하여 AI 에이전트에 붙여넣으면 됩니다.
+                  우측 목록에서 마음에 드는 디자인 카드를 클릭하세요. 상세 설정 창에서 브랜드명과 메뉴, 컬러를 지정하고 완성된 프롬프트를 복사하여 AI 에이전트에 붙여넣으면 됩니다.
                 </p>
               </div>
 

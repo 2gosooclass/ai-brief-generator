@@ -33,8 +33,10 @@ interface BriefState {
 
   // 네비게이션 메뉴 목록
   navMenus: string[];
+  activeSubPage: string; // 현재 서브페이지 ("home", "menu", "story", "reservation", "location")
 
   // 액션
+  setActiveSubPage: (subPage: string) => void;
   setCategory: (category: CategoryId) => void;
   selectTemplate: (template: Template) => void;
   openPanel: () => void;
@@ -94,6 +96,9 @@ export const useBriefStore = create<BriefState>((set) => ({
   logoUrl: null,
   referenceScreenshotUrl: null,
   navMenus: ["OVERVIEW", "COLLECTION", "STORY", "CONTACT"],
+  activeSubPage: "home",
+
+  setActiveSubPage: (subPage) => set({ activeSubPage: subPage }),
 
   setCategory: (category) =>
     set({

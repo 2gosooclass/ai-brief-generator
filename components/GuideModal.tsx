@@ -98,8 +98,8 @@ export default function GuideModal({ isOpen, onClose }: GuideModalProps) {
                     <li className="flex gap-2">
                       <span className="text-[#C8A97E] font-bold">4.</span>
                       <div>
-                        <strong className="text-[#1C1410]">추천 이미지 콕 찝어 선택하기</strong>
-                        <p className="text-[10px] text-[#8C7A6A] mt-0.5">스톡 이미지 자동 탭 아래에 Unsplash에서 실시간으로 불러온 추천 사진 3장이 뜹니다. 마음에 드는 사진을 마우스로 클릭하면 골드 체크마크가 활성화되며, 이 이미지의 실제 URL 주소가 프롬프트에 자동으로 포함됩니다. 이미지의 상세 정보나 고화질 다운로드가 필요할 때는 우측 상단의 작은 새창링크 아이콘을 누릅니다. (로그인 팝업은 가볍게 무시하셔도 됩니다.)</p>
+                        <strong className="text-[#1C1410]">텍스트 기반 AI 비주얼 & 아키텍처 자동 조립</strong>
+                        <p className="text-[10px] text-[#8C7A6A] mt-0.5">업체명과 한 줄 소개, 메뉴 항목만 입력하면 업종에 최적화된 Google Flow 시네마틱 미디어 프롬프트와 웹 아키텍처가 자동으로 완성됩니다. (로고나 이미지 변경은 추후 에이전트 채팅창에 말씀만 주시면 즉시 교체됩니다.)</p>
                       </div>
                     </li>
                     <li className="flex gap-2">
