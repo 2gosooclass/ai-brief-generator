@@ -20,6 +20,7 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
     "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&q=80"
   ],
   religion: [
+    "https://images.unsplash.com/photo-1555423461-b5056ae13db6?w=1200&q=80",
     "https://images.unsplash.com/photo-1438232992991-995b7058bbb3?w=1200&q=80",
     "https://images.unsplash.com/photo-1548625361-195fe612b7a4?w=1200&q=80",
     "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=1200&q=80",
@@ -41,7 +42,7 @@ const KEYWORD_IMAGE_POOLS: Record<string, string[]> = {
   ]
 };
 
-// ── 개별 섹션 이미지 래퍼 ──
+// ── 공통 이미지 래퍼 ──
 interface EditableImageProps {
   sectionKey: string;
   defaultUrl: string;
@@ -81,7 +82,7 @@ function EditableImage({
   return (
     <div className={`relative overflow-hidden ${className}`} style={style}>
       {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src={imageUrl} alt={sectionKey} className="w-full h-full object-cover" />
+      <img src={imageUrl} alt={sectionKey} className="w-full h-full object-cover" loading="lazy" />
     </div>
   );
 }
@@ -89,34 +90,321 @@ function EditableImage({
 interface LayoutProps {
   template: Template;
   category: string;
-  isMultiPage: boolean;
+  isMultiPage?: boolean;
   accentColor: string;
   bizName: string;
   bizDesc: string;
   sections: string[];
   images: string[];
   logoUrl: string | null;
-  contact: string;
+  contact?: string;
   navMenus: string[];
   activeSubPage: string;
   setActiveSubPage: (page: string) => void;
-  onActionClick: (label: string) => void;
+  onActionClick: (action: string) => void;
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 1. 🥩 K-BBQ 정통 숯불 다이닝 레이아웃 (완성형 풀 롱페이지)
+// 1. ⛪ [교회 1: 밝고 경건한 자연색] 전통 한인 장로 & 감리교회 (religion-heritage)
 // ════════════════════════════════════════════════════════════════════════
-function KoreanBBQRestaurantLayout({ accentColor, bizName, bizDesc, images, contact, setActiveSubPage, onActionClick }: LayoutProps) {
+function HeritageChurchLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
+  const gold = accentColor || "#D4AF70";
+  const navy = "#1E3A8A";
+
+  return (
+    <div className="min-h-full w-full flex flex-col font-serif-kr bg-[#FDFBF7] text-[#1E293B] text-left">
+      {/* 상단 예배 공지 바 */}
+      <div className="bg-[#1E3A8A] text-amber-100 text-xs py-2.5 px-8 flex justify-between items-center shadow-sm">
+        <span className="font-pretendard flex items-center gap-2">
+          <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+          주일 대예배 1부 (오전 9:00) · 2부 (오전 11:00) | 실시간 설교 생중계
+        </span>
+        <span className="font-pretendard">목양실: {contact || "010-1234-5678"}</span>
+      </div>
+
+      {/* 네비게이션 헤더 */}
+      <nav className="flex items-center justify-between px-8 py-4 bg-white/95 backdrop-blur-md border-b border-amber-900/10 sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-[#EFF6FF] border border-[#BFDBFE] flex items-center justify-center text-xl text-[#1E3A8A]">
+            ✝️
+          </div>
+          <div>
+            <h2 className="text-lg font-bold font-serif-kr text-[#1E3A8A] leading-tight">{bizName}</h2>
+            <span className="text-[10px] text-[#D4AF70] font-pretendard font-bold tracking-widest block">KOREAN PRESBYTERIAN & METHODIST CHURCH</span>
+          </div>
+        </div>
+        <div className="hidden md:flex gap-8 text-xs font-bold text-[#1E293B] font-pretendard">
+          <span className="hover:text-[#1E3A8A] cursor-pointer">ABOUT (교회소개)</span>
+          <span className="hover:text-[#1E3A8A] cursor-pointer">EVENTS (사역안내)</span>
+          <span className="hover:text-[#1E3A8A] cursor-pointer">GALLERY (사진첩)</span>
+          <span className="hover:text-[#1E3A8A] cursor-pointer">LOCATION (오시는길)</span>
+          <span className="hover:text-[#1E3A8A] cursor-pointer">설교방송</span>
+        </div>
+        <button onClick={() => onActionClick("새가족 등록")} className="px-5 py-2.5 rounded-xl text-xs font-bold font-pretendard shadow-md hover:scale-105 transition-all text-[#172554]" style={{ backgroundColor: gold }}>
+          새가족 등록 및 문의 &rarr;
+        </button>
+      </nav>
+
+      {/* 화사한 자연 채광 성전 히어로 */}
+      <header className="relative w-full h-[520px] bg-[#172554] flex items-center justify-center text-center overflow-hidden">
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#172554]/95 via-black/40 to-transparent" />
+        <div className="relative z-20 max-w-3xl px-6 space-y-4 text-white">
+          <span className="inline-block text-xs tracking-widest uppercase px-3.5 py-1.5 rounded-full border border-amber-300/40 bg-black/40 text-amber-200 font-pretendard font-bold shadow-sm">
+            ✝️ FAITH & PRAYER SANCTUARY
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-serif-kr font-bold text-white leading-tight">
+            말씀과 기도로 든든히 서가는<br />
+            <span className="text-[#FDE68A]">경건한 신앙 공동체</span>
+          </h1>
+          <p className="text-xs sm:text-sm text-slate-200 max-w-xl mx-auto leading-relaxed font-pretendard">
+            {bizDesc || "하나님의 거룩한 말씀 위에 굳건히 서서, 정통 개혁신학과 뜨거운 사랑 실천으로 이 땅과 열방을 섬깁니다."}
+          </p>
+          <div className="flex justify-center gap-3 pt-2 font-pretendard">
+            <button onClick={() => onActionClick("교회 사명 알아보기")} className="px-6 py-3 rounded-xl text-xs font-bold text-[#172554] shadow-lg hover:brightness-110 transition-all" style={{ backgroundColor: gold }}>
+              교회 사명 알아보기 &rarr;
+            </button>
+            <button onClick={() => onActionClick("온라인 설교방송")} className="px-6 py-3 rounded-xl text-xs font-bold bg-white/20 text-white border border-white/40 hover:bg-white/30 backdrop-blur-sm transition-all">
+              실시간 설교방송
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 4단 예배 시간 안내 바 */}
+      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-30 w-full font-pretendard">
+        <div className="bg-white rounded-2xl border border-slate-200 shadow-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100 overflow-hidden">
+          {[
+            { tag: "주일 1부 예배", time: "오전 09:00", place: "전통 경건 예배 (본당)" },
+            { tag: "주일 2부 대예배", time: "오전 11:00", place: "찬양 & 강해 설교 (생중계)" },
+            { tag: "수요 성경강해", time: "수요일 오후 07:30", place: "소예배실 및 온라인 줌" },
+            { tag: "새벽 기도회", time: "화~토 오전 05:30", place: "매일 은혜 채플홀" },
+          ].map((item, idx) => (
+            <div key={idx} className="p-5 space-y-1 text-left bg-gradient-to-b from-white to-[#F8FAFC]">
+              <span className="text-[11px] font-bold text-[#1E3A8A] bg-[#EFF6FF] px-2.5 py-0.5 rounded-full">{item.tag}</span>
+              <h4 className="text-sm font-bold text-slate-900 mt-1">{item.time}</h4>
+              <p className="text-xs text-slate-500">{item.place}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 메인 콘텐츠: 담임목사 환영사 & 4대 핵심 사역 */}
+      <main className="max-w-6xl mx-auto px-6 py-16 space-y-16 w-full font-pretendard">
+        {/* 담임목사 환영사 */}
+        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center bg-white p-8 rounded-3xl border border-slate-200 shadow-sm">
+          <div className="md:col-span-5 h-72 rounded-2xl overflow-hidden shadow-md">
+            <EditableImage sectionKey="pastor" defaultUrl={images[1]} className="w-full h-full object-cover" />
+          </div>
+          <div className="md:col-span-7 space-y-4 text-left">
+            <span className="text-xs font-bold text-[#1E3A8A] uppercase tracking-widest bg-[#EFF6FF] px-3 py-1 rounded-full">PASTORAL MESSAGE</span>
+            <h3 className="text-2xl font-serif-kr font-bold text-slate-900 leading-snug">
+              주님의 따뜻한 사랑으로<br />여러분을 환영합니다
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+              우리 교회는 성경 중심의 바른 신학과 뜨거운 성령의 역사가 조화를 이루는 영적 보금자리입니다. 삶의 무거운 짐을 내려놓고 참된 평안과 구원의 기쁨을 함께 누리시길 축복합니다.
+            </p>
+            <p className="text-xs font-serif-kr font-bold text-[#1E3A8A]">담임목사 및 사역팀 일동</p>
+          </div>
+        </section>
+
+        {/* 4대 핵심 사역 그리드 */}
+        <section className="space-y-6">
+          <div className="text-center space-y-1">
+            <span className="text-xs font-bold text-[#1E3A8A] uppercase tracking-wider">OUR MISSION</span>
+            <h3 className="text-2xl font-serif-kr font-bold text-slate-900">교회 4대 핵심 사역</h3>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-5">
+            {[
+              { i: "📖", t: "성경 중심 강해", d: "장로교 정통 개혁신학에 기초한 체계적 말씀 양육" },
+              { i: "🙏", t: "뜨거운 성령 기도", d: "매일 새벽과 금요철야로 무릎 꿇는 기도의 용사" },
+              { i: "🌱", t: "다음세대 전수", d: "영유아부부터 청년부까지 거룩한 신앙 정체성 확립" },
+              { i: "🤝", t: "사랑의 이웃 섬김", d: "지역 사회 나눔과 해외 선교지를 향한 헌신과 섬김" },
+            ].map((card, i) => (
+              <div key={i} className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-2 text-left hover:-translate-y-1 transition-transform">
+                <span className="text-3xl">{card.i}</span>
+                <h4 className="text-base font-bold text-slate-900">{card.t}</h4>
+                <p className="text-xs text-slate-600 leading-relaxed">{card.d}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      </main>
+
+      {/* 하단 푸터 */}
+      <footer className="py-12 px-8 bg-[#172554] text-slate-300 font-pretendard text-center text-xs space-y-2 mt-auto border-t-2 border-amber-400">
+        <h4 className="font-bold text-base text-white font-serif-kr">{bizName}</h4>
+        <p className="opacity-80">성전 주소: 경기도 용인시 기흥구 기흥로 42번길 15 · 대표 문의: {contact || "010-1234-5678"}</p>
+        <p className="opacity-80">150대 무료 주차 완비 · 기흥역 순환 주일 셔틀버스 운행</p>
+        <p className="text-[11px] text-amber-300/60 pt-2">© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 2. 🕊️ [교회 2: 화사한 화이트 & 틸] 모던 워십 글로벌 교회 (religion-gateway)
+// ════════════════════════════════════════════════════════════════════════
+function ModernChurchCommunityLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
+  const teal = accentColor || "#0D9488";
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#FFFFFF] text-[#0F172A] text-left">
+      {/* 4단 퀵 게이트웨이 상단 바 */}
+      <div className="grid grid-cols-2 md:grid-cols-4 text-center text-xs font-bold text-white shadow-sm">
+        <div onClick={() => onActionClick("새가족 환영")} className="py-3 bg-[#0F766E] hover:bg-[#115E59] cursor-pointer transition-colors">✨ NEW HERE? (새가족)</div>
+        <div onClick={() => onActionClick("교회 소개")} className="py-3 bg-[#0D9488] hover:bg-[#0F766E] cursor-pointer transition-colors">⛪ ABOUT US (교회소개)</div>
+        <div onClick={() => onActionClick("사역 안내")} className="py-3 bg-[#14B8A6] hover:bg-[#0D9488] cursor-pointer transition-colors">🌱 MINISTRIES (부서사역)</div>
+        <div onClick={() => onActionClick("온라인 헌금")} className="py-3 bg-[#2DD4BF] text-teal-950 hover:bg-[#14B8A6] cursor-pointer transition-colors">💳 ONLINE GIVE (온라인헌금)</div>
+      </div>
+
+      {/* 네비게이션 */}
+      <nav className="flex items-center justify-between px-8 py-4 bg-white/95 backdrop-blur-md border-b border-slate-100 sticky top-0 z-30 shadow-sm">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center text-xl font-bold">🕊️</div>
+          <div>
+            <h2 className="text-base font-black text-slate-900 leading-tight">{bizName}</h2>
+            <span className="text-[10px] text-teal-600 font-bold tracking-wider">GLOBAL WORSHIP COMMUNITY</span>
+          </div>
+        </div>
+        <div className="hidden md:flex gap-6 text-xs font-bold text-slate-600">
+          <span className="hover:text-teal-600 cursor-pointer">WORSHIP & SERMON</span>
+          <span className="hover:text-teal-600 cursor-pointer">COMMUNITY</span>
+          <span className="hover:text-teal-600 cursor-pointer">NEXT GENERATION</span>
+          <span className="hover:text-teal-600 cursor-pointer">LOCATION</span>
+        </div>
+        <button onClick={() => onActionClick("온라인 예배")} className="px-4 py-2 rounded-xl text-xs font-bold text-white shadow-md" style={{ backgroundColor: teal }}>
+          LIVE 예배 참여 &rarr;
+        </button>
+      </nav>
+
+      {/* 화사한 워십 히어로 */}
+      <header className="relative w-full h-[480px] bg-slate-900 flex items-center justify-center text-center overflow-hidden">
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-teal-950/40 to-transparent" />
+        <div className="relative z-20 max-w-3xl px-6 space-y-4 text-white">
+          <span className="inline-block text-xs font-bold px-3 py-1 bg-teal-600/80 rounded-full text-white backdrop-blur-sm">
+            하나님의 사랑과 은혜가 머무는 믿음의 공동체
+          </span>
+          <h1 className="text-3xl sm:text-5xl font-black leading-tight text-white">{bizName}</h1>
+          <p className="text-xs sm:text-sm text-slate-200 max-w-lg mx-auto">{bizDesc}</p>
+          <div className="flex justify-center gap-3 pt-2">
+            <button onClick={() => onActionClick("주일예배 안내")} className="px-6 py-3 rounded-xl text-xs font-bold text-white shadow-lg" style={{ backgroundColor: teal }}>
+              주일 예배 안내 &rarr;
+            </button>
+            <button onClick={() => onActionClick("설교 아카이브")} className="px-6 py-3 rounded-xl text-xs font-bold bg-white text-slate-900 hover:bg-slate-100">
+              최신 설교 듣기
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* 설교 카드 3열 쇼케이스 */}
+      <main className="max-w-6xl mx-auto px-6 py-14 space-y-12 w-full">
+        <div className="flex justify-between items-end border-b border-slate-200 pb-3">
+          <div>
+            <span className="text-xs font-bold text-teal-600 uppercase">ONLINE MESSAGES</span>
+            <h3 className="text-xl font-bold text-slate-900">은혜로운 최근 강해 설교</h3>
+          </div>
+          <button onClick={() => onActionClick("전체 설교")} className="text-xs font-bold text-teal-600 hover:underline">전체 설교 보기 &rarr;</button>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { t: "믿음의 반석 위에 서라", d: "에베소서 2:19~22", p: "2026.08.16 주일 2부" },
+            { t: "기도의 무릎으로 여는 하늘 문", d: "빌립보서 4:6~7", p: "2026.08.09 주일 2부" },
+            { t: "세상을 이기는 사랑의 능력", d: "요한일서 4:7~12", p: "2026.08.02 주일 2부" },
+          ].map((c, idx) => (
+            <div key={idx} className="bg-[#F8FAFC] rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+              <div className="h-44 overflow-hidden relative">
+                <EditableImage sectionKey={`sermon-${idx}`} defaultUrl={images[(idx + 1) % images.length]} className="w-full h-full object-cover" />
+                <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-white/90 text-teal-700 flex items-center justify-center shadow-lg font-bold pl-0.5">▶</div>
+                </div>
+              </div>
+              <div className="p-5 space-y-2">
+                <span className="text-[11px] font-bold text-teal-600">{c.p}</span>
+                <h4 className="text-sm font-bold text-slate-900">{c.t}</h4>
+                <p className="text-xs text-slate-500">{c.d}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      <footer className="py-10 px-8 bg-slate-900 text-slate-400 text-center text-xs mt-auto">
+        <p className="font-bold text-white">{bizName} · 문의처: {contact || "010-1234-5678"}</p>
+        <p className="opacity-70 mt-1">© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 3. 🌿 [NGO 3: 따뜻한 자연색 어스그린] 나눔 & 비영리 NGO 커뮤니티 (religion-ngo)
+// ════════════════════════════════════════════════════════════════════════
+function NgoCommunityLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
+  const green = accentColor || "#22C55E";
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F0FDF4] text-[#14532D] text-left">
+      {/* 상단 기부 바 */}
+      <div className="bg-[#15803D] text-emerald-100 text-xs py-2 px-8 flex justify-between">
+        <span>세상을 바꾸는 따뜻한 연대와 사랑의 실천</span>
+        <span>후원 문의: {contact || "1588-0000"}</span>
+      </div>
+
+      <nav className="flex items-center justify-between px-8 py-4 bg-white/95 border-b border-emerald-200 sticky top-0 z-30">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl">🌱</span>
+          <span className="text-lg font-black text-emerald-950">{bizName}</span>
+        </div>
+        <div className="hidden md:flex gap-6 text-xs font-bold text-emerald-900">
+          <span>구호 사역</span><span>후원 프로그램</span><span>스토리</span><span>투명성 리포트</span>
+        </div>
+        <button onClick={() => onActionClick("정기 후원 신청")} className="px-5 py-2 rounded-xl text-xs font-bold text-white shadow-md" style={{ backgroundColor: "#15803D" }}>
+          정기 후원하기 &rarr;
+        </button>
+      </nav>
+
+      {/* 따뜻한 나눔 히어로 */}
+      <header className="relative w-full h-[460px] bg-emerald-950 flex items-center justify-center text-center overflow-hidden">
+        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-black/40 to-transparent" />
+        <div className="relative z-20 max-w-3xl px-6 space-y-4 text-white">
+          <span className="text-xs font-bold px-3 py-1 bg-emerald-700/80 rounded-full text-white">HOPE & SHARING COMMUNITY</span>
+          <h1 className="text-3xl sm:text-5xl font-black text-white">{bizName}</h1>
+          <p className="text-xs sm:text-sm text-emerald-100 max-w-md mx-auto">{bizDesc}</p>
+        </div>
+      </header>
+
+      {/* 3단 임팩트 스탯 */}
+      <main className="max-w-6xl mx-auto px-6 py-12 space-y-8 w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 bg-white p-6 rounded-3xl border border-emerald-200 shadow-sm text-center">
+          <div><h4 className="text-2xl font-black text-emerald-700">12,400+</h4><p className="text-xs text-slate-500">후원받는 결식 아동</p></div>
+          <div><h4 className="text-2xl font-black text-emerald-700">98.7%</h4><p className="text-xs text-slate-500">투명 사업비 집행률</p></div>
+          <div><h4 className="text-2xl font-black text-emerald-700">34개국</h4><p className="text-xs text-slate-500">글로벌 구호 네트워크</p></div>
+        </div>
+      </main>
+
+      <footer className="py-10 px-8 bg-emerald-950 text-emerald-300 text-center text-xs mt-auto">
+        <p className="font-bold text-white">{bizName} · {contact || "1588-0000"}</p>
+        <p className="opacity-70 mt-1">© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 4. 🥩 [카페/식음료 1: 다크 시즐링] 정통 숯불 다이닝 (cafe-kbbq)
+// ════════════════════════════════════════════════════════════════════════
+function KoreanBBQRestaurantLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
   const red = accentColor || "#DC2626";
   return (
     <div className="min-h-full w-full flex flex-col font-pretendard bg-[#09090B] text-[#FAFAFA] text-left">
-      {/* 상단 띠 */}
       <div className="bg-[#18181B] text-gray-300 text-xs py-2.5 px-8 flex justify-between items-center border-b border-white/10">
         <span className="text-red-500 font-bold">🔥 SIZZLING PRIME DINING</span>
         <span>RESERVATION: {contact || "(847) 983-8282"}</span>
       </div>
 
-      {/* 네비게이션 */}
       <nav className="flex items-center justify-between px-8 py-4 bg-[#09090B]/95 border-b border-white/10 sticky top-0 z-30">
         <div className="flex items-center gap-2">
           <span className="text-2xl">🥩</span>
@@ -130,7 +418,6 @@ function KoreanBBQRestaurantLayout({ accentColor, bizName, bizDesc, images, cont
         </button>
       </nav>
 
-      {/* 16:9 다크 히어로 */}
       <header className="relative w-full h-[520px] bg-black flex items-center justify-center text-center overflow-hidden">
         <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-70" />
         <div className="absolute inset-0 bg-gradient-to-t from-[#09090B] via-black/40 to-black/60" />
@@ -144,49 +431,8 @@ function KoreanBBQRestaurantLayout({ accentColor, bizName, bizDesc, images, cont
         </div>
       </header>
 
-      {/* 4단 퀵 바 */}
-      <section className="max-w-6xl mx-auto px-6 -mt-6 relative z-30 w-full">
-        <div className="bg-[#18181B] rounded-2xl border border-white/10 grid grid-cols-2 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-white/10 shadow-2xl">
-          {[{ i: "🥩", t: "Prime Beef Galbi", d: "최상급 꽃갈비 & 양념갈비" }, { i: "🥓", t: "Thick Pork Belly", d: "두툼한 칼집 통삼겹살" }, { i: "🍲", t: "Authentic Stews", d: "해물순두부 & 차돌된장" }, { i: "🍶", t: "Soju & Craft Beer", d: "한국 소주 & 프리미엄 드링크" }].map((item, idx) => (
-            <div key={idx} className="p-4 flex items-center gap-3">
-              <span className="text-2xl">{item.i}</span>
-              <div><h4 className="text-xs font-bold text-white">{item.t}</h4><p className="text-[11px] text-gray-400">{item.d}</p></div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 3열 시그니처 메뉴 쇼케이스 */}
-      <main className="max-w-6xl mx-auto px-6 py-16 space-y-16 w-full">
-        <section className="space-y-6">
-          <div className="border-b border-white/10 pb-4"><span className="text-xs font-bold text-red-500">SIGNATURE</span><h2 className="text-2xl font-black text-white">인기 숯불구이 라인업</h2></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { t: "프라임 양념 소갈비", p: "$39.95", d: "24시간 특제 과일 양념에 숙성한 부드러운 육질", img: images[1%images.length] },
-              { t: "칼집 생삼겹살 세트", p: "$29.95", d: "신선한 통삼겹살과 겉절이 김치, 쌈채소", img: images[2%images.length] },
-              { t: "차돌박이 & 해물순두부", p: "$27.95", d: "고소한 차돌박이와 칼칼한 뚝배기 순두부", img: images[3%images.length] },
-            ].map((c, i) => (
-              <div key={i} className="bg-[#18181B] rounded-3xl border border-white/10 overflow-hidden shadow-lg">
-                <div className="h-48 overflow-hidden"><EditableImage sectionKey={`kbbq-${i}`} defaultUrl={c.img} className="w-full h-full object-cover" /></div>
-                <div className="p-5 space-y-2">
-                  <div className="flex justify-between font-bold"><span className="text-sm text-white">{c.t}</span><span className="text-amber-400">{c.p}</span></div>
-                  <p className="text-xs text-gray-400">{c.d}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* 프라이빗 룸 배너 */}
-        <section className="bg-gradient-to-r from-red-950/80 via-[#18181B] to-black p-8 rounded-3xl border border-red-900/30 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="space-y-2"><span className="text-xs font-bold text-amber-400">PRIVATE DINING</span><h3 className="text-2xl font-black text-white">단체 회식 & 가족 모임 전용 프라이빗 룸</h3><p className="text-xs text-gray-300">최대 50인 수용 가능한 전용 룸과 최첨단 환기 시스템</p></div>
-          <button onClick={() => onActionClick("룸 예약 문의")} className="px-6 py-3 rounded-xl text-xs font-bold text-white whitespace-nowrap" style={{ backgroundColor: red }}>룸 예약 문의 &rarr;</button>
-        </section>
-      </main>
-
       <footer className="py-10 px-8 border-t border-white/10 bg-black text-center text-xs text-gray-500 mt-auto">
         <p className="font-bold text-white">{bizName} · TEL: {contact || "(847) 983-8282"}</p>
-        <p className="mt-1">📍 8520 Golf Rd, Niles, IL 60714 (시카고 인근)</p>
         <p className="opacity-60 mt-2">© 2026 {bizName}. All Rights Reserved.</p>
       </footer>
     </div>
@@ -194,176 +440,49 @@ function KoreanBBQRestaurantLayout({ accentColor, bizName, bizDesc, images, cont
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 2. ⛪ 전통 한인 장로 & 감리교회 레이아웃 (경건한 버건디 & 베이지 풀 롱페이지)
+// 5. 🥐 [카페/식음료 2: 밝고 따뜻한 미니멀 베이지] 미니멀 카페 & 브런치 (cafe-minimal)
 // ════════════════════════════════════════════════════════════════════════
-function HeritageChurchLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
-  const burgundy = accentColor || "#881337";
+function MinimalCafeBrunchLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
+  const wood = accentColor || "#C8A97E";
   return (
-    <div className="min-h-full w-full flex flex-col font-serif-kr bg-[#FDFBF7] text-[#451A03] text-left">
-      {/* 1. 상단 유틸리티 띠 */}
-      <div className="bg-[#881337] text-amber-100 text-xs py-2.5 px-8 flex justify-between items-center">
-        <span>⛪ 말씀과 기도로 든든히 서가는 경건한 신앙 공동체</span>
-        <span>교회 사무실: {contact || "(303) 755-1234"}</span>
-      </div>
-
-      {/* 2. 경건한 네비게이션 헤더 */}
-      <nav className="flex items-center justify-between px-8 py-5 bg-white border-b-2 border-amber-900/10 sticky top-0 z-30 shadow-sm">
-        <div className="flex items-center gap-3">
-          <span className="text-3xl">⛪</span>
-          <div>
-            <h2 className="text-xl font-bold font-serif text-amber-950 leading-tight">{bizName}</h2>
-            <span className="text-[10px] text-amber-800 font-mono tracking-widest block">KOREAN PRESBYTERIAN & METHODIST CHURCH</span>
-          </div>
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#FAFAF7] text-[#2C2118] text-left">
+      <nav className="flex items-center justify-between px-8 py-5 border-b border-[#E8E0D8] bg-white sticky top-0 z-30">
+        <div className="flex items-center gap-2">
+          <span className="text-xl">☕</span>
+          <span className="font-serif-kr text-lg font-bold text-[#1C1410]">{bizName}</span>
         </div>
-        <div className="hidden md:flex gap-8 text-xs font-bold text-amber-950 font-pretendard">
-          <span>교회소개</span><span>말씀과 설교</span><span>예배시간표</span><span>교구 및 부서</span><span>교우소식</span>
+        <div className="hidden md:flex gap-8 text-xs font-medium text-[#5C4A3A]">
+          <span>COFFEE</span><span>BAKERY & BRUNCH</span><span>STORY</span><span>SPACE</span>
         </div>
-        <button onClick={() => onActionClick("온라인 주보")} className="px-5 py-2.5 rounded-xl text-xs font-bold text-white shadow font-pretendard" style={{ backgroundColor: burgundy }}>
-          이번 주 주보 PDF &rarr;
+        <button onClick={() => onActionClick("매장 방문 안내")} className="px-4 py-2 rounded-lg text-xs font-bold text-[#1C1410] border border-[#C8A97E] hover:bg-[#F5F0EA]">
+          VISIT STORE &rarr;
         </button>
       </nav>
 
-      {/* 3. 성전 전경 대형 히어로 */}
-      <header className="relative w-full h-[480px] bg-amber-950 flex items-center justify-center text-center overflow-hidden">
-        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-65" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#881337]/90 via-black/40 to-black/60" />
-        <div className="relative z-20 max-w-3xl px-6 space-y-4 text-white">
-          <span className="text-xs tracking-widest uppercase px-3 py-1 rounded-full border border-amber-300/40 bg-amber-950/60 text-amber-200">2026년 교회 표어</span>
-          <h1 className="text-3xl sm:text-5xl font-serif font-bold text-amber-50 leading-tight">
-            &quot;오직 은혜, 오직 믿음으로<br />세상을 치유하는 교회&quot;
+      {/* 에디토리얼 분할 히어로 */}
+      <header className="max-w-6xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <div className="md:col-span-6 space-y-4">
+          <span className="text-xs uppercase tracking-widest text-[#C8A97E] font-bold">ARTISAN ROASTERY</span>
+          <h1 className="font-serif-kr text-4xl sm:text-5xl font-bold text-[#1C1410] leading-tight">
+            여백과 감성으로 채우는<br /><span className="text-[#C8A97E]">따뜻한 한 잔의 온기</span>
           </h1>
-          <p className="text-xs sm:text-sm text-amber-100 max-w-lg mx-auto leading-relaxed">{bizDesc}</p>
-          <div className="flex justify-center gap-3 pt-3 font-pretendard">
-            <button onClick={() => onActionClick("새가족 등록")} className="px-6 py-3 rounded-xl text-xs font-bold bg-amber-400 text-amber-950 shadow-lg hover:bg-amber-300">새가족 등록 안내 &rarr;</button>
-            <button onClick={() => onActionClick("주일 설교")} className="px-6 py-3 rounded-xl text-xs font-bold bg-white/20 text-white border border-white/30 hover:bg-white/30">주일 설교 듣기</button>
-          </div>
+          <p className="text-xs sm:text-sm text-[#5C4A3A] leading-relaxed">{bizDesc}</p>
+        </div>
+        <div className="md:col-span-6 h-80 rounded-2xl overflow-hidden shadow-lg border border-[#E8E0D8]">
+          <EditableImage sectionKey="hero" defaultUrl={images[0]} className="w-full h-full object-cover" />
         </div>
       </header>
 
-      {/* 4. 4단 예배 시간 및 안내 바 */}
-      <section className="max-w-6xl mx-auto px-6 -mt-8 relative z-30 w-full font-pretendard">
-        <div className="bg-white rounded-3xl border-2 border-amber-900/10 shadow-2xl grid grid-cols-1 md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-amber-100 overflow-hidden">
-          {[
-            { tag: "주일 대예배", time: "주일 오전 11:00", place: "본당 대예배실 (생중계)" },
-            { tag: "수요 성경강해", time: "매주 수요일 저녁 7:30", place: "소예배실 및 온라인 줌" },
-            { tag: "새벽 기도회", time: "화~토 오전 6:00", place: "비전채플실" },
-            { tag: "주일학교 / 청년부", time: "주일 오전 11:00", place: "교육관 2층 글로리아홀" },
-          ].map((item, idx) => (
-            <div key={idx} className="p-5 space-y-1">
-              <span className="text-[11px] font-bold text-[#881337] bg-rose-50 px-2 py-0.5 rounded">{item.tag}</span>
-              <h4 className="text-sm font-bold text-amber-950 mt-1">{item.time}</h4>
-              <p className="text-xs text-stone-500">{item.place}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* 5. 메인 콘텐츠: 담임목사 환영사 & 최신 설교 영상 */}
-      <main className="max-w-6xl mx-auto px-6 py-16 space-y-16 w-full font-pretendard">
-        {/* 담임목사 환영사 2단 스플릿 */}
-        <section className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
-          <div className="md:col-span-5 h-80 rounded-3xl overflow-hidden border-2 border-amber-900/10 shadow-md">
-            <EditableImage sectionKey="pastor" defaultUrl={images[1%images.length]} className="w-full h-full object-cover" />
-          </div>
-          <div className="md:col-span-7 space-y-4 text-left">
-            <span className="text-xs font-bold text-[#881337] uppercase tracking-widest">PASTORAL MESSAGE</span>
-            <h3 className="text-2xl font-serif font-bold text-amber-950">주님의 사랑으로 여러분을 환영합니다</h3>
-            <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
-              우리 교회는 이민 사회의 따뜻한 안식처이자, 다음 세대를 믿음의 거목으로 세워가는 영적 보금자리입니다. 예배의 감격과 성도의 교제가 살아 숨쉬는 거룩한 공동체로 여러분을 정중히 초대합니다.
-            </p>
-            <p className="text-xs font-serif font-bold text-amber-900">담임목사 김은혜 드림</p>
-          </div>
-        </section>
-
-        {/* 최신 주일 설교 말씀 영상 섹션 */}
-        <section className="space-y-6">
-          <div className="flex justify-between items-end border-b-2 border-amber-900/10 pb-3">
-            <div>
-              <span className="text-xs font-bold text-[#881337] uppercase">LATEST SERMON</span>
-              <h3 className="text-xl font-bold text-amber-950">최신 주일 말씀 영상</h3>
-            </div>
-            <button onClick={() => onActionClick("설교 아카이브")} className="text-xs font-bold text-[#881337] hover:underline">지난 설교 전체보기 &rarr;</button>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-            <div className="lg:col-span-8 aspect-video rounded-3xl overflow-hidden bg-black border-2 border-amber-900/10 shadow-lg relative">
-              <EditableImage sectionKey="sermon-video" defaultUrl={images[2%images.length]} className="w-full h-full object-cover opacity-85" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-red-600/90 text-white flex items-center justify-center text-2xl shadow-2xl pl-1 cursor-pointer hover:scale-110 transition-transform">▶</div>
-              </div>
-            </div>
-            <div className="lg:col-span-4 bg-white p-6 rounded-3xl border-2 border-amber-900/10 shadow-sm space-y-4 text-left">
-              <span className="text-xs font-bold text-amber-700">2026년 8월 16일 주일 설교</span>
-              <h4 className="text-base font-bold text-amber-950">광야에서 피어나는 믿음의 꽃</h4>
-              <p className="text-xs text-stone-500 font-mono">본문: 이사야 43장 18~21절</p>
-              <p className="text-xs text-stone-600 leading-relaxed">광야에 길을 내시고 사막에 강을 만드시는 하나님의 신실하신 약속을 굳게 붙잡으십시오.</p>
-              <button onClick={() => onActionClick("설교 요약 다운로드")} className="w-full py-2.5 rounded-xl text-xs font-bold border border-amber-800/30 hover:bg-amber-50 text-amber-950">설교 요약문 PDF 다운로드</button>
-            </div>
-          </div>
-        </section>
-
-        {/* 4단 세대별 사역 부서 그리드 */}
-        <section className="space-y-6">
-          <div className="border-b-2 border-amber-900/10 pb-3"><span className="text-xs font-bold text-[#881337]">MINISTRIES</span><h3 className="text-xl font-bold text-amber-950">세대별 사역 및 공동체</h3></div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { t: "꿈나무 영유아부", d: "말씀 안에서 쑥쑥 자라는 아기학교", icon: "👶" },
-              { t: "유초등부 조이풀", d: "재미있는 성경공부와 찬양 축제", icon: "🎈" },
-              { t: "청년부 비전워십", d: "세상을 변화시키는 청년 복음 사역", icon: "🔥" },
-              { t: "시니어 은혜구역", d: "기도와 말씀 나눔의 따스한 교제", icon: "🌿" },
-            ].map((m, i) => (
-              <div key={i} className="bg-white p-5 rounded-2xl border-2 border-amber-900/10 shadow-sm space-y-2 text-left">
-                <span className="text-2xl">{m.icon}</span>
-                <h4 className="text-sm font-bold text-amber-950">{m.t}</h4>
-                <p className="text-xs text-stone-500 leading-relaxed">{m.d}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      </main>
-
-      {/* 6. 하단 푸터 & 오시는 길 */}
-      <footer className="py-12 px-8 bg-[#2A0808] text-amber-100 font-pretendard text-center text-xs space-y-2 mt-auto border-t-4 border-[#881337]">
-        <h4 className="font-bold text-base text-white font-serif">{bizName}</h4>
-        <p className="opacity-80">주소: 1234 Faith Blvd, Denver, CO 80231 · 연락처: {contact || "(303) 755-1234"}</p>
-        <p className="opacity-80">주일 대예배 1부 9:00 AM / 2부 11:00 AM · 수요기도회 7:30 PM</p>
-        <p className="text-[11px] text-amber-300/60 pt-2">© 2026 {bizName}. All Rights Reserved. 대한예수교장로회 / 미주감리교회</p>
+      <footer className="py-10 px-8 border-t border-[#E8E0D8] bg-white text-center text-xs text-[#8C7A6A] mt-auto">
+        <p className="font-bold text-[#1C1410]">{bizName} · {contact || "02-1234-5678"}</p>
+        <p className="mt-1">© 2026 {bizName}. All Rights Reserved.</p>
       </footer>
     </div>
   );
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 3. 🕊️ 모던 워십 글로벌 교회 (religion-gateway) - 딥 틸 & 슬레이트
-// ════════════════════════════════════════════════════════════════════════
-function ModernChurchCommunityLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
-  const teal = accentColor || "#0D9488";
-  return (
-    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#0F172A] text-white text-left">
-      <div className="grid grid-cols-2 md:grid-cols-4 text-center text-xs font-bold text-white">
-        <div className="py-3 bg-[#0F766E] cursor-pointer">NEW HERE? (새가족)</div>
-        <div className="py-3 bg-[#0D9488] cursor-pointer">ABOUT US (교회소개)</div>
-        <div className="py-3 bg-[#14B8A6] cursor-pointer">MINISTRIES (사역안내)</div>
-        <div className="py-3 bg-[#2DD4BF] text-slate-900 cursor-pointer">ONLINE GIVE (헌금)</div>
-      </div>
-      <nav className="flex items-center justify-between px-8 py-4 bg-[#0F172A]/95 border-b border-slate-800 sticky top-0 z-30">
-        <div className="flex items-center gap-2"><span className="text-2xl">⛪</span><span className="text-lg font-black">{bizName}</span></div>
-        <div className="hidden md:flex gap-6 text-xs font-bold text-slate-300"><span>WORSHIP</span><span>SERMONS</span><span>GROUPS</span><span>LOCATION</span></div>
-        <button onClick={() => onActionClick("온라인 헌금")} className="px-4 py-2 rounded-xl text-xs font-bold text-white" style={{ backgroundColor: teal }}>ONLINE GIVE &rarr;</button>
-      </nav>
-      <header className="relative w-full h-[500px] bg-black flex items-center justify-center text-center overflow-hidden">
-        <EditableImage sectionKey="hero" defaultUrl={images[0]} className="absolute inset-0 w-full h-full object-cover opacity-60" />
-        <div className="relative z-20 max-w-3xl px-6 space-y-4">
-          <span className="text-xs font-bold px-3 py-1 bg-teal-950 text-teal-300 border border-teal-500/30 rounded-full">GLOBAL WORSHIP COMMUNITY</span>
-          <h1 className="text-4xl sm:text-6xl font-black">{bizName}</h1>
-          <p className="text-sm text-slate-300 max-w-lg mx-auto">{bizDesc}</p>
-        </div>
-      </header>
-    </div>
-  );
-}
-
-// ════════════════════════════════════════════════════════════════════════
-// 4. ☕ 프리미엄 프랜차이즈 (cafe-corporate)
+// 6. ☕ [카페 3: 깔끔한 화이트 코퍼레이트] 프리미엄 프랜차이즈 (cafe-corporate)
 // ════════════════════════════════════════════════════════════════════════
 function CorporateFranchiseLayout({ accentColor, bizName, bizDesc, images, contact, onActionClick }: LayoutProps) {
   const brandRed = accentColor || "#D62828";
@@ -381,17 +500,20 @@ function CorporateFranchiseLayout({ accentColor, bizName, bizDesc, images, conta
           <p className="text-sm text-gray-100 max-w-md">{bizDesc}</p>
         </div>
       </header>
+      <footer className="py-8 bg-gray-50 text-center text-xs text-gray-500 mt-auto border-t">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// 5. 🎓 스타강사 실시간 Live 클래스 아카데미 (academy-live)
+// 7. 🎓 [학원 1: 다이내믹 인디고 라이브] 스타강사 Live 클래스 (academy-live)
 // ════════════════════════════════════════════════════════════════════════
 function OnlineAcademyLiveLayout({ accentColor, bizName, bizDesc, images, onActionClick }: LayoutProps) {
   return (
-    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F8FAFC] text-[#0F172A] text-left">
-      <div className="bg-[#1E1B4B] text-white text-xs py-2.5 px-8 flex justify-between">
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#0F172A] text-white text-left">
+      <div className="bg-[#1E1B4B] text-white text-xs py-2.5 px-8 flex justify-between border-b border-indigo-900">
         <span>🔴 2026 스타강사 실시간 Live 클래스 온에어</span>
         <span className="text-indigo-300">수강생 98.4% 합격 신화</span>
       </div>
@@ -401,9 +523,108 @@ function OnlineAcademyLiveLayout({ accentColor, bizName, bizDesc, images, onActi
             <h1 className="text-4xl font-black">스타강사의 명강의를<br /><span className="text-amber-400">온라인 실시간 Live로</span></h1>
             <p className="text-xs text-slate-300">{bizDesc}</p>
           </div>
-          <div className="md:col-span-5 h-72 rounded-2xl overflow-hidden border-2 border-white/20"><EditableImage sectionKey="teacher" defaultUrl={images[0]} className="w-full h-full object-cover" /></div>
+          <div className="md:col-span-5 h-72 rounded-2xl overflow-hidden border-2 border-white/20">
+            <EditableImage sectionKey="teacher" defaultUrl={images[0]} className="w-full h-full object-cover" />
+          </div>
         </div>
       </header>
+      <footer className="py-8 bg-black text-center text-xs text-gray-500 mt-auto">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 8. 📜 [학원 2: 로열블루 공인인증] 전문 자격증 교육원 (academy-cert)
+// ════════════════════════════════════════════════════════════════════════
+function CertInstituteLayout({ accentColor, bizName, bizDesc, images }: LayoutProps) {
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F8FAFC] text-[#0F172A] text-left">
+      <nav className="px-8 py-4 bg-white border-b border-slate-200 flex justify-between items-center">
+        <span className="text-base font-bold text-[#1E3A8A]">{bizName}</span>
+        <span className="text-xs font-bold text-slate-600">공인 수료증 및 실무 교육</span>
+      </nav>
+      <header className="max-w-6xl mx-auto px-6 py-12 text-left space-y-3">
+        <span className="text-xs font-bold text-blue-700 bg-blue-50 px-3 py-1 rounded">OFFICIAL CERTIFICATE</span>
+        <h1 className="text-3xl font-black text-slate-900">{bizName}</h1>
+        <p className="text-xs text-slate-600">{bizDesc}</p>
+      </header>
+      <footer className="py-8 bg-white border-t text-center text-xs text-slate-500 mt-auto">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 9. 📚 [학원 3: 산뜻한 민트/세이지] 전자책 지식구독 (academy-ebook)
+// ════════════════════════════════════════════════════════════════════════
+function EbookMembershipLayout({ accentColor, bizName, bizDesc, images }: LayoutProps) {
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#F0FDFA] text-[#134E4A] text-left">
+      <header className="max-w-6xl mx-auto px-6 py-12 text-left space-y-3">
+        <span className="text-xs font-bold text-teal-700 bg-teal-100 px-3 py-1 rounded-full">DIGITAL SUBSCRIPTION</span>
+        <h1 className="text-3xl font-black text-teal-950">{bizName}</h1>
+        <p className="text-xs text-teal-800">{bizDesc}</p>
+      </header>
+      <footer className="py-8 bg-teal-900 text-teal-200 text-center text-xs mt-auto">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 10. 🎨 [개인 1: 다크 네온 모션] 다이내믹 인터랙티브 랩 (personal-dynamic)
+// ════════════════════════════════════════════════════════════════════════
+function DynamicMotionLabLayout({ accentColor, bizName, bizDesc, images }: LayoutProps) {
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#0A0D14] text-[#F8FAFC] text-left">
+      <header className="max-w-6xl mx-auto px-6 py-16 text-center space-y-4">
+        <span className="text-xs font-bold px-3 py-1 bg-cyan-950 text-cyan-400 border border-cyan-500/40 rounded-full">3D MOTION & INTERACTIVE</span>
+        <h1 className="text-4xl sm:text-6xl font-black text-white">{bizName}</h1>
+        <p className="text-xs text-slate-400 max-w-md mx-auto">{bizDesc}</p>
+      </header>
+      <footer className="py-8 bg-black text-center text-xs text-gray-500 mt-auto">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 11. 🖼️ [개인 2: 화이트 모노크롬] 크리에이터 포트폴리오 (personal-portfolio)
+// ════════════════════════════════════════════════════════════════════════
+function CleanPortfolioLayout({ accentColor, bizName, bizDesc, images }: LayoutProps) {
+  return (
+    <div className="min-h-full w-full flex flex-col font-pretendard bg-[#FFFFFF] text-[#0A0A0A] text-left">
+      <header className="max-w-6xl mx-auto px-6 py-14 text-left space-y-3 border-b border-gray-100">
+        <span className="text-xs font-bold text-gray-400">PORTFOLIO</span>
+        <h1 className="text-4xl font-black text-black">{bizName}</h1>
+        <p className="text-xs text-gray-600">{bizDesc}</p>
+      </header>
+      <footer className="py-8 bg-gray-50 text-center text-xs text-gray-500 mt-auto border-t">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
+    </div>
+  );
+}
+
+// ════════════════════════════════════════════════════════════════════════
+// 12. 🎎 [전통 1: 한옥 웜우드] 전통매듭 & 공예 아틀리에 (traditional-knots / traditional-pottery)
+// ════════════════════════════════════════════════════════════════════════
+function TraditionalCraftLayout({ accentColor, bizName, bizDesc, images }: LayoutProps) {
+  return (
+    <div className="min-h-full w-full flex flex-col font-serif-kr bg-[#FAF7F2] text-[#2A1311] text-left">
+      <header className="max-w-6xl mx-auto px-6 py-14 text-center space-y-4">
+        <span className="text-xs font-bold text-amber-800 bg-amber-100 px-3 py-1 rounded-full font-pretendard">KOREAN TRADITIONAL ATELIER</span>
+        <h1 className="text-3xl sm:text-4xl font-bold text-[#4A1A17]">{bizName}</h1>
+        <p className="text-xs text-[#7D524A] max-w-md mx-auto font-pretendard">{bizDesc}</p>
+      </header>
+      <footer className="py-8 bg-[#4A1A17] text-amber-100 text-center text-xs mt-auto">
+        <p>© 2026 {bizName}. All Rights Reserved.</p>
+      </footer>
     </div>
   );
 }
@@ -431,6 +652,7 @@ export default function LivePreviewRenderer() {
   if (!selectedTemplate) return null;
 
   const templateId = selectedTemplate.id;
+  const layoutType = selectedTemplate.layoutType;
   const accentColor = userInputs.pickedColor || selectedTemplate.colors.accent;
   const bizName = userInputs.businessName || selectedTemplate.name;
   const bizDesc = userInputs.description || selectedTemplate.tagline;
@@ -481,19 +703,60 @@ export default function LivePreviewRenderer() {
   };
 
   const renderLayout = () => {
-    if (templateId === "religion-heritage") {
+    // 1. 종교/NGO 카테고리 (밝고 경건한 자연색)
+    if (templateId === "religion-heritage" || layoutType === "religion-heritage") {
       return <HeritageChurchLayout {...props} />;
     }
-    if (templateId === "religion-gateway" || selectedCategory === "religion") {
+    if (templateId === "religion-gateway" || layoutType === "religion-gateway") {
       return <ModernChurchCommunityLayout {...props} />;
     }
-    if (templateId === "cafe-corporate") {
+    if (templateId === "religion-ngo" || layoutType === "religion-ngo") {
+      return <NgoCommunityLayout {...props} />;
+    }
+
+    // 2. 카페/식음료 카테고리 (다크, 화이트, 웜베이지 다양한 구성)
+    if (templateId === "cafe-kbbq" || layoutType === "kbbq") {
+      return <KoreanBBQRestaurantLayout {...props} />;
+    }
+    if (templateId === "cafe-minimal" || templateId === "cafe-vintage" || layoutType === "minimal-cafe") {
+      return <MinimalCafeBrunchLayout {...props} />;
+    }
+    if (templateId === "cafe-corporate" || layoutType === "corporate") {
       return <CorporateFranchiseLayout {...props} />;
     }
-    if (selectedCategory === "academy" || templateId.includes("academy")) {
+
+    // 3. 학원/강좌 카테고리
+    if (templateId === "academy-live" || layoutType === "academy-live") {
       return <OnlineAcademyLiveLayout {...props} />;
     }
-    return <KoreanBBQRestaurantLayout {...props} />;
+    if (templateId === "academy-cert" || layoutType === "academy-cert") {
+      return <CertInstituteLayout {...props} />;
+    }
+    if (templateId === "academy-ebook" || layoutType === "academy-ebook") {
+      return <EbookMembershipLayout {...props} />;
+    }
+
+    // 4. 개인 브랜드 / 크리에이터
+    if (templateId === "personal-dynamic" || layoutType === "personal-dynamic" || layoutType === "dynamic") {
+      return <DynamicMotionLabLayout {...props} />;
+    }
+    if (templateId === "personal-portfolio" || layoutType === "personal-portfolio") {
+      return <CleanPortfolioLayout {...props} />;
+    }
+
+    // 5. 전통 공예
+    if (selectedCategory === "traditional" || layoutType.includes("traditional")) {
+      return <TraditionalCraftLayout {...props} />;
+    }
+
+    // 기본 폴백
+    if (selectedCategory === "religion") {
+      return <HeritageChurchLayout {...props} />;
+    }
+    if (selectedCategory === "academy") {
+      return <OnlineAcademyLiveLayout {...props} />;
+    }
+    return <MinimalCafeBrunchLayout {...props} />;
   };
 
   return (
