@@ -1,71 +1,80 @@
-# AI 웹사이트 브리프 생성기 (AI Website Brief Generator)
+# 🌐 AI Website Brief Generator (AI 웹사이트 브리프 생성기)
+
+<p align="center">
+  <b>Architect production-grade website structures & prompts for AI coding agents in under 5 minutes.</b><br/>
+  초보자도 5분 만에 업종별로 검증된 웹사이트 레이아웃을 구성하고 최신 AI 코딩 에이전트용 고도화 프롬프트를 자동 생성하는 웹 도구
+</p>
+
+<p align="center">
+  <a href="https://2gosooweb.netlify.app">
+    <img src="https://img.shields.io/badge/Live_Demo-2gosooweb.netlify.app-blue?style=for-the-badge&logo=netlify" alt="Live Demo"/>
+  </a>
+  <img src="https://img.shields.io/badge/Next.js_14-App_Router-black?style=for-the-badge&logo=next.js" alt="Next.js 14"/>
+  <img src="https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind"/>
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License"/>
+</p>
+
+---
+
+## 🌟 English Overview
+
+AI Website Brief Generator is an interactive visual builder designed to bridge the gap between human business intent and AI code synthesis. Instead of writing vague prompts that generate generic layouts, this tool lets you visually select industry-proven design frameworks, section hierarchies, Unsplash imagery, and live color themes, exporting a hyper-detailed architectural prompt ready for tools like Antigravity, Cursor, Claude 3.7 Sonnet, Lovable, or v0.
+
+### Key Capabilities
+* **Industry Frameworks**: Specialized structural templates for Cafes & Restaurants, Educational Academies, and Personal Consulting Brands.
+* **3 Distinct Layout Archetypes**: Classic Hero (Full-width impact), Split-Sidebar (Modern SaaS layout), and Editorial Magazine (Chip-based narrative).
+* **Live Interactive Prompt Engine**: Real-time right-panel synchronization as you toggle colors, section orders, and headings.
+* **Unsplash Stock Binding**: Instant live photo search with high-resolution image URLs directly embedded into the generated agent prompt.
+* **1-Click Clipboard Export**: Copy ready-to-run prompts with zero friction.
+
+---
+
+## 🇰🇷 한국어 소개 (Korean Guide)
 
 초보자도 5분 만에 업종별로 검증된 웹사이트 레이아웃 구조와 스타일을 선택하고, 최신 AI 코딩 에이전트에 그대로 입력할 수 있는 고도화된 프롬프트를 자동으로 생성해 주는 웹 애플리케이션입니다.
 
-배포 주소: https://2gosooweb.netlify.app
-개발 및 기획: 2GOSOO AI LAB
+- 공식 배포 주소: https://2gosooweb.netlify.app
+- 개발 및 기획: 2GOSOO AI LAB
 
----
-
-## 주요 기능
-
-1. 업종별 카테고리 필터링
-   - 카페 및 레스토랑, 학원 및 강좌, 개인 브랜드 3개 업종 지원
-   - 각 업종에 맞춤 설계된 9가지 검증된 템플릿 제공
-
-2. 고도화된 3종 CSS 미니 목업 레이아웃
-   - 단순히 컬러만 바꾸는 방식이 아닌, 레이아웃의 골격 자체가 다른 3가지 목업 제공
+### 주요 핵심 기능
+1. **업종별 카테고리 필터링**: 카페/레스토랑, 학원/강좌, 1인 브랜드 등 검증된 9종의 템플릿 제공.
+2. **3종 CSS 미니 목업 레이아웃**:
    - Classic: 상단 네비게이션과 전체폭 히어로 영역, 세로형 리스트 섹션 구조
    - Sidebar: 좌우 분할식 히어로 영역(이미지 플레이스홀더 포함)과 2열 카드 그리드 구조
    - Magazine: 네비게이션 일체형 그라디언트 헤더와 가로형 섹션 칩 구조
-
-3. 실시간 프롬프트 빌더 및 고정식 우측 패널
-   - 사용자가 변경하고자 하는 항목(텍스트, 색상, 섹션 순서)을 클릭하면 전용 입력 폼 제공
-   - 입력값 및 세부 선택 사항이 우측 고정식 패널의 프롬프트 뷰어에 실시간으로 조합되어 업데이트
-   - 원클릭 클립보드 복사 버튼 탑재
-
-4. Unsplash API 실시간 이미지 연동 및 직접 선택 기능
-   - 템플릿의 분위기에 맞는 연관 키워드로 Unsplash 스톡 이미지를 실시간으로 호출
-   - 추천 스톡 이미지를 클릭하여 직접 선택(체크마크) 시, 해당 이미지의 고화질 URL이 생성될 프롬프트에 자동으로 삽입되어 AI 에이전트가 이를 메인 배경으로 적용하도록 설계
-   - 외부 Unsplash 페이지의 강제 리다이렉션을 방지하고 로그인 혼선을 예방하는 미니 팝업 링크 분리
-
-5. 로컬 파일 업로드 시뮬레이션
-   - 드래그앤드롭 및 탐색기를 이용해 내 이미지를 업로드하고 즉시 미리보기 및 URL 바인딩 지원
+3. **실시간 프롬프트 빌더**: 텍스트, 색상, 섹션 순서를 변경하면 우측 패널 프롬프트 뷰어에 실시간 자동 동기화.
+4. **Unsplash API 실시간 이미지 연동**: 업종 무드에 맞는 고화질 스톡 이미지를 실시간 검색 및 URL 바인딩.
+5. **원클릭 클립보드 복사**: 클릭 한 번으로 생성된 프롬프트를 복사하여 AI 에이전트에 즉시 입력.
 
 ---
 
-## 기술 스택
-
-- 프레임워크: Next.js 14 (App Router)
-- 스타일링: Tailwind CSS
-- 상태 관리: Zustand
-- 모션/애니메이션: Framer Motion
-- API 연동: Unsplash API Search
-- 호스팅 및 배포: Netlify (Static Export 빌드)
-
----
-
-## 시작 가이드
-
-로컬 개발 환경에서 프로젝트를 기동하는 방법입니다.
-
-1. 의존성 패키지 설치:
-   npm install
-
-2. 환경 변수 파일 생성:
-   프로젝트 루트 디렉토리에 .env.local 파일을 생성하고 아래 키를 입력해 주세요.
-   NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=발급받은_언스플래시_액세스키
-
-3. 개발 서버 실행:
-   npm run dev
-
-4. 정적 내보내기 빌드:
-   npm run build
-   (빌드 완료 시 out/ 폴더에 정적 HTML/CSS 파일들이 생성됩니다.)
+## 🛠️ Tech Stack
+* Framework: Next.js 14 (App Router)
+* Styling: Tailwind CSS
+* State Management: Zustand
+* Motion: Framer Motion
+* Stock API: Unsplash API
+* Deployment: Netlify (Static Export)
 
 ---
 
-## 라이센스 및 크레딧
+## 🚀 Quick Start (Local Development)
 
-이 프로그램은 2GOSOO AI LAB에서 개발한 유틸리티이며, Unsplash API를 통해 무료 스톡 이미지를 제공받고 있습니다.
-사용하시는 AI 에이전트(Antigravity, Codex, Hermes, Lovable, v0, Claude, Cursor 등)에 복사한 프롬프트를 붙여넣어 최고의 웹사이트 제작 속도를 느껴보세요.
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Configure environment variables (.env.local)
+NEXT_PUBLIC_UNSPLASH_ACCESS_KEY=your_unsplash_access_key
+
+# 3. Start local development server
+npm run dev
+
+# 4. Build static export
+npm run build
+```
+
+---
+
+## 📄 License
+MIT License. Created by [2GOSOO AI LAB](https://2gosooailab.com).
